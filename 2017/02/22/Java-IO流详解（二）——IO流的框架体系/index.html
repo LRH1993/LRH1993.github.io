@@ -1,0 +1,800 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇文章主要介绍IO流的分类、概念以及IO流中的四大基类，通过对IO流中的框架体系进行介绍，对IO流有一个整体的了解。  一、IO流的概念Java的IO流是实现输入/输出的基础，它可以方便地实现数据的输入/输出操作，在Java中把不同的输入/输出源抽象表述为”流”。流是一组有顺序的，有起点和终点的字节集合，是对数据传输的总称或抽象。即数据在两设备间的传输称为流，流的本质是数据传输，根据数据传输特">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO流详解（二）——IO流的框架体系">
+<meta property="og:url" content="https://lrh1993.github.io/2017/02/22/Java-IO流详解（二）——IO流的框架体系/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="本篇文章主要介绍IO流的分类、概念以及IO流中的四大基类，通过对IO流中的框架体系进行介绍，对IO流有一个整体的了解。  一、IO流的概念Java的IO流是实现输入/输出的基础，它可以方便地实现数据的输入/输出操作，在Java中把不同的输入/输出源抽象表述为”流”。流是一组有顺序的，有起点和终点的字节集合，是对数据传输的总称或抽象。即数据在两设备间的传输称为流，流的本质是数据传输，根据数据传输特">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-9836dbd2ae2424d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-0f64a3fe1a2bf0b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-38c3ea4562d6dbe3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-24T03:22:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java IO流详解（二）——IO流的框架体系">
+<meta name="twitter:description" content="本篇文章主要介绍IO流的分类、概念以及IO流中的四大基类，通过对IO流中的框架体系进行介绍，对IO流有一个整体的了解。  一、IO流的概念Java的IO流是实现输入/输出的基础，它可以方便地实现数据的输入/输出操作，在Java中把不同的输入/输出源抽象表述为”流”。流是一组有顺序的，有起点和终点的字节集合，是对数据传输的总称或抽象。即数据在两设备间的传输称为流，流的本质是数据传输，根据数据传输特">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-9836dbd2ae2424d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/02/22/Java-IO流详解（二）——IO流的框架体系/"/>
+
+
+
+
+
+  <title>Java IO流详解（二）——IO流的框架体系 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/02/22/Java-IO流详解（二）——IO流的框架体系/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java IO流详解（二）——IO流的框架体系</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-22T16:53:23+08:00">
+                2017-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java-IO/" itemprop="url" rel="index">
+                    <span itemprop="name">Java IO</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/02/22/Java-IO流详解（二）——IO流的框架体系/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/02/22/Java-IO流详解（二）——IO流的框架体系/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇文章主要介绍IO流的分类、概念以及IO流中的四大基类，通过对IO流中的框架体系进行介绍，对IO流有一个整体的了解。</p>
+</blockquote>
+<h3 id="一、IO流的概念"><a href="#一、IO流的概念" class="headerlink" title="一、IO流的概念"></a>一、IO流的概念</h3><p>Java的IO流是实现输入/输出的基础，它可以方便地实现数据的输入/输出操作，在Java中把不同的输入/输出源抽象表述为”流”。流是一组有顺序的，有起点和终点的字节集合，是对数据传输的总称或抽象。即数据在两设备间的传输称为流，流的本质是数据传输，根据数据传输特性将流抽象为各种类，方便更直观的进行数据操作。<br><strong>流有输入和输出，输入时是流从数据源流向程序。输出时是流从程序传向数据源，而数据源可以是内存，文件，网络或程序等。</strong></p>
+<h3 id="二、IO流的分类"><a href="#二、IO流的分类" class="headerlink" title="二、IO流的分类"></a>二、IO流的分类</h3><h4 id="1-输入流和输出流"><a href="#1-输入流和输出流" class="headerlink" title="1.输入流和输出流"></a>1.输入流和输出流</h4><p>根据数据流向不同分为：输入流和输出流。</p>
+<blockquote>
+<p>输入流:只能从中读取数据，而不能向其写入数据。<br>输出流：只能向其写入数据，而不能从中读取数据。</p>
+</blockquote>
+<p>如下如所示：对程序而言，向右的箭头，表示输入，向左的箭头，表示输出。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-9836dbd2ae2424d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="2-字节流和字符流"><a href="#2-字节流和字符流" class="headerlink" title="2.字节流和字符流"></a>2.字节流和字符流</h4><p>字节流和字符流和用法几乎完全一样，区别在于字节流和字符流所操作的数据单元不同。<br>字符流的由来： 因为数据编码的不同，而有了对字符进行高效操作的流对象。本质其实就是基于字节流读取时，去查了指定的码表。字节流和字符流的区别：<br>（1）读写单位不同：字节流以字节（8bit）为单位，字符流以字符为单位，根据码表映射字符，一次可能读多个字节。<br>（2）处理对象不同：字节流能处理所有类型的数据（如图片、avi等），而字符流只能处理字符类型的数据。</p>
+<p>只要是处理纯文本数据，就优先考虑使用字符流。 除此之外都使用字节流。</p>
+<h4 id="3-节点流和处理流"><a href="#3-节点流和处理流" class="headerlink" title="3.节点流和处理流"></a>3.节点流和处理流</h4><p>按照流的角色来分，可以分为节点流和处理流。<br>可以从/向一个特定的IO设备（如磁盘、网络）读/写数据的流，称为节点流，节点流也被成为低级流。<br>处理流是对一个已存在的流进行连接或封装，通过封装后的流来实现数据读/写功能，处理流也被称为高级流。<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//节点流，直接传入的参数是IO设备</span></span><br><span class="line">FileInputStream fis = <span class="keyword">new</span> <span class="type">FileInputStream</span>(<span class="string">"test.txt"</span>);</span><br><span class="line"><span class="comment">//处理流，直接传入的参数是流对象</span></span><br><span class="line">BufferedInputStream bis = <span class="keyword">new</span> <span class="type">BufferedInputStream</span>(fis);</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-0f64a3fe1a2bf0b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>当使用处理流进行输入/输出时，程序并不会直接连接到实际的数据源，没有和实际的输入/输出节点连接。使用处理流的一个明显好处是，只要使用相同的处理流，程序就可以采用完全相同的输入/输出代码来访问不同的数据源，随着处理流所包装节点流的变化，程序实际所访问的数据源也相应地发生变化。<br>实际上，Java使用处理流来包装节点流是一种典型的装饰器设计模式，通过使用处理流来包装不同的节点流，既可以消除不同节点流的实现差异，也可以提供更方便的方法来完成输入/输出功能。</p>
+<h3 id="三、IO流的四大基类"><a href="#三、IO流的四大基类" class="headerlink" title="三、IO流的四大基类"></a>三、IO流的四大基类</h3><p>根据流的流向以及操作的数据单元不同，将流分为了四种类型，每种类型对应一种抽象基类。这四种抽象基类分别为：InputStream,Reader,OutputStream以及Writer。四种基类下，对应不同的实现类，具有不同的特性。在这些实现类中，又可以分为节点流和处理流。下面就是整个由着四大基类支撑下，整个IO流的框架图。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-38c3ea4562d6dbe3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>InputStream,Reader,OutputStream以及Writer，这四大抽象基类，本身并不能创建实例来执行输入/输出，但它们将成为所有输入/输出流的模版，所以它们的方法是所有输入/输出流都可以使用的方法。类似于集合中的Collection接口。</p>
+<h4 id="1-InputStream"><a href="#1-InputStream" class="headerlink" title="1.InputStream"></a>1.InputStream</h4><p>InputStream 是所有的输入字节流的父类，它是一个抽象类，主要包含三个方法：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取一个字节并以整数的形式返回(0~255),如果返回-1已到输入流的末尾。 </span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">read</span>() ； </span><br><span class="line"><span class="comment">//读取一系列字节并存储到一个数组buffer，返回实际读取的字节数，如果读取前已到输入流的末尾返回-1。 </span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">read</span>(<span class="keyword">byte</span>[] <span class="built_in">buffer</span>) ； </span><br><span class="line"><span class="comment">//读取length个字节并存储到一个字节数组buffer，从off位置开始存,最多len， 返回实际读取的字节数，如果读取前以到输入流的末尾返回-1。 </span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">read</span>(<span class="keyword">byte</span>[] <span class="built_in">buffer</span>, <span class="keyword">int</span> off, <span class="keyword">int</span> len) ；</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-Reader"><a href="#2-Reader" class="headerlink" title="2.Reader"></a>2.Reader</h4><p>Reader 是所有的输入字符流的父类，它是一个抽象类，主要包含三个方法：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取一个字符并以整数的形式返回(0~255),如果返回-1已到输入流的末尾。 </span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">read</span>() ； </span><br><span class="line"><span class="comment">//读取一系列字符并存储到一个数组buffer，返回实际读取的字符数，如果读取前已到输入流的末尾返回-1。 </span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">read</span>(<span class="keyword">char</span>[] cbuf) ； </span><br><span class="line"><span class="comment">//读取length个字符,并存储到一个数组buffer，从off位置开始存,最多读取len，返回实际读取的字符数，如果读取前以到输入流的末尾返回-1。 </span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">read</span>(<span class="keyword">char</span>[] cbuf, <span class="keyword">int</span> off, <span class="keyword">int</span> len)</span><br></pre></td></tr></table></figure></p>
+<p>对比InputStream和Reader所提供的方法，就不难发现两个基类的功能基本一样的，只不过读取的数据单元不同。</p>
+<p><strong>在执行完流操作后，要调用<code>close()</code>方法来关系输入流，因为程序里打开的IO资源不属于内存资源，垃圾回收机制无法回收该资源，所以应该显式关闭文件IO资源。</strong></p>
+<p>除此之外，InputStream和Reader还支持如下方法来移动流中的指针位置：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在此输入流中标记当前的位置</span></span><br><span class="line"><span class="comment">//readlimit - 在标记位置失效前可以读取字节的最大限制。</span></span><br><span class="line"><span class="keyword">void</span> mark(<span class="keyword">int</span> readlimit)</span><br><span class="line"><span class="comment">// 测试此输入流是否支持 mark 方法</span></span><br><span class="line"><span class="keyword">boolean</span> markSupported()</span><br><span class="line"><span class="comment">// 跳过和丢弃此输入流中数据的 n 个字节/字符</span></span><br><span class="line"><span class="keyword">long</span> skip(<span class="keyword">long</span> n)</span><br><span class="line"><span class="comment">//将此流重新定位到最后一次对此输入流调用 mark 方法时的位置</span></span><br><span class="line"><span class="keyword">void</span> reset()</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-OutputStream"><a href="#3-OutputStream" class="headerlink" title="3.OutputStream"></a>3.OutputStream</h3><p>OutputStream 是所有的输出字节流的父类，它是一个抽象类，主要包含如下四个方法：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向输出流中写入一个字节数据,该字节数据为参数b的低8位。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">int</span> b) ; </span><br><span class="line"><span class="comment">//将一个字节类型的数组中的数据写入输出流。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">byte</span>[] b); </span><br><span class="line"><span class="comment">//将一个字节类型的数组中的从指定位置（off）开始的,len个字节写入到输出流。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">byte</span>[] b, <span class="keyword">int</span> off, <span class="keyword">int</span> len); </span><br><span class="line"><span class="comment">//将输出流中缓冲的数据全部写出到目的地。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">flush</span>();</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-Writer"><a href="#4-Writer" class="headerlink" title="4.Writer"></a>4.Writer</h3><p>Writer 是所有的输出字符流的父类，它是一个抽象类,主要包含如下六个方法：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向输出流中写入一个字符数据,该字节数据为参数b的低16位。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">int</span> c); </span><br><span class="line"><span class="comment">//将一个字符类型的数组中的数据写入输出流， </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">char</span>[] cbuf) </span><br><span class="line"><span class="comment">//将一个字符类型的数组中的从指定位置（offset）开始的,length个字符写入到输出流。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">char</span>[] cbuf, <span class="keyword">int</span> offset, <span class="keyword">int</span> length); </span><br><span class="line"><span class="comment">//将一个字符串中的字符写入到输出流。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">String</span> <span class="keyword">string</span>); </span><br><span class="line"><span class="comment">//将一个字符串从offset开始的length个字符写入到输出流。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">write</span>(<span class="keyword">String</span> <span class="keyword">string</span>, <span class="keyword">int</span> offset, <span class="keyword">int</span> length); </span><br><span class="line"><span class="comment">//将输出流中缓冲的数据全部写出到目的地。 </span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">flush</span>()</span><br></pre></td></tr></table></figure></p>
+<p>可以看出，Writer比OutputStream多出两个方法，主要是支持写入字符和字符串类型的数据。</p>
+<p><strong>使用Java的IO流执行输出时，不要忘记关闭输出流，关闭输出流除了可以保证流的物理资源被回收之外，还能将输出流缓冲区的数据flush到物理节点里（因为在执行close()方法之前，自动执行输出流的flush()方法）</strong></p>
+<p>以上内容就是整个IO流的框架介绍。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/22/Activity全方位了解，总有你不知道的一面/" rel="next" title="Activity全方位了解，总有你不知道的一面">
+                <i class="fa fa-chevron-left"></i> Activity全方位了解，总有你不知道的一面
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/23/从Java虚拟机角度来理解方法调用以及重写与重载的实质/" rel="prev" title="从Java虚拟机角度来理解方法调用以及重写与重载的实质">
+                从Java虚拟机角度来理解方法调用以及重写与重载的实质 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、IO流的概念"><span class="nav-number">1.</span> <span class="nav-text">一、IO流的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、IO流的分类"><span class="nav-number">2.</span> <span class="nav-text">二、IO流的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-输入流和输出流"><span class="nav-number">2.1.</span> <span class="nav-text">1.输入流和输出流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-字节流和字符流"><span class="nav-number">2.2.</span> <span class="nav-text">2.字节流和字符流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-节点流和处理流"><span class="nav-number">2.3.</span> <span class="nav-text">3.节点流和处理流</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、IO流的四大基类"><span class="nav-number">3.</span> <span class="nav-text">三、IO流的四大基类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-InputStream"><span class="nav-number">3.1.</span> <span class="nav-text">1.InputStream</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Reader"><span class="nav-number">3.2.</span> <span class="nav-text">2.Reader</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-OutputStream"><span class="nav-number">4.</span> <span class="nav-text">3.OutputStream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Writer"><span class="nav-number">5.</span> <span class="nav-text">4.Writer</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

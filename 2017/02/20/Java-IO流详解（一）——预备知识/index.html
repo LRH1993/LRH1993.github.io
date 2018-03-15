@@ -1,0 +1,799 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇文章不会介绍关于输入输出流的任何知识。因为想要掌握输入输出流，首先要了解字节与字符的关系，以及File类的相关知识。这也是本篇文章的主要内容。   一、字符与字节在Java中有输入、输出两种IO流，每种输入、输出流又分为字节流和字符流两大类。关于字节，我们在学习8大基本数据类型中都有了解，每个字节(byte)有8bit组成，每种数据类型又几个字节组成等。关于字符，我们可能知道代表一个汉字或者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO流详解（一）——预备知识">
+<meta property="og:url" content="https://lrh1993.github.io/2017/02/20/Java-IO流详解（一）——预备知识/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="本篇文章不会介绍关于输入输出流的任何知识。因为想要掌握输入输出流，首先要了解字节与字符的关系，以及File类的相关知识。这也是本篇文章的主要内容。   一、字符与字节在Java中有输入、输出两种IO流，每种输入、输出流又分为字节流和字符流两大类。关于字节，我们在学习8大基本数据类型中都有了解，每个字节(byte)有8bit组成，每种数据类型又几个字节组成等。关于字符，我们可能知道代表一个汉字或者">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-176b02d90946bb65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-24T03:20:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java IO流详解（一）——预备知识">
+<meta name="twitter:description" content="本篇文章不会介绍关于输入输出流的任何知识。因为想要掌握输入输出流，首先要了解字节与字符的关系，以及File类的相关知识。这也是本篇文章的主要内容。   一、字符与字节在Java中有输入、输出两种IO流，每种输入、输出流又分为字节流和字符流两大类。关于字节，我们在学习8大基本数据类型中都有了解，每个字节(byte)有8bit组成，每种数据类型又几个字节组成等。关于字符，我们可能知道代表一个汉字或者">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-176b02d90946bb65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/02/20/Java-IO流详解（一）——预备知识/"/>
+
+
+
+
+
+  <title>Java IO流详解（一）——预备知识 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/02/20/Java-IO流详解（一）——预备知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java IO流详解（一）——预备知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-20T12:35:57+08:00">
+                2017-02-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java-IO/" itemprop="url" rel="index">
+                    <span itemprop="name">Java IO</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/02/20/Java-IO流详解（一）——预备知识/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/02/20/Java-IO流详解（一）——预备知识/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇文章不会介绍关于输入输出流的任何知识。因为想要掌握输入输出流，首先要了解字节与字符的关系，以及File类的相关知识。这也是本篇文章的主要内容。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-176b02d90946bb65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="一、字符与字节"><a href="#一、字符与字节" class="headerlink" title="一、字符与字节"></a>一、字符与字节</h3><p>在Java中有输入、输出两种IO流，每种输入、输出流又分为字节流和字符流两大类。关于字节，我们在学习8大基本数据类型中都有了解，每个字节(byte)有8bit组成，每种数据类型又几个字节组成等。关于字符，我们可能知道代表一个汉字或者英文字母。</p>
+<p><strong>但是字节与字符之间的关系是怎样的？</strong></p>
+<p>Java采用unicode编码，2个字节来表示一个字符，这点与C语言中不同，C语言中采用ASCII，在大多数系统中，一个字符通常占1个字节，但是在0~127整数之间的字符映射，unicode向下兼容ASCII。而Java采用unicode来表示字符，一个中文或英文字符的unicode编码都占2个字节。但如果采用其他编码方式，一个字符占用的字节数则各不相同。可能有点晕，举个例子解释下。</p>
+<p> 例如：Java中的String类是按照unicode进行编码的，当使用String(byte[] bytes, String encoding)构造字符串时，encoding所指的是bytes中的数据是按照那种方式编码的，而不是最后产生的String是什么编码方式，换句话说，是让系统把bytes中的数据由encoding编码方式转换成unicode编码。如果不指明，bytes的编码方式将由jdk根据操作系统决定。</p>
+<p><code>getBytes(String charsetName)</code>使用指定的编码方式将此String编码为 byte 序列，并将结果存储到一个新的 byte 数组中。如果不指定将使用操作系统默认的编码方式，我的电脑默认的是GBK编码。<br><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> class Hel &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args)&#123;  </span><br><span class="line">        <span class="keyword">String</span> <span class="built_in">str</span> = <span class="string">"你好hello"</span>;  </span><br><span class="line">            <span class="built_in">int</span> byte_len = <span class="built_in">str</span>.getBytes().length;  </span><br><span class="line">            <span class="built_in">int</span> len = <span class="built_in">str</span>.length();  </span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"字节长度为："</span> + byte_len);  </span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"字符长度为："</span> + len);  </span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"系统默认编码方式："</span> + System.getProperty(<span class="string">"file.encoding"</span>));  </span><br><span class="line">       &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果</p>
+<blockquote>
+<p>字节长度为：9<br>字符长度为：7<br>系统默认编码方式：GBK</p>
+</blockquote>
+<p>这是因为：在 GB 2312 编码或 GBK 编码中，一个英文字母字符存储需要1个字节，一个汉字字符存储需要2个字节。 在UTF-8编码中，一个英文字母字符存储需要1个字节，一个汉字字符储存需要3到4个字节。在UTF-16编码中，一个英文字母字符存储需要2个字节，一个汉字字符储存需要3到4个字节（Unicode扩展区的一些汉字存储需要4个字节）。在UTF-32编码中，世界上任何字符的存储都需要4个字节。</p>
+<p><strong>简单来讲，一个字符表示一个汉字或英文字母，具体字符与字节之间的大小比例视编码情况而定。有时候读取的数据是乱码，就是因为编码方式不一致，需要进行转换，然后再按照unicode进行编码。</strong></p>
+<h3 id="二、File类"><a href="#二、File类" class="headerlink" title="二、File类"></a>二、File类</h3><p>File类是java.io包下代表与平台无关的文件和目录，也就是说，如果希望在程序中操作<strong>文件和目录</strong>，都可以通过File类来完成。</p>
+<h5 id="①构造函数"><a href="#①构造函数" class="headerlink" title="①构造函数"></a>①构造函数</h5><figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//构造函数<span class="keyword">File</span>(<span class="built_in">String</span> pathname)</span><br><span class="line"><span class="keyword">File</span> f1 =<span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">"c:\\abc\\1.txt"</span>);</span><br><span class="line">//<span class="keyword">File</span>(<span class="built_in">String</span> parent,<span class="built_in">String</span> child)</span><br><span class="line"><span class="keyword">File</span> f2 =<span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">"c:\\abc"</span>,<span class="string">"2.txt"</span>);</span><br><span class="line">//<span class="keyword">File</span>(<span class="keyword">File</span> parent,<span class="built_in">String</span> child)</span><br><span class="line"><span class="keyword">File</span> f3 =<span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">"c:"</span>+<span class="keyword">File</span>.separator+<span class="string">"abc"</span>);//separator 跨平台分隔符</span><br><span class="line"><span class="keyword">File</span> f4 =<span class="keyword">new</span> <span class="keyword">File</span>(f3,<span class="string">"3.txt"</span>);</span><br><span class="line">System.<span class="keyword">out</span>.println(f1);//c:\abc\<span class="number">1</span>.txt</span><br></pre></td></tr></table></figure>
+<p><strong>路径分隔符：</strong><br>windows： “/“ “\” 都可以<br>linux/unix： “/“<br>注意:如果windows选择用”\”做分割符的话,那么请记得替换成”\\”,因为Java中”\”代表转义字符<br>所以推荐都使用”/“，也可以直接使用代码<code>File.separator</code>，表示跨平台分隔符。<br><strong>路径：</strong><br>相对路径：<br>./表示当前路径<br>../表示上一级路径<br>其中当前路径：默认情况下，java.io 包中的类总是根据当前用户目录来分析相对路径名。此目录由系统属性 user.dir 指定，通常是 Java 虚拟机的调用目录。”</p>
+<p>绝对路径：<br>绝对路径名是完整的路径名，不需要任何其他信息就可以定位自身表示的文件</p>
+<h5 id="②创建与删除方法"><a href="#②创建与删除方法" class="headerlink" title="②创建与删除方法"></a>②创建与删除方法</h5><figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//如果文件存在返回<span class="literal">false</span>，否则返回<span class="literal">true</span>并且创建文件 </span><br><span class="line"><span class="built_in">boolean</span> createNewFile();</span><br><span class="line">//创建一个<span class="keyword">File</span>对象所对应的目录，成功返回<span class="literal">true</span>，否则<span class="literal">false</span>。且<span class="keyword">File</span>对象必须为路径而不是文件。只会创建最后一级目录，如果上级目录不存在就抛异常。</span><br><span class="line"><span class="built_in">boolean</span> mkdir();</span><br><span class="line">//创建一个<span class="keyword">File</span>对象所对应的目录，成功返回<span class="literal">true</span>，否则<span class="literal">false</span>。且<span class="keyword">File</span>对象必须为路径而不是文件。创建多级目录，创建路径中所有不存在的目录</span><br><span class="line"><span class="built_in">boolean</span> mkdirs()	;</span><br><span class="line">//如果文件存在返回<span class="literal">true</span>并且删除文件，否则返回<span class="literal">false</span></span><br><span class="line"><span class="built_in">boolean</span> delete();</span><br><span class="line">//在虚拟机终止时，删除<span class="keyword">File</span>对象所表示的文件或目录。</span><br><span class="line">void deleteOnExit();</span><br></pre></td></tr></table></figure>
+<h5 id="③判断方法"><a href="#③判断方法" class="headerlink" title="③判断方法"></a>③判断方法</h5><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">canExecute</span><span class="params">()</span>	</span>;<span class="comment">//判断文件是否可执行</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">canRead</span><span class="params">()</span></span>;<span class="comment">//判断文件是否可读</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">canWrite</span><span class="params">()</span></span>;<span class="comment">//判断文件是否可写</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">exists</span><span class="params">()</span></span>;<span class="comment">//判断文件是否存在</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isDirectory</span><span class="params">()</span></span>;<span class="comment">//判断是否是目录</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isFile</span><span class="params">()</span></span>;<span class="comment">//判断是否是文件</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isHidden</span><span class="params">()</span></span>;<span class="comment">//判断是否是隐藏文件或隐藏目录</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isAbsolute</span><span class="params">()</span></span>;<span class="comment">//判断是否是绝对路径 文件不存在也能判断</span></span><br></pre></td></tr></table></figure>
+<h5 id="③获取方法"><a href="#③获取方法" class="headerlink" title="③获取方法"></a>③获取方法</h5><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">String</span> <span class="selector-tag">getName</span>();<span class="comment">//返回文件或者是目录的名称</span></span><br><span class="line"><span class="selector-tag">String</span> <span class="selector-tag">getPath</span>();<span class="comment">//返回路径</span></span><br><span class="line"><span class="selector-tag">String</span> <span class="selector-tag">getAbsolutePath</span>();<span class="comment">//返回绝对路径</span></span><br><span class="line"><span class="selector-tag">String</span> <span class="selector-tag">getParent</span>();<span class="comment">//返回父目录，如果没有父目录则返回null</span></span><br><span class="line"><span class="selector-tag">long</span> <span class="selector-tag">lastModified</span>();<span class="comment">//返回最后一次修改的时间</span></span><br><span class="line"><span class="selector-tag">long</span> <span class="selector-tag">length</span>();<span class="comment">//返回文件的长度</span></span><br><span class="line"><span class="selector-tag">File</span><span class="selector-attr">[]</span> <span class="selector-tag">listRoots</span>();<span class="comment">// 列出所有的根目录（Window中就是所有系统的盘符）</span></span><br><span class="line"><span class="selector-tag">String</span><span class="selector-attr">[]</span> <span class="selector-tag">list</span>() ;<span class="comment">//返回一个字符串数组，给定路径下的文件或目录名称字符串</span></span><br><span class="line"><span class="selector-tag">String</span><span class="selector-attr">[]</span> <span class="selector-tag">list</span>(FilenameFilter filter);<span class="comment">//返回满足过滤器要求的一个字符串数组</span></span><br><span class="line"><span class="selector-tag">File</span><span class="selector-attr">[]</span>  <span class="selector-tag">listFiles</span>();<span class="comment">//返回一个文件对象数组，给定路径下文件或目录</span></span><br><span class="line"><span class="selector-tag">File</span><span class="selector-attr">[]</span> <span class="selector-tag">listFiles</span>(FilenameFilter filter);<span class="comment">//返回满足过滤器要求的一个文件对象数组</span></span><br></pre></td></tr></table></figure>
+<p>其中包含了一个重要的接口FileNameFilter，该接口是个文件过滤器，包含了一个<code>accept(File dir,String name)</code>方法，该方法依次对指定File的所有子目录或者文件进行迭代，按照指定条件，进行过滤，过滤出满足条件的所有文件。<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文件过滤</span></span><br><span class="line"><span class="keyword">File</span>[] files = <span class="keyword">file</span>.listFiles(<span class="keyword">new</span> FilenameFilter() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> accept(<span class="keyword">File</span> <span class="keyword">file</span>, String filename) &#123;</span><br><span class="line">        <span class="keyword">return</span> filename.endsWith(<span class="string">".mp3"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>file目录下的所有子文件如果满足后缀是.mp3的条件的文件都会被过滤出来。</p>
+<p>以上就是IO流的预备知识，掌握了这些内容有助于我们更好地理解IO流，下篇文章将开始学习Java中的IO流的内容。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/19/Android消息机制的原理及源码解析/" rel="next" title="Android消息机制的原理及源码解析">
+                <i class="fa fa-chevron-left"></i> Android消息机制的原理及源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/21/简单理解Android事件分发机制(上)——基础内容及流程梳理/" rel="prev" title="简单理解Android事件分发机制(上)——基础内容及流程梳理">
+                简单理解Android事件分发机制(上)——基础内容及流程梳理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、字符与字节"><span class="nav-number">1.</span> <span class="nav-text">一、字符与字节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、File类"><span class="nav-number">2.</span> <span class="nav-text">二、File类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#①构造函数"><span class="nav-number">2.0.1.</span> <span class="nav-text">①构造函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#②创建与删除方法"><span class="nav-number">2.0.2.</span> <span class="nav-text">②创建与删除方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#③判断方法"><span class="nav-number">2.0.3.</span> <span class="nav-text">③判断方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#③获取方法"><span class="nav-number">2.0.4.</span> <span class="nav-text">③获取方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

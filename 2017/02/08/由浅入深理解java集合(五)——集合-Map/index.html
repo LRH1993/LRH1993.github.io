@@ -1,0 +1,838 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="前面已经介绍完了Collection接口下的集合实现类，今天我们来介绍Map接口下的两个重要的集合实现类HashMap,TreeMap。关于Map的一些通用介绍，可以参考第一篇文章。由于Map与List、Set集合的某些特性有重合，因此观看本篇文章的会参考到之前的一些内容，最下方有链接。如果已经有这方面的基础，那么对Map的学习将会事半功倍。  HashMapHashMap 是一个散列表，它存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="由浅入深理解java集合(五)——集合-Map">
+<meta property="og:url" content="https://lrh1993.github.io/2017/02/08/由浅入深理解java集合(五)——集合-Map/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="前面已经介绍完了Collection接口下的集合实现类，今天我们来介绍Map接口下的两个重要的集合实现类HashMap,TreeMap。关于Map的一些通用介绍，可以参考第一篇文章。由于Map与List、Set集合的某些特性有重合，因此观看本篇文章的会参考到之前的一些内容，最下方有链接。如果已经有这方面的基础，那么对Map的学习将会事半功倍。  HashMapHashMap 是一个散列表，它存储">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-dcddf2f5ebcfdad4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-a37ca433f85677c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-23T12:50:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="由浅入深理解java集合(五)——集合-Map">
+<meta name="twitter:description" content="前面已经介绍完了Collection接口下的集合实现类，今天我们来介绍Map接口下的两个重要的集合实现类HashMap,TreeMap。关于Map的一些通用介绍，可以参考第一篇文章。由于Map与List、Set集合的某些特性有重合，因此观看本篇文章的会参考到之前的一些内容，最下方有链接。如果已经有这方面的基础，那么对Map的学习将会事半功倍。  HashMapHashMap 是一个散列表，它存储">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-dcddf2f5ebcfdad4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/02/08/由浅入深理解java集合(五)——集合-Map/"/>
+
+
+
+
+
+  <title>由浅入深理解java集合(五)——集合-Map | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/02/08/由浅入深理解java集合(五)——集合-Map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">由浅入深理解java集合(五)——集合-Map</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-08T14:23:57+08:00">
+                2017-02-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/02/08/由浅入深理解java集合(五)——集合-Map/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/02/08/由浅入深理解java集合(五)——集合-Map/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>前面已经介绍完了Collection接口下的集合实现类，今天我们来介绍Map接口下的两个重要的集合实现类HashMap,TreeMap。关于Map的一些通用介绍，可以参考<a href="http://www.jianshu.com/p/589d58033841" target="_blank" rel="noopener">第一篇文章</a>。由于Map与List、Set集合的某些特性有重合，因此观看本篇文章的会参考到之前的一些内容，最下方有链接。如果已经有这方面的基础，那么对Map的学习将会事半功倍。</p>
+</blockquote>
+<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><p>HashMap 是一个散列表，它存储的内容是键值对(key-value)映射。<br>既然要介绍HashMap，那么就顺带介绍HashTable,两者进行比对。HashMap和Hashtable都是Map接口的经典实现类，它们之间的关系完全类似于之前介绍的<a href="http://www.jianshu.com/p/d436b4cf6b94" target="_blank" rel="noopener">ArrayList和Vector的关系</a>。由于Hashtable是个古老的Map实现类（从Hashtable的命名规范就可以看出，t没有大写，并不是我写错了），需要方法比较繁琐，不符合Map接口的规范。但是Hashtable也具有HashMap不具有的优点。下面我们进行两者之间的比对。</p>
+<h4 id="HashMap与Hashtable的区别"><a href="#HashMap与Hashtable的区别" class="headerlink" title="HashMap与Hashtable的区别"></a>HashMap与Hashtable的区别</h4><p>1.Hashtable是一个线程安全的Map实现，但HashMap是线程不安全的实现，所以HashMap比Hashtable的性能好一些；但如果有多个线程访问同一个Map对象时，是盗用Hashtable实现类会更好。</p>
+<p>2.Hashtable不允许使用null作为key和value，如果试图把null值放进Hashtable中，将会引发NullPointerException异常；但是HashMap可以使用null作为key或value。</p>
+<h4 id="HashMap判断key与value相等的标准"><a href="#HashMap判断key与value相等的标准" class="headerlink" title="HashMap判断key与value相等的标准"></a>HashMap判断key与value相等的标准</h4><blockquote>
+<p>前面文章中，我们针对其他集合都分析了判断集合元素相等的标准。针对HashMap也不例外，不同的是有两个元素：key与value需要分别介绍判断相等的标准。</p>
+</blockquote>
+<p><strong>key判断相等的标准</strong></p>
+<p>类似于HashSet，HashMap与Hashtable判断两个key相等的标准是：两个key通过equals()方法比较返回true,两个key的hashCode值也相等，则认为两个key是相等的。</p>
+<p><strong>注意：用作key的对象必须实现了hashCode()方法和equals()方法。并且最好两者返回的结果一致，即如果equals()返回true，hashCode()值相等。可<a href="http://www.jianshu.com/p/9081017a2d67" target="_blank" rel="noopener">参考Set关于这方面的介绍</a>。</strong></p>
+<p><strong>value判断相等的标准</strong></p>
+<p>HashMap与Hashtable判断两个value相等的标准是：只要两个对象通过equals()方法比较返回true即可。</p>
+<p><strong>注意：</strong>HashMap中key所组成的集合元素不能重复，value所组成的集合元素可以重复。</p>
+<p>下面程序示范了HashMap判断key与value相等的标准。<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">count</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> A(<span class="keyword">int</span> <span class="keyword">count</span>) &#123;</span><br><span class="line">		<span class="keyword">this</span>.<span class="keyword">count</span> = <span class="keyword">count</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">//根据count值来计算hashCode值</span></span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> hashCode() &#123;</span><br><span class="line">		<span class="keyword">final</span> <span class="keyword">int</span> prime = <span class="number">31</span>;</span><br><span class="line">		<span class="keyword">int</span> result = <span class="number">1</span>;</span><br><span class="line">		result = prime * result + <span class="keyword">count</span>;</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">//根据count值来判断两个对象是否相等</span></span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">boolean</span> equals(Object obj) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span> == obj)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">if</span> (obj == <span class="keyword">null</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">if</span> (getClass() != obj.getClass())</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		A other = (A) obj;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">count</span> != other.<span class="keyword">count</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">count</span>;</span><br><span class="line">	<span class="keyword">public</span> B(<span class="keyword">int</span> <span class="keyword">count</span>) &#123;</span><br><span class="line">		<span class="keyword">this</span>.<span class="keyword">count</span> = <span class="keyword">count</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	 <span class="comment">//根据count值来判断两个对象是否相等</span></span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">boolean</span> equals(Object obj) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span> == obj)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">if</span> (obj == <span class="keyword">null</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">if</span> (getClass() != obj.getClass())</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		B other = (B) obj;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">count</span> != other.<span class="keyword">count</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> class HashMapTest &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args)&#123;</span><br><span class="line">		HashMap <span class="built_in">map</span> = <span class="keyword">new</span> HashMap();</span><br><span class="line">		<span class="built_in">map</span>.<span class="built_in">put</span>(<span class="keyword">new</span> A(<span class="number">1000</span>), <span class="string">"集合Set"</span>);</span><br><span class="line">		<span class="built_in">map</span>.<span class="built_in">put</span>(<span class="keyword">new</span> A(<span class="number">2000</span>), <span class="string">"集合List"</span>);</span><br><span class="line">		<span class="built_in">map</span>.<span class="built_in">put</span>(<span class="keyword">new</span> A(<span class="number">3000</span>), <span class="keyword">new</span> B(<span class="number">1000</span>));</span><br><span class="line">       <span class="comment">//仅仅equals()比较为true，但认为是相同的value</span></span><br><span class="line">		<span class="keyword">boolean</span> isContainValue = <span class="built_in">map</span>.containsValue(<span class="keyword">new</span> B(<span class="number">1000</span>));</span><br><span class="line">		System.out.<span class="built_in">println</span>(isContainValue);</span><br><span class="line">      <span class="comment">//虽然是不同的对象，但是equals()和hashCode()返回结果都相等</span></span><br><span class="line">		<span class="keyword">boolean</span> isContainKey = <span class="built_in">map</span>.containsKey(<span class="keyword">new</span> A(<span class="number">1000</span>));</span><br><span class="line">		System.out.<span class="built_in">println</span>(isContainKey);</span><br><span class="line">      <span class="comment">//equals()和hashCode()返回结果不满足key相等的条件</span></span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="built_in">map</span>.containsKey(<span class="keyword">new</span> A(<span class="number">4000</span>)));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<blockquote>
+<p>true<br>true<br>false</p>
+</blockquote>
+<p><strong>注意：</strong>如果是加入HashMap的key是个可变对象，在加入到集合后又修改key的成员变量的值，可能导致hashCode()值以及equal()的比较结果发生变化，无法访问到该key。一般情况下不要修改。</p>
+<h4 id="HashMap的本质"><a href="#HashMap的本质" class="headerlink" title="HashMap的本质"></a>HashMap的本质</h4><p>下面我们从源码角度来理解HashMap。</p>
+<p><strong>HashMap的构造函数</strong><br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认构造函数。</span></span><br><span class="line"><span class="function"><span class="title">HashMap</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定“容量大小”的构造函数</span></span><br><span class="line"><span class="function"><span class="title">HashMap</span><span class="params">(int capacity)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定“容量大小”和“加载因子”的构造函数</span></span><br><span class="line"><span class="function"><span class="title">HashMap</span><span class="params">(int capacity, float loadFactor)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 包含“子Map”的构造函数</span></span><br><span class="line"><span class="function"><span class="title">HashMap</span><span class="params">(Map&lt;? extends K, ? extends V&gt; map)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>从构造函数中，了解到两个重要的元素：容量大小(capacity)以及加载因子(loadFactor)。<br>容量(capacity)是哈希表的容量，初始容量是哈希表在创建时的容量（即<code>DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4</code>）。<br>加载因子 是哈希表在其容量自动增加之前可以达到多满的一种尺度。当哈希表中的条目数超出了加载因子与当前容量的乘积时，则要对该哈希表进行 resize操作（即重建内部数据结构），从而哈希表将具有大约两倍的桶数。<br>通常，默认加载因子是 0.75(即<code>DEFAULT_LOAD_FACTOR = 0.75f</code>), 这是在时间和空间成本上寻求一种折衷。加载因子过高虽然减少了空间开销，但同时也增加了查询成本（在大多数 HashMap 类的操作中，包括 get 和 put 操作，都反映了这一点）。在设置容量时应该考虑到映射中所需的条目数及其加载因子，以便最大限度地减少 resize操作次数。如果容量大于最大条目数除以加载因子，则不会发生 rehash 操作。</p>
+<p><strong>Node类型</strong><br>HashMap是通过”拉链法”实现的哈希表。它包括几个重要的成员变量：table, size, threshold, loadFactor。</p>
+<p>table是一个Node[]数组类型，而Node实际上就是一个单向链表。哈希表的”key-value键值对”都是存储在Node数组中的。 </p>
+<p>size是HashMap的大小，它是HashMap保存的键值对的数量。 </p>
+<p>threshold是HashMap的阈值，用于判断是否需要调整HashMap的容量。threshold的值=”容量*加载因子”，当HashMap中存储数据的数量达到threshold时，就需要将HashMap的容量加倍。</p>
+<p>loadFactor就是加载因子。 </p>
+<p>要想理解HashMap，首先就要理解基于Node实现的“拉链法”。</p>
+<p>Java中数据存储方式最底层的两种结构，一种是数组，另一种就是链表，数组的特点：连续空间，寻址迅速，但是在刪除或者添加元素的时候需要有较大幅度的移动，所以查询速度快，增刪较慢。而链表正好相反，由于空间不连续，寻址困难，增刪元素只需修改指針，所以查询速度慢、增刪快。有沒有一种数组结构來综合一下数组和链表，以便发挥它们各自的优势？答案是肯定的！就是：哈希表。哈希表具有较快（常量级）的查询速度，及相对较快的增刪速度，所以很适合在海量数据的环境中使用。一般实现哈希表的方法采用“拉链法”，我們可以理解为“链表的数组”，如下图：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-dcddf2f5ebcfdad4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>图中，我们可以发现哈希表是由数组+链表組成的，一个长度为16的数组中，每個元素存储的是一个链表的头结点。那么这些元素是按照什么样的规则存储到数组中呢？<br>一般情況是通过hash(key)获得，也就是元素的key的哈希值。如果hash(key)值相等，则都存入该hash值所对应的链表中。它的內部其实是用一個Node数组來实现。</p>
+<p><strong>所以每个数组元素代表一个链表，其中的共同点就是hash(key)相等。</strong></p>
+<p>下面我们来了解下链表的基本元素Node。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">        <span class="keyword">final</span> K key;</span><br><span class="line">        V value;</span><br><span class="line">        <span class="comment">// 指向下一个节点</span></span><br><span class="line">        Node&lt;K,V&gt; next;</span><br><span class="line">        <span class="comment">//构造函数。</span></span><br><span class="line">      <span class="comment">// 输入参数包括"哈希值(hash)", "键(key)", "值(value)", "下一节点(next)"</span></span><br><span class="line">        Node(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">            <span class="keyword">this</span>.hash = hash;</span><br><span class="line">            <span class="keyword">this</span>.key = key;</span><br><span class="line">            <span class="keyword">this</span>.value = value;</span><br><span class="line">            <span class="keyword">this</span>.next = next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> K <span class="title">getKey</span><span class="params">()</span>        </span>&#123; <span class="keyword">return</span> key; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">getValue</span><span class="params">()</span>      </span>&#123; <span class="keyword">return</span> value; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> key + <span class="string">"="</span> + value; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> Objects.hashCode(key) ^ Objects.hashCode(value);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">setValue</span><span class="params">(V newValue)</span> </span>&#123;</span><br><span class="line">            V oldValue = value;</span><br><span class="line">            value = newValue;</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">         <span class="comment">// 判断两个Node是否相等</span></span><br><span class="line">        <span class="comment">// 若两个Node的“key”和“value”都相等，则返回true。</span></span><br><span class="line">        <span class="comment">// 否则，返回false</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (o == <span class="keyword">this</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (o <span class="keyword">instanceof</span> Map.Entry) &#123;</span><br><span class="line">                Map.Entry&lt;?,?&gt; e = (Map.Entry&lt;?,?&gt;)o;</span><br><span class="line">                <span class="keyword">if</span> (Objects.equals(key, e.getKey()) &amp;&amp;</span><br><span class="line">                    Objects.equals(value, e.getValue()))</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>再此结构下，实现了集合的增删改查功能，由于本篇的篇幅有限，这里就不具体介绍其源码实现了。</p>
+<h5 id="HashMap遍历方式"><a href="#HashMap遍历方式" class="headerlink" title="HashMap遍历方式"></a>HashMap遍历方式</h5><p>1.遍历HashMap的键值对</p>
+<p>第一步：根据entrySet()获取HashMap的“键值对”的Set集合。<br>第二步：通过Iterator迭代器遍历“第一步”得到的集合。</p>
+<p>2.遍历HashMap的键</p>
+<p>第一步：根据keySet()获取HashMap的“键”的Set集合。<br>第二步：通过Iterator迭代器遍历“第一步”得到的集合。</p>
+<p>3.遍历HashMap的值</p>
+<p>第一步：根据value()获取HashMap的“值”的集合。<br>第二步：通过Iterator迭代器遍历“第一步”得到的集合。</p>
+<h4 id="LinkedHashMap实现类"><a href="#LinkedHashMap实现类" class="headerlink" title="LinkedHashMap实现类"></a>LinkedHashMap实现类</h4><p>HashSet有一个LinkedHashSet子类，HashMap也有一个LinkedHashMap子类；LinkedHashMap使用双向链表来维护key-value对的次序。<br>LinkedHashMap需要维护元素的插入顺序，因此性能略低于HashMap的性能；但是因为它以链表来维护内部顺序，所以在迭代访问<strong>Map里的全部元素时有较好的性能</strong>。迭代输出LinkedHashMap的元素时，将会按照添加key-value对的顺序输出。<br><strong>本质上来讲，LinkedHashMap=散列表+循环双向链表</strong></p>
+<h3 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h3><p>TreeMap是SortedMap接口的实现类。TreeMap 是一个<strong>有序的key-value集合</strong>，它是通过红黑树实现的，每个key-value对即作为红黑树的一个节点。</p>
+<h5 id="TreeMap排序方式"><a href="#TreeMap排序方式" class="headerlink" title="TreeMap排序方式"></a>TreeMap排序方式</h5><p>TreeMap有两种排序方式，和TreeSet一样。</p>
+<p>自然排序：TreeMap的所有key必须实现Comparable接口，而且所有的key应该是同一个类的对象，否则会抛出ClassCastException异常。</p>
+<p>定制排序：创建TreeMap时，传入一个Comparator对象，该对象负责对TreeMap中的所有key进行排序。</p>
+<h5 id="TreeMap中判断两个元素key、value相等的标准"><a href="#TreeMap中判断两个元素key、value相等的标准" class="headerlink" title="TreeMap中判断两个元素key、value相等的标准"></a>TreeMap中判断两个元素key、value相等的标准</h5><p>类似于TreeSet中判断两个元素相等的标准，TreeMap中判断两个key相等的标准是：两个key通过compareTo()方法返回0，TreeMap即认为这两个key是相等的。</p>
+<p>TreeMap中判断两个value相等的标准是：两个value通过equals()方法比较返回true。</p>
+<p><strong>注意：</strong>如果使用自定义类作为TreeMap的key，且想让TreeMap良好地工作，则重写该类的equals()方法和compareTo()方法时应保持一致的返回结果：两个key通过equals()方法比较返回true时，它们通过compareTo()方法比较应该返回0。如果两个方法的返回结果不一致，TreeMap与Map接口的规则就会冲突。</p>
+<p>除此之外，与TreeSet类似，TreeMap根据排序特性，也添加了一部分新的方法，与TreeSet中的一致。可以参考前面的文章。</p>
+<h4 id="TreeMap的本质"><a href="#TreeMap的本质" class="headerlink" title="TreeMap的本质"></a>TreeMap的本质</h4><h5 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h5><p>  R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。</p>
+<p>红黑树的特性:<br>（1）每个节点或者是黑色，或者是红色。<br>（2）根节点是黑色。<br>（3）每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]<br>（4）如果一个节点是红色的，则它的子节点必须是黑色的。<br>（5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</p>
+<p>注意：<br>(01) 特性(3)中的叶子节点，是只为空(NIL或null)的节点。<br>(02) 特性(5)，确保没有一条路径会比其他路径长出俩倍。因而，红黑树是相对是接近平衡的二叉树。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-a37ca433f85677c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>红黑树的时间复杂度为: O(log n)</strong><br>更多关于红黑树的增删改查操作，可以参考<a href="http://www.cnblogs.com/skywang12345/p/3245399.html" target="_blank" rel="noopener">这篇文章</a>。</p>
+<p><strong>可以说TreeMap的增删改查等操作都是在一颗红黑树的基础上进行操作的。</strong></p>
+<h5 id="TreeMap遍历方式"><a href="#TreeMap遍历方式" class="headerlink" title="TreeMap遍历方式"></a>TreeMap遍历方式</h5><p>遍历TreeMap的键值对</p>
+<p>第一步：根据entrySet()获取TreeMap的“键值对”的Set集合。<br>第二步：通过Iterator迭代器遍历“第一步”得到的集合。</p>
+<p>遍历TreeMap的键</p>
+<p>第一步：根据keySet()获取TreeMap的“键”的Set集合。<br>第二步：通过Iterator迭代器遍历“第一步”得到的集合。</p>
+<p>遍历TreeMap的值</p>
+<p>第一步：根据value()获取TreeMap的“值”的集合。<br>第二步：通过Iterator迭代器遍历“第一步”得到的集合。</p>
+<h3 id="Map实现类的性能分析及适用场景"><a href="#Map实现类的性能分析及适用场景" class="headerlink" title="Map实现类的性能分析及适用场景"></a>Map实现类的性能分析及适用场景</h3><p>HashMap与Hashtable实现机制几乎一样，但是HashMap比Hashtable性能更好些。<br>LinkedHashMap比HashMap慢一点，因为它需要维护一个双向链表。<br>TreeMap比HashMap与Hashtable慢（尤其在插入、删除key-value时更慢），因为TreeMap底层采用红黑树来管理键值对。<br><strong>适用场景：</strong><br>一般的应用场景，尽可能多考虑使用HashMap，因为其为快速查询设计的。<br>如果需要特定的排序时，考虑使用TreeMap。<br>如果仅仅需要插入的顺序时，考虑使用LinkedHashMap。</p>
+<p>以上就是集合Map的内容，介绍地比较粗糙，感兴趣的话可以自己看源码深入了解其内部的结构。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/06/Android-MVP-的简单介绍与使用/" rel="next" title="Android MVP 的简单介绍与使用">
+                <i class="fa fa-chevron-left"></i> Android MVP 的简单介绍与使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/08/Android之仿哔哩哔哩客户端首页+抽屉式导航/" rel="prev" title="Android之仿哔哩哔哩客户端首页+抽屉式导航">
+                Android之仿哔哩哔哩客户端首页+抽屉式导航 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap与Hashtable的区别"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap与Hashtable的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap判断key与value相等的标准"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap判断key与value相等的标准</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap的本质"><span class="nav-number">1.3.</span> <span class="nav-text">HashMap的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HashMap遍历方式"><span class="nav-number">1.3.1.</span> <span class="nav-text">HashMap遍历方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedHashMap实现类"><span class="nav-number">1.4.</span> <span class="nav-text">LinkedHashMap实现类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TreeMap"><span class="nav-number">2.</span> <span class="nav-text">TreeMap</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TreeMap排序方式"><span class="nav-number">2.0.1.</span> <span class="nav-text">TreeMap排序方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TreeMap中判断两个元素key、value相等的标准"><span class="nav-number">2.0.2.</span> <span class="nav-text">TreeMap中判断两个元素key、value相等的标准</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TreeMap的本质"><span class="nav-number">2.1.</span> <span class="nav-text">TreeMap的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#红黑树"><span class="nav-number">2.1.1.</span> <span class="nav-text">红黑树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TreeMap遍历方式"><span class="nav-number">2.1.2.</span> <span class="nav-text">TreeMap遍历方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map实现类的性能分析及适用场景"><span class="nav-number">3.</span> <span class="nav-text">Map实现类的性能分析及适用场景</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

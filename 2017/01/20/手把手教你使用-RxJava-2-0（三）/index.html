@@ -1,0 +1,812 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本节介绍的是关于Flowabale的使用，以及RxJava 2.x中的backpressure的处理策略。这部分内容应当是RxJava 2.x中改动最大的一部分。但同时也能解决一些应用场景中的问题，使得我们的RxJava更加强大。  Flowable的产生在RxJava中会经常遇到一种情况就是被观察者发送消息十分迅速以至于观察者不能及时的响应这些消息。例如下面这种情况：1234567891011">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手把手教你使用-RxJava-2-0（三）">
+<meta property="og:url" content="https://lrh1993.github.io/2017/01/20/手把手教你使用-RxJava-2-0（三）/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="本节介绍的是关于Flowabale的使用，以及RxJava 2.x中的backpressure的处理策略。这部分内容应当是RxJava 2.x中改动最大的一部分。但同时也能解决一些应用场景中的问题，使得我们的RxJava更加强大。  Flowable的产生在RxJava中会经常遇到一种情况就是被观察者发送消息十分迅速以至于观察者不能及时的响应这些消息。例如下面这种情况：1234567891011">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-8cc62169490bd0f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-23T12:59:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="手把手教你使用-RxJava-2-0（三）">
+<meta name="twitter:description" content="本节介绍的是关于Flowabale的使用，以及RxJava 2.x中的backpressure的处理策略。这部分内容应当是RxJava 2.x中改动最大的一部分。但同时也能解决一些应用场景中的问题，使得我们的RxJava更加强大。  Flowable的产生在RxJava中会经常遇到一种情况就是被观察者发送消息十分迅速以至于观察者不能及时的响应这些消息。例如下面这种情况：1234567891011">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-8cc62169490bd0f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/01/20/手把手教你使用-RxJava-2-0（三）/"/>
+
+
+
+
+
+  <title>手把手教你使用-RxJava-2-0（三） | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/01/20/手把手教你使用-RxJava-2-0（三）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">手把手教你使用-RxJava-2-0（三）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-20T18:14:57+08:00">
+                2017-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RxJava/" itemprop="url" rel="index">
+                    <span itemprop="name">RxJava</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/01/20/手把手教你使用-RxJava-2-0（三）/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/01/20/手把手教你使用-RxJava-2-0（三）/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本节介绍的是关于Flowabale的使用，以及RxJava 2.x中的backpressure的处理策略。这部分内容应当是RxJava 2.x中改动最大的一部分。但同时也能解决一些应用场景中的问题，使得我们的RxJava更加强大。</p>
+</blockquote>
+<h3 id="Flowable的产生"><a href="#Flowable的产生" class="headerlink" title="Flowable的产生"></a>Flowable的产生</h3><p>在RxJava中会经常遇到一种情况就是被观察者发送消息十分迅速以至于观察者不能及时的响应这些消息。<br>例如下面这种情况：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Observable.create(<span class="literal">new</span> ObservableOnSubscribe&lt;<span class="built_in">Integer</span>&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> subscribe(ObservableEmitter&lt;<span class="built_in">Integer</span>&gt; e) throws Exception &#123;</span><br><span class="line">                <span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">                    e.onNext(<span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">                .subscribeOn(Schedulers.io())</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">                .subscribe(<span class="literal">new</span> Consumer&lt;<span class="built_in">Integer</span>&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> accept(<span class="built_in">Integer</span> <span class="built_in">integer</span>) throws Exception &#123;</span><br><span class="line">                <span class="keyword">Thread</span>.sleep(<span class="number">2000</span>);</span><br><span class="line">                System.out.println(<span class="built_in">integer</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>被观察者是事件的生产者，观察者是事件的消费者。上述例子中可以看出生产者无限生成事件，而消费者每2秒才能消费一个事件，这会造成事件无限堆积，最后造成OOM。</p>
+<p>因此问题来了，要怎么处理这些慢慢堆积起来的消息呢？</p>
+<p>Flowable就是由此产生，专门用来处理这类问题。<br>关于上述的问题，有个专有的名词来形容上述现象，即：Backpressure(背压)。所谓背压，即生产者的速度大于消费者的速度带来的问题。<br>在原来的RxJava 1.x版本中并没有Flowable的存在，Backpressure问题是由Observable来处理的。在RxJava 2.x中对于backpressure的处理进行了改动，为此将原来的Observable拆分成了新的Observable和Flowable，同时其他相关部分也同时进行了拆分。原先的Observable已经不具备背压处理能力。 </p>
+<p>到此，我们便知道了Flowable是为了应对Backpressure而产生的。Flowable是一个被观察者，与Subscriber(观察者)配合使用，解决Backpressure问题。</p>
+<p>下面我们就具体讲解处理Backpressure的策略。<br><strong>注意：处理Backpressure的策略仅仅是处理Subscriber接收事件的方式，并不影响Flowable发送事件的方法。即使采用了处理Backpressure的策略，Flowable原来以什么样的速度产生事件，现在还是什么样的速度不会变化，主要处理的是Subscriber接收事件的方式。</strong></p>
+<h3 id="处理Backpressure的策略"><a href="#处理Backpressure的策略" class="headerlink" title="处理Backpressure的策略"></a>处理Backpressure的策略</h3><p>在讲具体策略之前，我们要具体分析下什么情况下才会产生Backpressure问题？<br>1.如果生产者和消费者在一个线程的情况下，无论生产者的生产速度有多快，每生产一个事件都会通知消费者，等待消费者消费完毕，再生产下一个事件。所以在这种情况下，根本不存在Backpressure问题。即同步情况下，Backpressure问题不存在。<br>2.如果生产者和消费者不在同一线程的情况下，如果生产者的速度大于消费者的速度，就会产生Backpressure问题。即异步情况下，Backpressure问题才会存在。</p>
+<p>现在我们已经知道了具体产生Backpressure问题的原因及场景。那我们就可以通过学习下面处理Backpressure问题的策略来解决问题了。<br><strong>以下实例都是异步操作</strong></p>
+<h5 id="ERROR"><a href="#ERROR" class="headerlink" title="ERROR"></a>ERROR</h5><p>这种方式会在产生Backpressure问题的时候直接抛出一个异常,这个异常就是著名的MissingBackpressureException。</p>
+<p>我们先以代码示例介绍一下Flowable相比与Observable新的东西。<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Flowable&lt;<span class="built_in">Integer</span>&gt; flowable = Flowable.create(<span class="literal">new</span> FlowableOnSubscribe&lt;<span class="built_in">Integer</span>&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> subscribe(FlowableEmitter&lt;<span class="built_in">Integer</span>&gt; emitter) throws Exception &#123;</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"emit 1"</span>);</span><br><span class="line">                emitter.onNext(<span class="number">1</span>);</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"emit 2"</span>);</span><br><span class="line">                emitter.onNext(<span class="number">2</span>);</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"emit 3"</span>);</span><br><span class="line">                emitter.onNext(<span class="number">3</span>);</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"emit complete"</span>);</span><br><span class="line">                emitter.onComplete();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, BackpressureStrategy.ERROR); <span class="comment">//增加了一个参数</span></span><br><span class="line"></span><br><span class="line">        Subscriber&lt;<span class="built_in">Integer</span>&gt; subscriber = <span class="literal">new</span> Subscriber&lt;<span class="built_in">Integer</span>&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> onSubscribe(Subscription s) &#123;</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"onSubscribe"</span>);</span><br><span class="line">                s.request(Long.MAX_VALUE);  </span><br><span class="line">            &#125;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> onNext(<span class="built_in">Integer</span> <span class="built_in">integer</span>) &#123;</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"onNext: "</span> + <span class="built_in">integer</span>);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> onError(Throwable t) &#123;</span><br><span class="line">                <span class="keyword">Log</span>.w(<span class="built_in">TAG</span>, <span class="string">"onError: "</span>, t);</span><br><span class="line">            &#125;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> onComplete() &#123;</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"onComplete"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        flowable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>01-20 16:18:58.898 17829-17851/? D/MainActivity: emit 1<br>01-20 16:18:58.898 17829-17851/? D/MainActivity: emit 2<br>01-20 16:18:58.898 17829-17851/? D/MainActivity: emit 3<br>01-20 16:18:58.898 17829-17851/? D/MainActivity: emit complete<br>01-20 16:18:58.908 17829-17829/? D/MainActivity: onNext: 1<br>01-20 16:18:58.908 17829-17829/? D/MainActivity: onNext: 2<br>01-20 16:18:58.908 17829-17829/? D/MainActivity: onNext: 3<br>01-20 16:18:58.908 17829-17829/? D/MainActivity: onComplete</p>
+</blockquote>
+<p>上述代码创建了一个Flowable(被观察者)和一个Subscriber(观察者)，可以看到程序如我们预期的一样输出结果了。不同的是 onSubscribe(Subscription s)中传给我们的不再是Disposable了, 而是Subscription。然而Subscription也可以用于切断观察者与被观察者之间的联系，调用Subscription.cancel()方法便可。 不同的地方在于Subscription增加了一个void request(long n)方法, 这个方法有什么用呢, 在上面的代码中也有这么一句代码:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">s</span><span class="selector-class">.request</span>(<span class="selector-tag">Long</span><span class="selector-class">.MAX_VALUE</span>);</span><br></pre></td></tr></table></figure></p>
+<p>这个方法就是用来向生产者申请可以消费的事件数量。这样我们便可以根据本身的消费能力进行消费事件。<br>当调用了request()方法后，生产者便发送对应数量的事件供消费者消费。<br><strong>这是因为Flowable在设计的时候采用了一种新的思路也就是响应式拉取的方式,你要求多少，我便传给你多少。</strong></p>
+<p><strong>注意：</strong>如果不显示调用request就表示消费能力为0。</p>
+<p>虽然并不限制向request()方法中传入任意数字，但是如果消费者并没有这么多的消费能力，依旧会造成资源浪费，最后产生OOM。形象点就是不能打肿脸充胖子。<br>而ERROR策略就避免了这种情况的出现(讲了这么多终于出现了)。</p>
+<p>在异步调用时，RxJava中有个缓存池，用来缓存消费者处理不了暂时缓存下来的数据，缓存池的默认大小为128，即只能缓存128个事件。无论request()中传入的数字比128大或小，缓存池中在刚开始都会存入128个事件。当然如果本身并没有这么多事件需要发送，则不会存128个事件。<br>在ERROR策略下，如果缓存池溢出，就会立刻抛出MissingBackpressureException异常。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Flowable.create(<span class="keyword">new</span> FlowableOnSubscribe&lt;Integer&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(FlowableEmitter&lt;Integer&gt; emitter)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">129</span>; i++) &#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"emit "</span> + i);</span><br><span class="line">                    emitter.onNext(i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, BackpressureStrategy.ERROR).subscribeOn(Schedulers.io())</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">                .subscribe(<span class="keyword">new</span> Subscriber&lt;Integer&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSubscribe</span><span class="params">(Subscription s)</span> </span>&#123;</span><br><span class="line">                        mSubscription = s;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onNext</span><span class="params">(Integer integer)</span> </span>&#123;</span><br><span class="line">                        Log.d(TAG, <span class="string">"onNext: "</span> + integer);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable t)</span> </span>&#123;</span><br><span class="line">                        Log.w(TAG, <span class="string">"onError: "</span>, t);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>01-20 16:58:48.993 32434-32474/? D/MainActivity: emit 125<br>01-20 16:58:48.993 32434-32474/? D/MainActivity: emit 126<br>01-20 16:58:48.993 32434-32474/? D/MainActivity: emit 127<br>01-20 16:58:48.993 32434-32474/? D/MainActivity: emit 128<br>01-20 16:58:49.003 32434-32434/? W/MainActivity: onError:<br>                                                 io.reactivex.exceptions.MissingBackpressureException: create: could not emit value due to lack of requests</p>
+</blockquote>
+<p>我们让Flowable发送129个事件，而Subscriber一个也不处理，就产生了异常。<br>因此，ERROR即保证在异步操作中，事件累积不能超过128，超过即出现异常。消费者不能再接收事件了，但生产者并不会停止。</p>
+<h5 id="BUFFER"><a href="#BUFFER" class="headerlink" title="BUFFER"></a>BUFFER</h5><p>所谓BUFFER就是把RxJava中默认的只能存128个事件的缓存池换成一个大的缓存池，支持存很多很多的数据。<br>这样，消费者通过request()即使传入一个很大的数字，生产者也会生产事件，并将处理不了的事件缓存。<br>但是这种方式任然比较消耗内存，除非是我们比较了解消费者的消费能力，能够把握具体情况，不会产生OOM。<br>总之BUFFER要慎用。</p>
+<h4 id="DROP"><a href="#DROP" class="headerlink" title="DROP"></a>DROP</h4><p>看名字就可以了解其作用：当消费者处理不了事件，就丢弃。<br>消费者通过request()传入其需求n，然后生产者把n个事件传递给消费者供其消费。其他消费不掉的事件就丢掉。<br>下面例子具体介绍：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-8cc62169490bd0f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>点击“开始”按钮，建立连接。生产者开始生产事件，刚开始消费者通过request()只要了50个事件消费。然后每次点击“消费”按钮，再次消费50个事件。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">mFlowable = Flowable.create(<span class="keyword">new</span> FlowableOnSubscribe&lt;Integer&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(FlowableEmitter&lt;Integer&gt; emitter)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; ; i++) &#123;</span><br><span class="line"></span><br><span class="line">                    emitter.onNext(i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, BackpressureStrategy.DROP);</span><br><span class="line">        mSubscriber = <span class="keyword">new</span> Subscriber&lt;Integer&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSubscribe</span><span class="params">(Subscription s)</span> </span>&#123;</span><br><span class="line">                mSubscription = s;</span><br><span class="line">                s.request(<span class="number">50</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onNext</span><span class="params">(Integer integer)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"onNext: "</span> + integer);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable t)</span> </span>&#123;</span><br><span class="line">                Log.w(TAG, <span class="string">"onError: "</span>, t);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">start</span><span class="params">(View view)</span></span>&#123;</span><br><span class="line">        mFlowable.subscribeOn(Schedulers.io())</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">                .subscribe(mSubscriber);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">consume</span><span class="params">(View view)</span></span>&#123;</span><br><span class="line">        mSubscription.request(<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>01-20 17:25:44.331 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 0<br>………………………………………………….<br>01-20 17:25:44.331 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 49<br>01-20 17:25:47.891 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 50<br>………………………………………………….<br>01-20 17:25:47.891 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 99<br>01-20 17:25:50.241 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 100<br>………………………………………………….<br>01-20 17:25:50.241 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 127<br>01-20 17:25:50.241 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 17749078<br>………………………………………………….<br>01-20 17:25:50.241 3327-3327/com.lvr.rxjavalearning D/MainActivity: onNext: 17749099</p>
+</blockquote>
+<p>可以看出，生产者一次性传入128个事件进入缓存池。点击“开始”按钮，消费了50个。然后第一次点击“消费”按钮，又消费了50个，第二次点击“消费”按钮，再次消费50个。然而此时原来的128个缓存只剩下28个了，所以先消费掉28个，然后剩下22个是后来传入的（其实后来的是在消费了96个后传入，并一次性在缓存池中又传入了96个，具体可以看源码，这里不解释了）。</p>
+<h4 id="LATEST"><a href="#LATEST" class="headerlink" title="LATEST"></a>LATEST</h4><p>LATEST与DROP功能基本一致。<br>消费者通过request()传入其需求n，然后生产者把n个事件传递给消费者供其消费。其他消费不掉的事件就丢掉。<br>唯一的区别就是LATEST总能使消费者能够接收到生产者产生的最后一个事件。<br>还是以上述例子展示，唯一的区别就是Flowable不再无限发事件，只发送1000000个。<br>结果如下：</p>
+<blockquote>
+<p>01-20 17:50:30.459 25334-25334/com.lvr.rxjavalearning D/MainActivity: onNext: 0<br>………………………………………………….<br>01-20 17:50:30.459 25334-25334/com.lvr.rxjavalearning D/MainActivity: onNext: 49<br>01-20 17:50:31.569 25334-25334/com.lvr.rxjavalearning D/MainActivity: onNext: 50<br>………………………………………………….<br>01-20 17:50:32.459 25334-25334/com.lvr.rxjavalearning D/MainActivity: onNext: 100<br>01-20 17:50:32.459 25334-25334/com.lvr.rxjavalearning D/MainActivity: onNext: 101<br>………………………………………………….<br>01-20 17:50:32.459 25334-25334/com.lvr.rxjavalearning D/MainActivity: onNext: 127<br>01-20 17:50:32.459 25334-25334/com.lvr.rxjavalearning D/MainActivity: onNext: 999999</p>
+</blockquote>
+<p>唯一的区别就在最后一行。这就是LATEST与DROP的区别。</p>
+<p>上述例子Flowable对象的获取都是通过create()获取的，自然可以通过BackpressureStrategy.LATEST之类的方式指定处理背压的策略。如果Flowable对象不是自己创建的，可以采用onBackpressureBuffer()、onBackpressureDrop()、onBackpressureLatest()的方式指定。<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">Flowable</span><span class="selector-class">.just</span>(<span class="number">1</span>)<span class="selector-class">.onBackpressureBuffer</span>()</span><br><span class="line">               <span class="selector-class">.observeOn</span>(AndroidSchedulers.mainThread())</span><br><span class="line">               <span class="selector-class">.subscribeOn</span>(Schedulers.io())</span><br><span class="line">               <span class="selector-class">.subscribe</span>(new Consumer&lt;Integer&gt;() &#123;</span><br><span class="line">                   <span class="variable">@Override</span></span><br><span class="line">                   public void accept(Integer integer) throws Exception &#123;</span><br><span class="line">                       </span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>以上就是关于Flowable及backpressure的内容。由于水平有限，关于RxJava 2.0 的学习内容就暂时只有这么多了。接下来会继续学习，如果有新的理解和认识，会再来分享。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/19/手把手教你使用-RxJava-2-0（二）/" rel="next" title="手把手教你使用-RxJava-2-0（二）">
+                <i class="fa fa-chevron-left"></i> 手把手教你使用-RxJava-2-0（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/21/由浅入深理解java集合(三)——集合-List/" rel="prev" title="由浅入深理解java集合(三)——集合-List">
+                由浅入深理解java集合(三)——集合-List <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Flowable的产生"><span class="nav-number">1.</span> <span class="nav-text">Flowable的产生</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理Backpressure的策略"><span class="nav-number">2.</span> <span class="nav-text">处理Backpressure的策略</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ERROR"><span class="nav-number">2.0.1.</span> <span class="nav-text">ERROR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BUFFER"><span class="nav-number">2.0.2.</span> <span class="nav-text">BUFFER</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DROP"><span class="nav-number">2.1.</span> <span class="nav-text">DROP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LATEST"><span class="nav-number">2.2.</span> <span class="nav-text">LATEST</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

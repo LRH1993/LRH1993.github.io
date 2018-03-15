@@ -1,0 +1,812 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="接下来我们将介绍Java反射机制的一系列的知识。本篇文章主要针对Java反射机制的介绍以及反射API的使用知识。  一、概述Java反射机制定义 Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。Java 反射机制的功能 1.在运行时判断">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java反射机制详解（一）">
+<meta property="og:url" content="https://lrh1993.github.io/2017/02/14/Java反射机制详解（一）/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="接下来我们将介绍Java反射机制的一系列的知识。本篇文章主要针对Java反射机制的介绍以及反射API的使用知识。  一、概述Java反射机制定义 Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。Java 反射机制的功能 1.在运行时判断">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-05-24T04:46:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java反射机制详解（一）">
+<meta name="twitter:description" content="接下来我们将介绍Java反射机制的一系列的知识。本篇文章主要针对Java反射机制的介绍以及反射API的使用知识。  一、概述Java反射机制定义 Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。Java 反射机制的功能 1.在运行时判断">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/02/14/Java反射机制详解（一）/"/>
+
+
+
+
+
+  <title>Java反射机制详解（一） | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/02/14/Java反射机制详解（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java反射机制详解（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-14T10:35:21+08:00">
+                2017-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java反射/" itemprop="url" rel="index">
+                    <span itemprop="name">Java反射</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/02/14/Java反射机制详解（一）/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/02/14/Java反射机制详解（一）/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>接下来我们将介绍Java反射机制的一系列的知识。本篇文章主要针对Java反射机制的介绍以及反射API的使用知识。</p>
+</blockquote>
+<h3 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h3><p><strong>Java反射机制定义</strong></p>
+<p>Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。<br><strong>Java 反射机制的功能</strong></p>
+<p>1.在运行时判断任意一个对象所属的类。</p>
+<p>2.在运行时构造任意一个类的对象。</p>
+<p>3.在运行时判断任意一个类所具有的成员变量和方法。</p>
+<p>4.在运行时调用任意一个对象的方法。</p>
+<p>5.生成动态代理。</p>
+<p><strong>Java  反射机制的应用场景</strong></p>
+<p>1.逆向代码 ，例如反编译</p>
+<p>2.与注解相结合的框架 例如Retrofit</p>
+<p>3.单纯的反射机制应用框架 例如EventBus </p>
+<p>4.动态生成类框架 例如Gson</p>
+<h3 id="二、通过Java反射查看类信息"><a href="#二、通过Java反射查看类信息" class="headerlink" title="二、通过Java反射查看类信息"></a>二、通过Java反射查看类信息</h3><p><strong>获得Class对象</strong><br>每个类被加载之后，系统就会为该类生成一个对应的Class对象。通过该Class对象就可以访问到JVM中的这个类。</p>
+<p>在Java程序中获得Class对象通常有如下三种方式：</p>
+<p>1.使用Class类的forName(String clazzName)静态方法。该方法需要传入字符串参数，该字符串参数的值是某个类的全限定名（必须添加完整包名）。</p>
+<p>2.调用某个类的class属性来获取该类对应的Class对象。</p>
+<p>3.调用某个对象的getClass()方法。该方法是java.lang.Object类中的一个方法。<br><figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一种方式 通过Class类的静态方法——forName()来实现</span></span><br><span class="line"><span class="keyword">class</span><span class="number">1</span> = Class.forName(<span class="string">"com.lvr.reflection.Person"</span>);</span><br><span class="line"><span class="comment">//第二种方式 通过类的class属性</span></span><br><span class="line"><span class="keyword">class</span><span class="number">1</span> = Person.<span class="keyword">class</span>;</span><br><span class="line"><span class="comment">//第三种方式 通过对象getClass方法</span></span><br><span class="line">Person person = <span class="keyword">new</span> Person();</span><br><span class="line">Class&lt;?&gt; <span class="keyword">class</span><span class="number">1</span> = person.getClass();</span><br></pre></td></tr></table></figure></p>
+<p><strong>获取class对象的属性、方法、构造函数等</strong></p>
+<p>1.获取class对象的成员变量<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Field[] allFields = class1.getDeclaredFields();<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>对象的所有属性</span></span><br><span class="line">Field[] publicFields = class1.getFields();<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>对象的<span class="title">public</span>属性</span></span><br><span class="line">Field ageField = class1.getDeclaredField(<span class="string">"age"</span>);<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>指定属性</span></span><br><span class="line">Field desField = class1.getField(<span class="string">"des"</span>);<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>指定的<span class="title">public</span>属性</span></span><br></pre></td></tr></table></figure></p>
+<p>2.获取class对象的方法<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span>[] <span class="title">methods</span> = <span class="title">class1</span>.<span class="title">getDeclaredMethods</span><span class="params">()</span>;</span><span class="comment">//获取class对象的所有声明方法</span></span><br><span class="line"><span class="function"><span class="keyword">Method</span>[] <span class="title">allMethods</span> = <span class="title">class1</span>.<span class="title">getMethods</span><span class="params">()</span>;</span><span class="comment">//获取class对象的所有public方法 包括父类的方法</span></span><br><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">method</span> = <span class="title">class1</span>.<span class="title">getMethod</span><span class="params">("info", String.<span class="keyword">class</span>)</span>;</span><span class="comment">//返回次Class对象对应类的、带指定形参列表的public方法</span></span><br><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">declaredMethod</span> = <span class="title">class1</span>.<span class="title">getDeclaredMethod</span><span class="params">("info", String.<span class="keyword">class</span>)</span>;</span><span class="comment">//返回次Class对象对应类的、带指定形参列表的方法</span></span><br></pre></td></tr></table></figure></p>
+<p>3.获取class对象的构造函数<br><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Constructor</span>&lt;?&gt;[] <span class="title">allConstructors</span> = <span class="title">class1</span>.<span class="title">getDeclaredConstructors</span><span class="params">()</span>;</span><span class="comment">//获取class对象的所有声明构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">Constructor</span>&lt;?&gt;[] <span class="title">publicConstructors</span> = <span class="title">class1</span>.<span class="title">getConstructors</span><span class="params">()</span>;</span><span class="comment">//获取class对象public构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">Constructor</span>&lt;?&gt; <span class="title">constructor</span> = <span class="title">class1</span>.<span class="title">getDeclaredConstructor</span><span class="params">(<span class="keyword">String</span>.<span class="keyword">class</span>)</span>;</span><span class="comment">//获取指定声明构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">Constructor</span> <span class="title">publicConstructor</span> = <span class="title">class1</span>.<span class="title">getConstructor</span><span class="params">(<span class="keyword">String</span>.<span class="keyword">class</span>)</span>;</span><span class="comment">//获取指定声明的public构造函数</span></span><br></pre></td></tr></table></figure></p>
+<p>4.其他方法<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Annotation[] annotations = (Annotation[]) class1.getAnnotations();<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>对象的所有注解</span></span><br><span class="line">Annotation annotation = (Annotation) class1.getAnnotation(Deprecated.<span class="keyword">class</span>);<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>对象指定注解</span></span><br><span class="line">Type genericSuperclass = class1.getGenericSuperclass();<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>对象的直接超类的 <span class="title">Type</span></span></span><br><span class="line">Type[] interfaceTypes = class1.getGenericInterfaces();<span class="regexp">//</span>获取<span class="class"><span class="keyword">class</span>对象的所有接口的<span class="title">type</span>集合</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>获取class对象的信息</strong><br>比较多。<br><figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">boolean isPrimitive = <span class="keyword">class</span><span class="number">1</span>.isPrimitive();<span class="comment">//判断是否是基础类型</span></span><br><span class="line">boolean isArray = <span class="keyword">class</span><span class="number">1</span>.isArray();<span class="comment">//判断是否是集合类</span></span><br><span class="line">boolean isAnnotation = <span class="keyword">class</span><span class="number">1</span>.isAnnotation();<span class="comment">//判断是否是注解类</span></span><br><span class="line">boolean isInterface = <span class="keyword">class</span><span class="number">1</span>.isInterface();<span class="comment">//判断是否是接口类</span></span><br><span class="line">boolean isEnum = <span class="keyword">class</span><span class="number">1</span>.isEnum();<span class="comment">//判断是否是枚举类</span></span><br><span class="line">boolean isAnonymousClass = <span class="keyword">class</span><span class="number">1</span>.isAnonymousClass();<span class="comment">//判断是否是匿名内部类</span></span><br><span class="line">boolean isAnnotationPresent = <span class="keyword">class</span><span class="number">1</span>.isAnnotationPresent(Deprecated.<span class="keyword">class</span>);<span class="comment">//判断是否被某个注解类修饰</span></span><br><span class="line">String className = <span class="keyword">class</span><span class="number">1</span>.getName();<span class="comment">//获取class名字 包含包名路径</span></span><br><span class="line">Package aPackage = <span class="keyword">class</span><span class="number">1</span>.getPackage();<span class="comment">//获取class的包信息</span></span><br><span class="line">String simpleName = <span class="keyword">class</span><span class="number">1</span>.getSimpleName();<span class="comment">//获取class类名</span></span><br><span class="line">int modifiers = <span class="keyword">class</span><span class="number">1</span>.getModifiers();<span class="comment">//获取class访问权限</span></span><br><span class="line">Class&lt;?&gt;[] declaredClasses = <span class="keyword">class</span><span class="number">1</span>.getDeclaredClasses();<span class="comment">//内部类</span></span><br><span class="line">Class&lt;?&gt; declaringClass = <span class="keyword">class</span><span class="number">1</span>.getDeclaringClass();<span class="comment">//外部类</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="三、通过Java反射生成并操作对象"><a href="#三、通过Java反射生成并操作对象" class="headerlink" title="三、通过Java反射生成并操作对象"></a>三、通过Java反射生成并操作对象</h3><p><strong>生成类的实例对象</strong></p>
+<p>1.使用Class对象的newInstance()方法来创建该Class对象对应类的实例。这种方式要求该Class对象的对应类有默认构造器，而执行newInstance()方法时实际上是利用默认构造器来创建该类的实例。</p>
+<p>2.先使用Class对象获取指定的Constructor对象，再调用Constructor对象的newInstance()方法来创建该Class对象对应类的实例。通过这种方式可以选择使用指定的构造器来创建实例。<br><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一种方式 Class对象调用newInstance()方法生成</span></span><br><span class="line"><span class="keyword">Object</span> obj = class1.newInstance();</span><br><span class="line"><span class="comment">//第二种方式 对象获得对应的Constructor对象，再通过该Constructor对象的newInstance()方法生成</span></span><br><span class="line"><span class="function"><span class="keyword">Constructor</span>&lt;?&gt; <span class="title">constructor</span> = <span class="title">class1</span>.<span class="title">getDeclaredConstructor</span><span class="params">(<span class="keyword">String</span>.<span class="keyword">class</span>)</span>;</span><span class="comment">//获取指定声明构造函数</span></span><br><span class="line">obj = <span class="function"><span class="keyword">constructor</span>.<span class="title">newInstance</span><span class="params">("hello")</span>;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>调用类的方法</strong></p>
+<p>1.通过Class对象的getMethods()方法或者getMethod()方法获得指定方法，返回Method数组或对象。</p>
+<p>2.调用Method对象中的<code>Object invoke(Object obj, Object... args)</code>方法。第一个参数对应调用该方法的实例对象，第二个参数对应该方法的参数。</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 生成新的对象：用newInstance()方法</span></span><br><span class="line"> Object obj = class1.newInstance();</span><br><span class="line"><span class="comment">//首先需要获得与该方法对应的Method对象</span></span><br><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">method</span> = <span class="title">class1</span>.<span class="title">getDeclaredMethod</span><span class="params">("setAge", int.<span class="keyword">class</span>)</span>;</span></span><br><span class="line"><span class="comment">//调用指定的函数并传递参数</span></span><br><span class="line"><span class="function"><span class="keyword">method</span>.<span class="title">invoke</span><span class="params">(obj, 28)</span>;</span></span><br></pre></td></tr></table></figure>
+<p><strong>当通过Method的invoke()方法来调用对应的方法时，Java会要求程序必须有调用该方法的权限。如果程序确实需要调用某个对象的private方法，则可以先调用Method对象的如下方法。<br>setAccessible(boolean flag)：将Method对象的acessible设置为指定的布尔值。值为true，指示该Method在使用时应该取消Java语言的访问权限检查；值为false，则知识该Method在使用时要实施Java语言的访问权限检查。</strong></p>
+<p><strong>访问成员变量值</strong></p>
+<p>1.通过Class对象的getFields()方法或者getField()方法获得指定方法，返回Field数组或对象。</p>
+<p>2.Field提供了两组方法来读取或设置成员变量的值：<br>getXXX(Object obj):获取obj对象的该成员变量的值。此处的XXX对应8种基本类型。如果该成员变量的类型是引用类型，则取消get后面的XXX。<br>setXXX(Object obj,XXX val)：将obj对象的该成员变量设置成val值。</p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//生成新的对象：用newInstance()方法 </span></span><br><span class="line">Object obj = <span class="keyword">class</span><span class="number">1</span>.newInstance();</span><br><span class="line"><span class="comment">//获取age成员变量</span></span><br><span class="line">Field field = <span class="keyword">class</span><span class="number">1</span>.getField(<span class="string">"age"</span>);</span><br><span class="line"><span class="comment">//将obj对象的age的值设置为10</span></span><br><span class="line">field.setInt(obj, <span class="number">10</span>);</span><br><span class="line"><span class="comment">//获取obj对象的age的值</span></span><br><span class="line">field.getInt(obj);</span><br></pre></td></tr></table></figure>
+<p>还有很多其他操作，就不一一介绍了。</p>
+<p>下篇文章我们将介绍反射和动态代理的相关知识。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/13/Java泛型详解/" rel="next" title="Java泛型详解">
+                <i class="fa fa-chevron-left"></i> Java泛型详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/14/Java反射机制详解（三）/" rel="prev" title="Java反射机制详解（三）">
+                Java反射机制详解（三） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、概述"><span class="nav-number">1.</span> <span class="nav-text">一、概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、通过Java反射查看类信息"><span class="nav-number">2.</span> <span class="nav-text">二、通过Java反射查看类信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、通过Java反射生成并操作对象"><span class="nav-number">3.</span> <span class="nav-text">三、通过Java反射生成并操作对象</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

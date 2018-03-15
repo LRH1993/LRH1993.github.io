@@ -1,0 +1,857 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="图片轮播是前端中经常需要实现的一个功能。最近学习Vue.js，就针对Swiper进行封装，实现一个简单的图片轮播组件。  一、Swiper在实现封装之前，先介绍一下Swiper。  Swiper是纯Javascript打造的滑动特效插件，面向手机、平板电脑等移动终端。  Swiper能实现触屏焦点图、触屏Tab切换、触屏多图切换等常用效果。  Swiper开源、免费、稳定、使用简单、功能强大，是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue封装Swiper实现图片轮播">
+<meta property="og:url" content="https://lrh1993.github.io/2018/02/06/Vue封装Swiper实现图片轮播/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="图片轮播是前端中经常需要实现的一个功能。最近学习Vue.js，就针对Swiper进行封装，实现一个简单的图片轮播组件。  一、Swiper在实现封装之前，先介绍一下Swiper。  Swiper是纯Javascript打造的滑动特效插件，面向手机、平板电脑等移动终端。  Swiper能实现触屏焦点图、触屏Tab切换、触屏多图切换等常用效果。  Swiper开源、免费、稳定、使用简单、功能强大，是">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-00cff6709a904b26.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-bf27e8b63d03172a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-929709345fdb3f4b.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-02-06T07:38:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue封装Swiper实现图片轮播">
+<meta name="twitter:description" content="图片轮播是前端中经常需要实现的一个功能。最近学习Vue.js，就针对Swiper进行封装，实现一个简单的图片轮播组件。  一、Swiper在实现封装之前，先介绍一下Swiper。  Swiper是纯Javascript打造的滑动特效插件，面向手机、平板电脑等移动终端。  Swiper能实现触屏焦点图、触屏Tab切换、触屏多图切换等常用效果。  Swiper开源、免费、稳定、使用简单、功能强大，是">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-00cff6709a904b26.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2018/02/06/Vue封装Swiper实现图片轮播/"/>
+
+
+
+
+
+  <title>Vue封装Swiper实现图片轮播 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2018/02/06/Vue封装Swiper实现图片轮播/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue封装Swiper实现图片轮播</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T15:29:21+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/02/06/Vue封装Swiper实现图片轮播/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/02/06/Vue封装Swiper实现图片轮播/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>图片轮播是前端中经常需要实现的一个功能。最近学习Vue.js，就针对Swiper进行封装，实现一个简单的图片轮播组件。</p>
+</blockquote>
+<h2 id="一、Swiper"><a href="#一、Swiper" class="headerlink" title="一、Swiper"></a>一、Swiper</h2><p>在实现封装之前，先介绍一下Swiper。</p>
+<ul>
+<li><p>Swiper是纯Javascript打造的滑动特效插件，面向手机、平板电脑等移动终端。</p>
+</li>
+<li><p>Swiper能实现触屏焦点图、触屏Tab切换、触屏多图切换等常用效果。</p>
+</li>
+<li><p>Swiper开源、免费、稳定、使用简单、功能强大，是架构移动终端网站的重要选择。</p>
+</li>
+</ul>
+<p>Swiper的应用场景广泛，实现效果很好，下面个这实际案例就是Swiper的典型应用场景。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-00cff6709a904b26.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>Swiper的具体使用教程及详细API，参考<a href="http://www.swiper.com.cn/" target="_blank" rel="noopener">Swiper中文网</a>。</p>
+<h2 id="二、Vue组件"><a href="#二、Vue组件" class="headerlink" title="二、Vue组件"></a>二、Vue组件</h2><p>Vue组件设计初衷就是要配合使用的，提高维护性和复用性。而图片轮播正适合使用组件来完成，因此在介绍具体的实现之前，先介绍下关于Vue组件及组件通信。</p>
+<p>Vue组件中最常见的就是形成父子组件的关系：组件 A 在它的模板中使用了组件 B。</p>
+<p>它们之间必然需要相互通信：父组件可能要给子组件下发数据，子组件则可能要将它内部发生的事情告知父组件。然而，通过一个良好定义的接口来尽可能将父子组件解耦也是很重要的。这保证了每个组件的代码可以在相对隔离的环境中书写和理解，从而提高了其可维护性和复用性。</p>
+<p>在 Vue 中，父子组件的关系可以总结为 prop 向下传递，事件向上传递。父组件通过 prop 给子组件下发数据，子组件通过事件给父组件发送消息。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-bf27e8b63d03172a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="三、封装实现"><a href="#三、封装实现" class="headerlink" title="三、封装实现"></a>三、封装实现</h2><h3 id="1-引入Swiper"><a href="#1-引入Swiper" class="headerlink" title="1.引入Swiper"></a>1.引入Swiper</h3><p>首先，需要安装Swiper。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> <span class="comment">--save swiper</span></span><br></pre></td></tr></table></figure></p>
+<p>然后，要引用两个文件。<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Swiper from <span class="string">"swiper"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"swiper/dist/css/swiper.min.css"</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-HTML代码"><a href="#2-HTML代码" class="headerlink" title="2.HTML代码"></a>2.HTML代码</h3><p>在模板中设置轮播图的html布局。<br><figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"swiper-container"</span> <span class="attr">:class</span>=<span class="string">"swipeid"</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"swiper-wrapper"</span>&gt;</span></span></span><br><span class="line"><span class="xml">          <span class="comment">&lt;!-- 存放具体的轮播内容 --&gt;</span></span></span><br><span class="line"><span class="xml">          <span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span> =<span class="string">"swiper-con"</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="comment">&lt;!-- 分页器 --&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">:class</span>=<span class="string">"</span></span></span><span class="template-variable">&#123;'swiper-pagination':pagination&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>其中使用具名插槽，提高解耦，使得在父组件使用时，根据不同情况，设置不同的轮播内容。</p>
+<p>另外需要设置分页器，即图片轮播中的页面指示器，常见的如小圆点，或者数字指示器。</p>
+<h3 id="3-初始化Swiper"><a href="#3-初始化Swiper" class="headerlink" title="3.初始化Swiper"></a>3.初始化Swiper</h3><p>既然是对Swiper进行封装实现轮播图，前面也已经安装了Swiper，那么现在就需要初始化使用。</p>
+<p>在初始化之前，根据Swiper用法的了解，先确定轮播组件需要的属性信息，然后通过父组件传递给封装的Swiper组件。</p>
+<p>这时候就需要用到props。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">props</span>: &#123;</span><br><span class="line">    <span class="attribute">swipeid</span>: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      default: <span class="string">""</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="selector-tag">effect</span>: &#123;</span><br><span class="line">      <span class="attribute">type</span>: String,</span><br><span class="line">      default: <span class="string">"slide"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="selector-tag">loop</span>: &#123;</span><br><span class="line">      <span class="attribute">type</span>: Boolean,</span><br><span class="line">      default: false</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="selector-tag">direction</span>: &#123;</span><br><span class="line">      <span class="attribute">type</span>: String,</span><br><span class="line">      default: <span class="string">"horizontal"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="selector-tag">pagination</span>: &#123;</span><br><span class="line">      <span class="attribute">type</span>: Boolean,</span><br><span class="line">      default: true</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="selector-tag">paginationType</span>: &#123;</span><br><span class="line">      <span class="attribute">type</span>: String,</span><br><span class="line">      default: <span class="string">"bullets"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="selector-tag">autoPlay</span>: &#123;</span><br><span class="line">      <span class="attribute">type</span>: Number,</span><br><span class="line">      default: <span class="number">3000</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面逐一解释每个属性的含义。</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>swiped</td>
+<td>轮播容器class属性的类名。</td>
+</tr>
+<tr>
+<td>effect</td>
+<td>图片的 切换效果，默认为”slide”，还可设置为”fade”, “cube”, “coverflow”,”flip”，详情见<a href="http://www.swiper.com.cn/api/effects/193.html" target="_blank" rel="noopener">effect</a>。</td>
+</tr>
+<tr>
+<td>loop</td>
+<td>设置为true 则开启loop模式。loop模式：会在原本图片前后复制若干个图片并在合适的时候切换，让Swiper看起来是循环的，详情见<a href="http://www.swiper.com.cn/api/loop/22.html" target="_blank" rel="noopener">loop</a>。</td>
+</tr>
+<tr>
+<td>direction</td>
+<td>图片的滑动方向，可设置水平(horizontal)或垂直(vertical)，详情见<a href="http://www.swiper.com.cn/api/parameters/21.html" target="_blank" rel="noopener">direction</a>。</td>
+</tr>
+<tr>
+<td>pagination</td>
+<td>使用分页导航，详情见<a href="http://www.swiper.com.cn/api/pagination/362.html" target="_blank" rel="noopener">pagination</a>。</td>
+</tr>
+<tr>
+<td>paginationType</td>
+<td>分页器样式类型，可设置为”bullets”, “fraction”, “progressbar”, “custom”，详情见<a href="http://www.swiper.com.cn/api/pagination/299.html" target="_blank" rel="noopener">type</a>。</td>
+</tr>
+<tr>
+<td>autoPlay</td>
+<td>设置为true启动自动切换，并使用默认的切换设置，详情见<a href="http://www.swiper.com.cn/api/autoplay/16.html" target="_blank" rel="noopener">autoplay</a>。</td>
+</tr>
+</tbody>
+</table>
+<p>了解了上面每个属性的含义，下面就可以初始化Swiper，并设置具体的属性。</p>
+<p>初始化Swiper时，需要传入两个参数。</p>
+<ul>
+<li>轮播容器的类名</li>
+<li>代表图片轮播组件详细功能的对象</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.dom = new Swiper(<span class="string">"."</span> + that.swipeid, &#123;</span><br><span class="line">    <span class="comment">//循环</span></span><br><span class="line">    loop: that.loop,</span><br><span class="line">    <span class="comment">//分页器</span></span><br><span class="line">    pagination: &#123; </span><br><span class="line">      el: <span class="string">".swiper-pagination"</span>,</span><br><span class="line">      bulletClass : <span class="string">'swiper-pagination-bullet'</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">    <span class="comment">//分页类型</span></span><br><span class="line">    paginationType: that.paginationType,</span><br><span class="line">    <span class="comment">//自动播放</span></span><br><span class="line">    autoPlay: that.autoPlay,</span><br><span class="line">    <span class="comment">//方向</span></span><br><span class="line">    direction: that.direction,</span><br><span class="line">    <span class="comment">//特效</span></span><br><span class="line">    effect: that.effect,</span><br><span class="line">    <span class="comment">//用户操作swiper之后，不禁止autoplay</span></span><br><span class="line">    disableOnInteraction: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">//修改swiper自己或子元素时，自动初始化swiper</span></span><br><span class="line">    observer: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">//修改swiper的父元素时，自动初始化swiper</span></span><br><span class="line">    observeParents: <span class="literal">true</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="四、自定义轮播效果"><a href="#四、自定义轮播效果" class="headerlink" title="四、自定义轮播效果"></a>四、自定义轮播效果</h2><p>经过上面的步骤，轮播器就封装好了。我们可以自定义实现自己想要的轮播器效果。下面以知乎的API为例，实现图片轮播。</p>
+<h3 id="1-HTML代码"><a href="#1-HTML代码" class="headerlink" title="1.HTML代码"></a>1.HTML代码</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">m-swipe</span> <span class="attr">swipeid</span>=<span class="string">"swipe"</span> <span class="attr">ref</span>=<span class="string">"swiper"</span> <span class="attr">:autoPlay</span>=<span class="string">"3000"</span> <span class="attr">effect</span>=<span class="string">"slide"</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">"top in tops"</span> <span class="attr">:key</span>=<span class="string">"top.id"</span> <span class="attr">class</span>=<span class="string">"swiper-slide"</span> <span class="attr">slot</span>=<span class="string">"swiper-con"</span> &gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">:src</span>=<span class="string">"top.image"</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">h3</span>&gt;</span></span><span class="template-variable">&#123;&#123;top.title&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">m-swipe</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>首先要引用注册组件，这里就不详细写出。</p>
+<p>其中<code>m-swipe</code>就是前面实现的图片轮播组件，而其中的子组件就是通过具名插槽插入的轮播内容。</p>
+<h3 id="2-CSS代码"><a href="#2-CSS代码" class="headerlink" title="2.CSS代码"></a>2.CSS代码</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.swiper-container</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.swiper-slide</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">8rem</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="selector-class">.swiper-slide</span> &#123;</span><br><span class="line">  <span class="selector-tag">div</span> &#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">0.4</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">background-color</span>: @blue;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">transform</span>: translate(<span class="number">0</span>, -<span class="number">50%</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">h3</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">70%</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">0.5rem</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1rem</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">5%</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">2.6rem</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: right;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">text-shadow</span>: <span class="number">1px</span> <span class="number">1px</span> <span class="number">10px</span> rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.5</span>);</span><br><span class="line">    &amp;:before &#123;</span><br><span class="line">      <span class="attribute">content</span>: <span class="string">""</span>;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">3rem</span>;</span><br><span class="line">      <span class="attribute">bottom</span>: -<span class="number">0.6rem</span>;</span><br><span class="line">      <span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">      <span class="attribute">display</span>: block;</span><br><span class="line">      <span class="attribute">position</span>: absolute;</span><br><span class="line">      <span class="attribute">border</span>: <span class="number">2px</span> solid @yellow;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.swiper-pagination-bullet-active</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.swiper-container-horizontal</span> &gt; <span class="selector-class">.swiper-pagination-bullets</span> &#123;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">1rem</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">95%</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: right;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>其中<code>swiper-pagination-bullet-active</code>代表分页器中当前指示的小圆点的类名。<code>swiper-pagination-bullets</code>代表分页器的类名，详情见<a href="http://www.swiper.com.cn/api/pagination/79.html" target="_blank" rel="noopener">pagination分页器内元素的类名</a>。</p>
+<p>关于网络请求数据展示的代码就不贴了，下面有源码地址。</p>
+<h3 id="3-效果"><a href="#3-效果" class="headerlink" title="3.效果"></a>3.效果</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-929709345fdb3f4b.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这只是一个简单的封装效果，想要实现更多的效果，可以通过Swiper中提供的更多功能来实现。</p>
+<p><strong>Github地址：</strong> <a href="https://github.com/LRH1993/daily-zhihu/blob/master/src/components/swipe/swipe.vue" target="_blank" rel="noopener">图片轮播</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/30/简单理解Vue中的nextTick/" rel="next" title="简单理解Vue中的nextTick">
+                <i class="fa fa-chevron-left"></i> 简单理解Vue中的nextTick
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/28/从google-todo-mvp示例再次学习MVP/" rel="prev" title="从google-todo-mvp示例再次学习MVP">
+                从google-todo-mvp示例再次学习MVP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Swiper"><span class="nav-number">1.</span> <span class="nav-text">一、Swiper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Vue组件"><span class="nav-number">2.</span> <span class="nav-text">二、Vue组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、封装实现"><span class="nav-number">3.</span> <span class="nav-text">三、封装实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-引入Swiper"><span class="nav-number">3.1.</span> <span class="nav-text">1.引入Swiper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-HTML代码"><span class="nav-number">3.2.</span> <span class="nav-text">2.HTML代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-初始化Swiper"><span class="nav-number">3.3.</span> <span class="nav-text">3.初始化Swiper</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、自定义轮播效果"><span class="nav-number">4.</span> <span class="nav-text">四、自定义轮播效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HTML代码"><span class="nav-number">4.1.</span> <span class="nav-text">1.HTML代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-CSS代码"><span class="nav-number">4.2.</span> <span class="nav-text">2.CSS代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-效果"><span class="nav-number">4.3.</span> <span class="nav-text">3.效果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

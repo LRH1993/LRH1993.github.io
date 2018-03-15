@@ -1,0 +1,827 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Android 5.0中引入了很多炫酷的动画效果，Circular Reveal便是其中一种。使用起来很简单，但效果却是意想不到的炫酷，让你的app更有逼格。  一、效果废话不说，下面的gif图中使用Circular Reveal动画实现跳转到搜索页的效果。gif图压缩宽高比失真了，不过效果还在。源码在最下面，可以下载体验下。 二、Circular Reveal介绍当您显示或隐藏一组 UI 元素">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Circular-Reveal动画让页面跳转更炫酷">
+<meta property="og:url" content="https://lrh1993.github.io/2017/08/16/使用Circular-Reveal动画让页面跳转更炫酷/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="Android 5.0中引入了很多炫酷的动画效果，Circular Reveal便是其中一种。使用起来很简单，但效果却是意想不到的炫酷，让你的app更有逼格。  一、效果废话不说，下面的gif图中使用Circular Reveal动画实现跳转到搜索页的效果。gif图压缩宽高比失真了，不过效果还在。源码在最下面，可以下载体验下。 二、Circular Reveal介绍当您显示或隐藏一组 UI 元素">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-ce00b62b862a3948.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-30cdc1373f06bf06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-08-18T10:00:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Circular-Reveal动画让页面跳转更炫酷">
+<meta name="twitter:description" content="Android 5.0中引入了很多炫酷的动画效果，Circular Reveal便是其中一种。使用起来很简单，但效果却是意想不到的炫酷，让你的app更有逼格。  一、效果废话不说，下面的gif图中使用Circular Reveal动画实现跳转到搜索页的效果。gif图压缩宽高比失真了，不过效果还在。源码在最下面，可以下载体验下。 二、Circular Reveal介绍当您显示或隐藏一组 UI 元素">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-ce00b62b862a3948.gif?imageMogr2/auto-orient/strip">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/08/16/使用Circular-Reveal动画让页面跳转更炫酷/"/>
+
+
+
+
+
+  <title>使用Circular-Reveal动画让页面跳转更炫酷 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/08/16/使用Circular-Reveal动画让页面跳转更炫酷/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Circular-Reveal动画让页面跳转更炫酷</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T19:58:57+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">Android进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/08/16/使用Circular-Reveal动画让页面跳转更炫酷/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/08/16/使用Circular-Reveal动画让页面跳转更炫酷/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Android 5.0中引入了很多炫酷的动画效果，<strong>Circular Reveal</strong>便是其中一种。使用起来很简单，但效果却是意想不到的炫酷，让你的app更有逼格。</p>
+</blockquote>
+<h3 id="一、效果"><a href="#一、效果" class="headerlink" title="一、效果"></a>一、效果</h3><p>废话不说，下面的gif图中使用<strong>Circular Reveal</strong>动画实现跳转到搜索页的效果。gif图压缩宽高比失真了，不过效果还在。源码在最下面，可以下载体验下。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-ce00b62b862a3948.gif?imageMogr2/auto-orient/strip" alt=""></p>
+<h3 id="二、Circular-Reveal介绍"><a href="#二、Circular-Reveal介绍" class="headerlink" title="二、Circular Reveal介绍"></a>二、Circular Reveal介绍</h3><p>当您显示或隐藏一组 UI 元素时，揭露动画可为用户提供视觉连续性。</p>
+<p>ViewAnimationUtils.createCircularReveal()方法让您能够为裁剪区域添加动画以揭露或隐藏视图。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">* <span class="meta">@param</span> view The View will be clipped to the animating circle.</span><br><span class="line">     * <span class="meta">@param</span> centerX The x coordinate of the center of the animating circle, relative to</span><br><span class="line">     *                &lt;code&gt;view&lt;/code&gt;.</span><br><span class="line">     * <span class="meta">@param</span> centerY The y coordinate of the center of the animating circle, relative to</span><br><span class="line">     *                &lt;code&gt;view&lt;/code&gt;.</span><br><span class="line">     * <span class="meta">@param</span> startRadius The starting radius of the animating circle.</span><br><span class="line">     * <span class="meta">@param</span> endRadius The ending radius of the animating circle.</span><br><span class="line">     */</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Animator <span class="title">createCircularReveal</span><span class="params">(View view,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="keyword">int</span> centerX,  <span class="keyword">int</span> centerY, <span class="keyword">float</span> startRadius, <span class="keyword">float</span> endRadius)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RevealAnimator(view, centerX, centerY, startRadius, endRadius);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>ViewAnimationUtils.createCircularReveal()方法所执行的效果，就是将一个View裁剪成圆，然后从圆心逐渐揭露展现视图。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align:right">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>view</td>
+<td style="text-align:right">要执行动画效果的View</td>
+</tr>
+<tr>
+<td>centerX</td>
+<td style="text-align:right">圆心x坐标</td>
+</tr>
+<tr>
+<td>centerY</td>
+<td style="text-align:right">圆心y坐标</td>
+</tr>
+<tr>
+<td>startRadius</td>
+<td style="text-align:right">开始时的圆半径</td>
+</tr>
+<tr>
+<td>endRadius</td>
+<td style="text-align:right">结束时的圆半径</td>
+</tr>
+</tbody>
+</table>
+<h3 id="三、实现"><a href="#三、实现" class="headerlink" title="三、实现"></a>三、实现</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-30cdc1373f06bf06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>从上图可以看出，需要揭露展现的View是整个视图的根布局。开始的位置就是🔍图标的x，y坐标。开始的半径为0，结束的半径是上面那条斜边的长度。知道了这些参数，那么实现就简单了。<br>以下代码使用Kotlin实现，不过和java区别不大，不影响看懂原理。</p>
+<h4 id="1-动画参数"><a href="#1-动画参数" class="headerlink" title="1.动画参数"></a>1.动画参数</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressLint(<span class="meta-string">"NewApi"</span>)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">actionOtherVisible</span><span class="params">(isShow: <span class="type">Boolean</span>, triggerView: <span class="type">View</span>, animView: <span class="type">View</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">//判断API是否大于21</span></span><br><span class="line">        <span class="keyword">if</span> (android.os.Build.VERSION.SDK_INT &lt; android.os.Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isShow) &#123;</span><br><span class="line">                animView.visibility = View.VISIBLE</span><br><span class="line">                <span class="keyword">if</span> (mListener != <span class="literal">null</span>) mListener!!.onShowAnimationEnd()</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                animView.visibility = View.GONE</span><br><span class="line">                <span class="keyword">if</span> (mListener != <span class="literal">null</span>) mListener!!.onHideAnimationEnd()</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 计算 triggerView(即搜索按钮) 的中心位置</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">val</span> tvLocation = IntArray(<span class="number">2</span>)</span><br><span class="line">        triggerView.getLocationInWindow(tvLocation)</span><br><span class="line">        <span class="keyword">val</span> tvX = tvLocation[<span class="number">0</span>] + triggerView.width / <span class="number">2</span></span><br><span class="line">        <span class="keyword">val</span> tvY = tvLocation[<span class="number">1</span>] + triggerView.height / <span class="number">2</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 计算 animView(即根布局) 的中心位置</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">val</span> avLocation = IntArray(<span class="number">2</span>)</span><br><span class="line">        animView.getLocationInWindow(avLocation)</span><br><span class="line">        <span class="keyword">val</span> avX = avLocation[<span class="number">0</span>] + animView.width / <span class="number">2</span></span><br><span class="line">        <span class="keyword">val</span> avY = avLocation[<span class="number">1</span>] + animView.height / <span class="number">2</span></span><br><span class="line">        <span class="comment">//计算宽高</span></span><br><span class="line">        <span class="keyword">val</span> rippleW = <span class="keyword">if</span> (tvX &lt; avX) animView.width - tvX <span class="keyword">else</span> tvX - avLocation[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">val</span> rippleH = <span class="keyword">if</span> (tvY &lt; avY) animView.height - tvY <span class="keyword">else</span> tvY - avLocation[<span class="number">1</span>]</span><br><span class="line">       <span class="comment">//勾股定理求斜边</span></span><br><span class="line">        <span class="keyword">val</span> maxRadius = Math.sqrt((rippleW * rippleW + rippleH * rippleH).toDouble()).toFloat()</span><br><span class="line">        <span class="keyword">val</span> startRadius: <span class="built_in">Float</span></span><br><span class="line">        <span class="keyword">val</span> endRadius: <span class="built_in">Float</span></span><br><span class="line">        <span class="comment">//根据展示或隐藏设置起始与结束的半径</span></span><br><span class="line">        <span class="keyword">if</span> (isShow) &#123;</span><br><span class="line">            startRadius = <span class="number">0</span>f</span><br><span class="line">            endRadius = maxRadius</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            startRadius = maxRadius</span><br><span class="line">            endRadius = <span class="number">0</span>f</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> anim = ViewAnimationUtils.createCircularReveal(animView, tvX, tvY, startRadius, endRadius)</span><br><span class="line">        animView.visibility = View.VISIBLE</span><br><span class="line">        anim.duration = DURATION</span><br><span class="line">        anim.interpolator = DecelerateInterpolator()</span><br><span class="line">        <span class="comment">//监听动画结束，进行回调</span></span><br><span class="line">        anim.addListener(<span class="keyword">object</span> : AnimatorListenerAdapter() &#123;</span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onAnimationEnd</span><span class="params">(animation: <span class="type">Animator</span>)</span></span> &#123;</span><br><span class="line">                <span class="keyword">super</span>.onAnimationEnd(animation)</span><br><span class="line">                <span class="keyword">if</span> (isShow) &#123;</span><br><span class="line">                    animView.visibility = View.VISIBLE</span><br><span class="line">                    <span class="keyword">if</span> (mListener != <span class="literal">null</span>) mListener!!.onShowAnimationEnd()</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    animView.visibility = View.GONE</span><br><span class="line">                    <span class="keyword">if</span> (mListener != <span class="literal">null</span>) mListener!!.onHideAnimationEnd()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        anim.start()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码中注释清楚解析了动画参数的获取和执行过程。</p>
+<h4 id="2-动画调用"><a href="#2-动画调用" class="headerlink" title="2.动画调用"></a>2.动画调用</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">show</span><span class="params">(triggerView: <span class="type">View</span>, showView: <span class="type">View</span>)</span></span> &#123;</span><br><span class="line">        actionOtherVisible(<span class="literal">true</span>, triggerView, showView)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">hide</span><span class="params">(triggerView: <span class="type">View</span>, hideView: <span class="type">View</span>)</span></span> &#123;</span><br><span class="line">        actionOtherVisible(<span class="literal">false</span>, triggerView, hideView)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>actionOtherVisible()方法根据传入true/false来确定是执行展示或隐藏动画。</p>
+<h4 id="3-动画调用时机"><a href="#3-动画调用时机" class="headerlink" title="3.动画调用时机"></a>3.动画调用时机</h4><p>在SearchFragment中，监听第一帧的绘制，开启动画。其中mRootView就是根布局View。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onPreDraw</span><span class="params">()</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        iv_search_search.viewTreeObserver.removeOnPreDrawListener(<span class="keyword">this</span>);</span><br><span class="line">        mCircularRevealAnim.show(iv_search_search, mRootView);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>动画结束调用时机：①在点击搜索，跳转到搜索结果界面。②物理回退键回退。③点击回退按钮</p>
+<p>再以上三个地方都可以调用hide()方法，实现隐藏动画。</p>
+<h4 id="4-监听回调"><a href="#4-监听回调" class="headerlink" title="4.监听回调"></a>4.监听回调</h4><p>在上面配置动画参数的过程中，对动画结束进行了监听回调。调用了AnimListener接口的onHideAnimationEnd()和onShowAnimationEnd()方法，来实现回调。所有在SearchFragment中实现该接口，来监听回调。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onHideAnimationEnd</span><span class="params">()</span></span> &#123;</span><br><span class="line">    et_search_keyword.setText(<span class="string">""</span>);</span><br><span class="line">    dismiss();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onShowAnimationEnd</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isVisible) &#123;</span><br><span class="line">        KeyBoardUtils.openKeyboard(activity, et_search_keyword);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>监听到隐藏动画结束的时候，调用dismiss()方法关闭该DialogFragment。监听展现动画结束的时候，开启输入法框。</p>
+<p>就是这么简单，通过以上方式就可以实现如此炫酷的效果。</p>
+<p><strong>Github地址：</strong><a href="https://github.com/LRH1993/Eyepetizer-in-Kotlin/tree/master/app/src/main/java/com/tt/lvruheng/eyepetizer/search" target="_blank" rel="noopener">搜索页Circular Reveal动画</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/10/FloatingDragButton-炫酷的拖拽浮动按钮/" rel="next" title="FloatingDragButton:炫酷的拖拽浮动按钮">
+                <i class="fa fa-chevron-left"></i> FloatingDragButton:炫酷的拖拽浮动按钮
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/23/一篇文章，教你学会Git/" rel="prev" title="一篇文章，教你学会Git">
+                一篇文章，教你学会Git <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、效果"><span class="nav-number">1.</span> <span class="nav-text">一、效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Circular-Reveal介绍"><span class="nav-number">2.</span> <span class="nav-text">二、Circular Reveal介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、实现"><span class="nav-number">3.</span> <span class="nav-text">三、实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-动画参数"><span class="nav-number">3.1.</span> <span class="nav-text">1.动画参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-动画调用"><span class="nav-number">3.2.</span> <span class="nav-text">2.动画调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-动画调用时机"><span class="nav-number">3.3.</span> <span class="nav-text">3.动画调用时机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-监听回调"><span class="nav-number">3.4.</span> <span class="nav-text">4.监听回调</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

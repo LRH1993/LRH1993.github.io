@@ -1,0 +1,830 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="上一篇文章介绍了Set集合的通用知识。Set集合中包含了三个比较重要的实现类:HashSet、TreeSet和EnumSet。本篇文章将重点介绍这三个类。  一、HashSet类HashSet简介HashSet是Set接口的典型实现，实现了Set接口中的所有方法，并没有添加额外的方法，大多数时候使用Set集合时就是使用这个实现类。HashSet按Hash算法来存储集合中的元素。因此具有很好的存取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="由浅入深理解java集合(二)——集合-Set">
+<meta property="og:url" content="https://lrh1993.github.io/2017/01/19/由浅入深理解java集合(二)——集合-Set/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="上一篇文章介绍了Set集合的通用知识。Set集合中包含了三个比较重要的实现类:HashSet、TreeSet和EnumSet。本篇文章将重点介绍这三个类。  一、HashSet类HashSet简介HashSet是Set接口的典型实现，实现了Set接口中的所有方法，并没有添加额外的方法，大多数时候使用Set集合时就是使用这个实现类。HashSet按Hash算法来存储集合中的元素。因此具有很好的存取">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-b750b57756ebd0de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-23T12:50:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="由浅入深理解java集合(二)——集合-Set">
+<meta name="twitter:description" content="上一篇文章介绍了Set集合的通用知识。Set集合中包含了三个比较重要的实现类:HashSet、TreeSet和EnumSet。本篇文章将重点介绍这三个类。  一、HashSet类HashSet简介HashSet是Set接口的典型实现，实现了Set接口中的所有方法，并没有添加额外的方法，大多数时候使用Set集合时就是使用这个实现类。HashSet按Hash算法来存储集合中的元素。因此具有很好的存取">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-b750b57756ebd0de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/01/19/由浅入深理解java集合(二)——集合-Set/"/>
+
+
+
+
+
+  <title>由浅入深理解java集合(二)——集合-Set | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/01/19/由浅入深理解java集合(二)——集合-Set/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">由浅入深理解java集合(二)——集合-Set</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-19T10:21:57+08:00">
+                2017-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">Java集合</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/01/19/由浅入深理解java集合(二)——集合-Set/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/01/19/由浅入深理解java集合(二)——集合-Set/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>上一篇文章介绍了Set集合的通用知识。Set集合中包含了三个比较重要的实现类:HashSet、TreeSet和EnumSet。本篇文章将重点介绍这三个类。</p>
+</blockquote>
+<h3 id="一、HashSet类"><a href="#一、HashSet类" class="headerlink" title="一、HashSet类"></a>一、HashSet类</h3><h4 id="HashSet简介"><a href="#HashSet简介" class="headerlink" title="HashSet简介"></a>HashSet简介</h4><p>HashSet是Set接口的典型实现，实现了Set接口中的所有方法，并没有添加额外的方法，大多数时候使用Set集合时就是使用这个实现类。HashSet按Hash算法来存储集合中的元素。因此具有很好的存取和查找性能。</p>
+<h4 id="HashSet特点"><a href="#HashSet特点" class="headerlink" title="HashSet特点"></a>HashSet特点</h4><p>1.不能保证元素的排列顺序，顺序可能与添加顺序不同，顺序也有可能发生变化。<br>2.HashSet不是同步的，如果多个线程同时访问一个HashSet，则必须通过代码来保证其同步。<br>3.集合元素值可以是null。<br>除此之外，HashSet判断两个元素是否相等的标准也是其一大特点。HashSet集合判断两个元素相等的标准是两个对象通过equals()方法比较相等，并且两个对象的hashCode()方法返回值也相等。</p>
+<p>写到这里，我们就要介绍下equals()和hashCode()方法了。</p>
+<h4 id="equals-和hashCode"><a href="#equals-和hashCode" class="headerlink" title="equals()和hashCode()"></a>equals()和hashCode()</h4><h5 id="equals"><a href="#equals" class="headerlink" title="equals()"></a>equals()</h5><p>equals() 的作用是<strong> 用来判断两个对象是否相等。</strong></p>
+<p>equals() 定义在JDK的Object.java中。通过判断两个对象的地址是否相等(即，是否是同一个对象)来区分它们是否相等。源码如下：<br> <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>既然Object.java中定义了equals()方法，这就意味着所有的Java类都实现了equals()方法，所有的类都可以通过equals()去比较两个对象是否相等。 但是，使用默认的“equals()”方法，等价于“==”方法。我们也可以在Object的子类中重写此方法，自定义“equals()”方法，在其中定义自己的判断逻辑，如果满足则返回true，不满足则返回false。下面我们自定义一个类 Person,并认为年龄，身高相等的两个Person对象，equals()方法比较结果相等。<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> int age;</span><br><span class="line">	<span class="keyword">public</span> int height;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> boolean equals(Object obj) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span> == obj)</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">if</span> (obj == <span class="literal">null</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">if</span> (getClass() != obj.getClass())</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		Person other = (Person) obj;</span><br><span class="line">		<span class="keyword">if</span> (age != other.age)</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">if</span> (height != other.height)</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EqualTest</span> &#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span>&#123;</span><br><span class="line">		Person p1 = <span class="keyword">new</span> Person();</span><br><span class="line">		Person p2 =<span class="keyword">new</span> Person();</span><br><span class="line">		System.<span class="keyword">out</span>.println(p1.<span class="keyword">equals</span>(p2));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<blockquote>
+<p>true</p>
+</blockquote>
+<p>下面根据“类是否覆盖equals()方法”，将它分为2类。<br>(01) 若某个类没有覆盖equals()方法，当它的通过equals()比较两个对象时，实际上是比较两个对象是不是同一个对象。这时，等价于通过“==”去比较这两个对象，即两个对象的内存地址是否相同。<br>(02) 我们可以覆盖类的equals()方法，来让equals()通过其它方式比较两个对象是否相等。通常的做法是：若两个对象的内容相等，则equals()方法返回true；否则，返回fasle。</p>
+<h5 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode()"></a>hashCode()</h5><p>hashCode() 的作用<strong>是获取哈希码，也称为散列码；它实际上是返回一个int整数。这个哈希码的作用是确定该对象在哈希表中的索引位置。</strong></p>
+<p>hashCode() 定义在JDK的Object.java中，这就意味着Java中的任何类都包含有hashCode() 函数。虽然，每个Java类都包含hashCode() 函数。但是，仅仅当创建某个“类”的散列表时，该类的hashCode() 才有用。更通俗地说就是创建包含该类的HashMap，Hashtable，HashSet集合时，hashCode() 才有用。因为HashMap，Hashtable，HashSet就是散列表集合。<br>在散列表中，hashCode()作用是：<strong>确定该类的每一个对象在散列表中的位置；</strong>其它情况下类的hashCode() 没有作用。<strong>在散列表中hashCode() 的作用是获取对象的散列码，进而确定该对象在散列表中的位置。</strong></p>
+<p>hashCode()也分两种情况。一种是Object类中默认的方法，另一种是在子类中重写的方法。<br>(01) 若某个类没有覆盖hashCode()方法，当它的通过hashCode()比较两个对象时，实际上是比较两个对象是不是同一个对象。这时，等价于通过“==”去比较这两个对象，即两个对象的内存地址是否相同。<br>(02) 我们可以覆盖类的hashCode()方法，来让hashCode()通过其它方式比较两个对象是否相等。通常的做法是：若两个对象的内容相等，则hashCode()方法返回true；否则，返回fasle。</p>
+<p>通过对以上两个方法的了解。我们可以接下来学习HashSet集合中如何判断两个元素是否相等？</p>
+<h3 id="HashSet中判断集合元素相等"><a href="#HashSet中判断集合元素相等" class="headerlink" title="HashSet中判断集合元素相等"></a>HashSet中判断集合元素相等</h3><p>两个对象比较 具体分为如下四个情况：<br>1.如果有两个元素通过equal()方法比较返回false，但它们的hashCode()方法返回不相等，HashSet将会把它们存储在不同的位置。</p>
+<p>2.如果有两个元素通过equal()方法比较返回true，但它们的hashCode()方法返回不相等，HashSet将会把它们存储在不同的位置。</p>
+<p>3.如果两个对象通过equals()方法比较不相等，hashCode()方法比较相等，HashSet将会把它们存储在相同的位置，在这个位置以链表式结构来保存多个对象。这是因为当向HashSet集合中存入一个元素时，HashSet会调用对象的hashCode()方法来得到对象的hashCode值，然后根据该hashCode值来决定该对象存储在HashSet中存储位置。</p>
+<p>4.如果有两个元素通过equal()方法比较返回true，但它们的hashCode()方法返回true，HashSet将不予添加。</p>
+<p>HashSet判断两个元素相等的标准：<strong>两个对象通过equals()方法比较相等，并且两个对象的hashCode()方法返回值也相等。</strong></p>
+<p><strong>注意：</strong>HashSet是根据元素的hashCode值来快速定位的，如果HashSet中两个以上的元素具有相同的hashCode值，将会导致性能下降。所以如果重写类的equals()方法和hashCode()方法时，应尽量保证两个对象通过hashCode()方法返回值相等时，通过equals()方法比较返回true。</p>
+<h4 id="LinkedHashSet类"><a href="#LinkedHashSet类" class="headerlink" title="LinkedHashSet类"></a>LinkedHashSet类</h4><p>LinkedHashSet是HashSet对的子类，也是根据元素的hashCode值来决定元素的存储位置，同时使用链表维护元素的次序，使得元素是以插入的顺序来保存的。当遍历LinkedHashSet集合里的元素时，LinkedHashSet将会按元素的添加顺序来访问集合里的元素。但是由于要维护元素的插入顺序，在性能上略低与HashSet，但在迭代访问Set里的全部元素时有很好的性能。<br><strong>注意：</strong>LinkedHashSet依然不允许元素重复，判断重复标准与HashSet一致。</p>
+<p><strong>补充：</strong>HashSet的实质是一个HashMap。HashSet的所有集合元素，构成了HashMap的key，其value为一个静态Object对象。因此HashSet的所有性质，HashMap的key所构成的集合都具备。可以参考后续文章中HashMap的相关内容进行比对。</p>
+<h3 id="二、TreeSet类"><a href="#二、TreeSet类" class="headerlink" title="二、TreeSet类"></a>二、TreeSet类</h3><h4 id="TreeSet简介"><a href="#TreeSet简介" class="headerlink" title="TreeSet简介"></a>TreeSet简介</h4><p>TreeSet是SortedSet接口的实现类，正如SortedSet名字所暗示的，TreeSet可以确保集合元素处于排序状态。此外，TreeSet还提供了几个额外的方法。</p>
+<h4 id="TreeSet的方法"><a href="#TreeSet的方法" class="headerlink" title="TreeSet的方法"></a>TreeSet的方法</h4><blockquote>
+<p>comparator():返回对此 set 中的元素进行排序的比较器；如果此 set 使用其元素的自然顺序，则返回null。<br>first():返回此 set 中当前第一个（最低）元素。<br>last(): 返回此 set 中当前最后一个（最高）元素。<br>lower(E e):返回此 set 中严格小于给定元素的最大元素；如果不存在这样的元素，则返回 null。<br>higher(E e):返回此 set 中严格大于给定元素的最小元素；如果不存在这样的元素，则返回 null。<br>subSet(E fromElement, E toElement):返回此 set 的部分视图，其元素从 fromElement（包括）到 toElement（不包括）。<br>headSet(E toElement):返回此 set 的部分视图，其元素小于toElement。<br>tailSet(E fromElement):返回此 set 的部分视图，其元素大于等于 fromElement。</p>
+</blockquote>
+<h4 id="TreeSet的排序方式"><a href="#TreeSet的排序方式" class="headerlink" title="TreeSet的排序方式"></a>TreeSet的排序方式</h4><p>TreeSet中所谓的有序，不同于之前所讲的插入顺序，而是通过集合中元素属性进行排序方式来实现的。<br>TreeSet支持两种排序方法：自然排序和定制排序。在默认情况下，TreeSet采用自然排序。</p>
+<h6 id="1-自然排序"><a href="#1-自然排序" class="headerlink" title="1.自然排序"></a>1.自然排序</h6><p>在讲自然排序之前，要先讲一下<strong>Comparable接口</strong>。</p>
+<p>Java提供了一个Comparable接口，该接口里定义了一个compareTo(Object obj)方法,该方法返回一个整数值，实现该接口的类必须实现该方法，实现了该接口的类的对象就可以比较大小了。当一个对象调用该方法与另一个对象比较时，例如obj1.compareTo(obj2),如果该方法返回0，则表明两个对象相等；如果该方法返回一个整数，则表明obj1大于obj2;如果该方法返回一个负整数，则表明oj1小于obj2。</p>
+<p>TreeSet会调用集合中元素所属类的compareTo(Object obj)方法来比较元素之间的大小关系，然后将集合元素按升序排列，即把通过compareTo(Object obj)方法比较后比较大的的往后排。这种方式就是自然排序。</p>
+<p>Java的一些常用类已经实现了Comparable接口，并提供了比较大小的标准。例如，String按字符串的UNICODE值进行比较，Integer等所有数值类型对应的包装类按它们的数值大小进行比较。<br>除了这些已经实现Comparable接口类之外，如果试图把一个对象添加到TreeSet时，则该对象的类必须实现Comparable接口，否则就会出现异常。<br><strong>注意：</strong>TreeSet中只能添加同一种类型的对象，否则无法比较，会出现异常。</p>
+<h5 id="TreeSet中判断集合元素相等"><a href="#TreeSet中判断集合元素相等" class="headerlink" title="TreeSet中判断集合元素相等"></a>TreeSet中判断集合元素相等</h5><p>对于TreeSet集合而言，判断两个对象是否相等的唯一标准是：两个对象通过compareTo(Object obj)方法比较是否返回0——如果通过compareTo(Object obj)方法比较返回0，TreeSet则会认为它们相等，不予添加入集合内；否则就认为它们不相等，添加到集合内。<br><strong>TreeSet是根据红黑树结构找到集合元素的存储位置。</strong></p>
+<h6 id="2-定制排序"><a href="#2-定制排序" class="headerlink" title="2.定制排序"></a>2.定制排序</h6><p>TreeSet的自然排序是根据集合元素中compareTo(Object obj)比较的大小，以升序排列。而定制排序是通过Comparator接口的帮助。该接口包含一个int compare(T o1,T o2)方法，该方法用于比较o1,o2的大小：如果该方法返回正整数，则表明o1大于o2；如果该方法返回0，则表明o1等于o2;如果该方法返回负整数，则表明o1小于o2。<br>如果要实现定制排序，则需要在创建TreeSet时，调用一个带参构造器，传入Comparator对象。并有该Comparator对象负责集合元素的排序逻辑，集合元素可以不必实现Comparable接口。下面具体演示一下这种用法：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span>&#123;</span><br><span class="line">		Person p1 = <span class="keyword">new</span> Person();</span><br><span class="line">		p1.age =<span class="number">20</span>;</span><br><span class="line">		Person p2 =<span class="keyword">new</span> Person();</span><br><span class="line">		p2.age = <span class="number">30</span>;</span><br><span class="line">		Comparator&lt;Person&gt; comparator = <span class="keyword">new</span> Comparator&lt;Person&gt;() &#123;</span><br><span class="line"></span><br><span class="line">			@Override</span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span>(<span class="params">Person o1, Person o2</span>) </span>&#123;</span><br><span class="line">				<span class="comment">//年龄越小的排在越后面</span></span><br><span class="line">				<span class="keyword">if</span>(o1.age&lt;o2.age)&#123;</span><br><span class="line">					<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">				&#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.age&gt;o2.age)&#123;</span><br><span class="line">					<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">				&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">					<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">		TreeSet&lt;Person&gt; <span class="keyword">set</span> = <span class="keyword">new</span> TreeSet&lt;Person&gt;(comparator);</span><br><span class="line">		<span class="keyword">set</span>.<span class="keyword">add</span>(p1);</span><br><span class="line">		<span class="keyword">set</span>.<span class="keyword">add</span>(p2);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">set</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>[Person[age=30], Person[age=20]]</p>
+</blockquote>
+<p><strong>总结：无论使用自然排序还是定制排序，都可以通过自定义比较逻辑实现各种各样的排序方式。</strong></p>
+<p><strong>注意:</strong>如果向TreeSet中添加了一个可变对象后，并且后面程序修改了该可变对象的实例变量，这将导致它与其他对象的大小顺序发生了改变，但TreeSet不会再次调整它们。下面程序演示这一现象：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TreeSet&lt;Person&gt; <span class="keyword">set</span> = <span class="keyword">new</span> TreeSet&lt;Person&gt;();</span><br><span class="line">		Person p1 = <span class="keyword">new</span> Person();</span><br><span class="line">		p1.setAge(<span class="number">10</span>);</span><br><span class="line">		Person p2 =<span class="keyword">new</span> Person();</span><br><span class="line">		p2.setAge(<span class="number">30</span>);</span><br><span class="line">		Person p3 =<span class="keyword">new</span> Person();</span><br><span class="line">		p3.setAge(<span class="number">40</span>);</span><br><span class="line">		<span class="keyword">set</span>.<span class="keyword">add</span>(p1);</span><br><span class="line">		<span class="keyword">set</span>.<span class="keyword">add</span>(p2);</span><br><span class="line">		<span class="keyword">set</span>.<span class="keyword">add</span>(p3);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"初始年龄排序"</span>);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">set</span>);</span><br><span class="line">		<span class="comment">//p1的年龄修改成50 最大</span></span><br><span class="line">		p1.age = <span class="number">60</span>;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"修改p1年龄后集合排序"</span>);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">set</span>);</span><br><span class="line">		p2.age = <span class="number">40</span>;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"修改p2年龄后集合排序"</span>);</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="keyword">set</span>);</span><br><span class="line">		Person p4 = <span class="keyword">new</span> Person();</span><br></pre></td></tr></table></figure></p>
+<p>其中Person实现Comparable接口，将Person对象按照年龄从小到大升序排列。<br>输出结果：</p>
+<blockquote>
+<p>初始年龄排序<br>[Person[age=10], Person[age=30], Person[age=40]]<br>修改p1年龄后集合排序<br>[Person[age=60], Person[age=30], Person[age=40]]<br>修改p2年龄后集合排序<br>[Person[age=60], Person[age=40], Person[age=40]]</p>
+</blockquote>
+<p>可以看到并没有发生变化，而且如果修改后进行元素删除操作可能会不成功，具体比较复杂。<strong>总之，推荐不要修改放入TreeSet集合中元素的关键实例变量。</strong><br><strong>补充：TreeSet也是非线程安全的。</strong></p>
+<h3 id="三、EnumSet类"><a href="#三、EnumSet类" class="headerlink" title="三、EnumSet类"></a>三、EnumSet类</h3><h4 id="EnumSet简介"><a href="#EnumSet简介" class="headerlink" title="EnumSet简介"></a>EnumSet简介</h4><p>EnumSet是一个专为枚举类设计的集合类，EnumSet中的所有元素都必须是指定枚举类型的枚举值，该枚举类型在创建EnumSet时显示或隐式地指定。EnumSet的集合元素也是有序的，EnumSet以枚举值在EnumSet类内的定义顺序来决定集合元素的顺序。</p>
+<h4 id="EnumSet特点"><a href="#EnumSet特点" class="headerlink" title="EnumSet特点"></a>EnumSet特点</h4><p>1.EnumSet集合不允许加入null元素。EnumSet中的所有元素都必须是指定枚举类型的枚举值。<br>2.EnumSet类没有暴露任何构造器来创建该类的实例，程序应该通过它提供的类方法来创建EnumSet对象。</p>
+<p>EnumSet没有其他额外增加的方法，只是增加了一些创建EnumSet对象的方法。</p>
+<h5 id="EnumSet创建对象的方法"><a href="#EnumSet创建对象的方法" class="headerlink" title="EnumSet创建对象的方法"></a>EnumSet创建对象的方法</h5><p><img src="http://upload-images.jianshu.io/upload_images/3985563-b750b57756ebd0de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>补充：EnumSet 也是非线程安全的。</strong></p>
+<h3 id="四、HashSet、TreeSet和EnumSet的性能对比"><a href="#四、HashSet、TreeSet和EnumSet的性能对比" class="headerlink" title="四、HashSet、TreeSet和EnumSet的性能对比"></a>四、HashSet、TreeSet和EnumSet的性能对比</h3><p><strong>EnumSet性能&gt;HashSet性能&gt;LinkedHashSet&gt;TreeSet性能</strong></p>
+<p>EnumSet内部以位向量的形式存储，结构紧凑、高效，且只存储枚举类的枚举值，所以最高效。HashSet以hash算法进行位置存储，特别适合用于添加、查询操作。LinkedHashSet由于要维护链表，性能比HashSet差点，但是有了链表，LinkedHashSet更适合于插入、删除以及遍历操作。而TreeSet需要额外的红黑树算法来维护集合的次序，性能最次。</p>
+<p>但是具体使用要考虑具体的使用场景。<br>当需要一个特定排序的集合时，使用TreeSet集合。<br>当需要保存枚举类的枚举值时，使用EnumSet集合。<br>当经常使用添加、查询操作时，使用HashSet。<br>当经常插入排序或使用删除、插入及遍历操作时，使用LinkedHashSet。</p>
+<p>后续文章将对java集合中的具体实现类进行深入了解。有兴趣的话可以观看后续内容，进一步了解java集合内容。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/18/手把手教你使用-RxJava-2-0（一）/" rel="next" title="手把手教你使用-RxJava-2-0（一）">
+                <i class="fa fa-chevron-left"></i> 手把手教你使用-RxJava-2-0（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/19/手把手教你使用-RxJava-2-0（二）/" rel="prev" title="手把手教你使用-RxJava-2-0（二）">
+                手把手教你使用-RxJava-2-0（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、HashSet类"><span class="nav-number">1.</span> <span class="nav-text">一、HashSet类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HashSet简介"><span class="nav-number">1.1.</span> <span class="nav-text">HashSet简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashSet特点"><span class="nav-number">1.2.</span> <span class="nav-text">HashSet特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#equals-和hashCode"><span class="nav-number">1.3.</span> <span class="nav-text">equals()和hashCode()</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#equals"><span class="nav-number">1.3.1.</span> <span class="nav-text">equals()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hashCode"><span class="nav-number">1.3.2.</span> <span class="nav-text">hashCode()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashSet中判断集合元素相等"><span class="nav-number">2.</span> <span class="nav-text">HashSet中判断集合元素相等</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedHashSet类"><span class="nav-number">2.1.</span> <span class="nav-text">LinkedHashSet类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、TreeSet类"><span class="nav-number">3.</span> <span class="nav-text">二、TreeSet类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TreeSet简介"><span class="nav-number">3.1.</span> <span class="nav-text">TreeSet简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TreeSet的方法"><span class="nav-number">3.2.</span> <span class="nav-text">TreeSet的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TreeSet的排序方式"><span class="nav-number">3.3.</span> <span class="nav-text">TreeSet的排序方式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-自然排序"><span class="nav-number">3.3.0.1.</span> <span class="nav-text">1.自然排序</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TreeSet中判断集合元素相等"><span class="nav-number">3.3.1.</span> <span class="nav-text">TreeSet中判断集合元素相等</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-定制排序"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">2.定制排序</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、EnumSet类"><span class="nav-number">4.</span> <span class="nav-text">三、EnumSet类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EnumSet简介"><span class="nav-number">4.1.</span> <span class="nav-text">EnumSet简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EnumSet特点"><span class="nav-number">4.2.</span> <span class="nav-text">EnumSet特点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#EnumSet创建对象的方法"><span class="nav-number">4.2.1.</span> <span class="nav-text">EnumSet创建对象的方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、HashSet、TreeSet和EnumSet的性能对比"><span class="nav-number">5.</span> <span class="nav-text">四、HashSet、TreeSet和EnumSet的性能对比</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

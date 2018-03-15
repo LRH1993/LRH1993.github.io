@@ -1,0 +1,787 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Retrofit 、RxJava以及OkHttp 都是最近非常火的开源框架，通过Retrofit 、RxJava以及OkHttp的结合，可以非常便捷地实现网络请求。但是在使用之前，我们经常需要对Retrofit进行一些基础配置，来实现更好的网络请求，比如设置 Json 转换器、RxJava 适配器、设置 Debug Log 模式、设置超时、错误重连，以及配置缓存等等一些内容。今天就主要分享一下这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Retrofit配置详解及封装，让你的网络请求更简单">
+<meta property="og:url" content="https://lrh1993.github.io/2017/01/22/Retrofit配置详解及封装，让你的网络请求更简单/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="Retrofit 、RxJava以及OkHttp 都是最近非常火的开源框架，通过Retrofit 、RxJava以及OkHttp的结合，可以非常便捷地实现网络请求。但是在使用之前，我们经常需要对Retrofit进行一些基础配置，来实现更好的网络请求，比如设置 Json 转换器、RxJava 适配器、设置 Debug Log 模式、设置超时、错误重连，以及配置缓存等等一些内容。今天就主要分享一下这">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-15T01:45:11.440Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Retrofit配置详解及封装，让你的网络请求更简单">
+<meta name="twitter:description" content="Retrofit 、RxJava以及OkHttp 都是最近非常火的开源框架，通过Retrofit 、RxJava以及OkHttp的结合，可以非常便捷地实现网络请求。但是在使用之前，我们经常需要对Retrofit进行一些基础配置，来实现更好的网络请求，比如设置 Json 转换器、RxJava 适配器、设置 Debug Log 模式、设置超时、错误重连，以及配置缓存等等一些内容。今天就主要分享一下这">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/01/22/Retrofit配置详解及封装，让你的网络请求更简单/"/>
+
+
+
+
+
+  <title>Retrofit配置详解及封装，让你的网络请求更简单 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/01/22/Retrofit配置详解及封装，让你的网络请求更简单/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Retrofit配置详解及封装，让你的网络请求更简单</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-22T22:53:21+08:00">
+                2017-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Retrofit-RxJava/" itemprop="url" rel="index">
+                    <span itemprop="name">Retrofit+RxJava</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/01/22/Retrofit配置详解及封装，让你的网络请求更简单/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/01/22/Retrofit配置详解及封装，让你的网络请求更简单/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Retrofit 、RxJava以及OkHttp 都是最近非常火的开源框架，通过Retrofit 、RxJava以及OkHttp的结合，可以非常便捷地实现网络请求。但是在使用之前，我们经常需要对Retrofit进行一些基础配置，来实现更好的网络请求，比如设置 Json 转换器、RxJava 适配器、设置 Debug Log 模式、设置超时、错误重连，以及配置缓存等等一些内容。今天就主要分享一下这方面的内容。</p>
+</blockquote>
+<h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//引入okhttp</span></span><br><span class="line"> <span class="keyword">compile</span> <span class="string">'com.squareup.okhttp3:okhttp:3.5.0'</span></span><br><span class="line"><span class="comment">//引入retrofit</span></span><br><span class="line"> <span class="keyword">compile</span> <span class="string">'com.squareup.retrofit2:retrofit:2.1.0'</span></span><br><span class="line"><span class="comment">//引入rxjava</span></span><br><span class="line"> <span class="keyword">compile</span> <span class="string">'io.reactivex.rxjava2:rxjava:2.0.4'</span></span><br><span class="line"><span class="comment">//引入Log拦截器，方便DEBUG模式输出log信息</span></span><br><span class="line"> <span class="keyword">compile</span> <span class="string">'com.squareup.okhttp3:logging-interceptor:3.5.0'</span></span><br><span class="line"><span class="comment">//引入rxjava适配器，方便rxjava与retrofit的结合</span></span><br><span class="line"> <span class="keyword">compile</span> <span class="string">'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'</span></span><br><span class="line"><span class="comment">//引入json转换器，方便将返回的数据转换为json格式</span></span><br><span class="line"> <span class="keyword">compile</span> <span class="string">'com.squareup.retrofit2:converter-gson:2.1.0'</span></span><br><span class="line"><span class="comment">//引入rxandroid</span></span><br><span class="line"> <span class="keyword">compile</span> <span class="string">'io.reactivex.rxjava2:rxandroid:2.0.1'</span></span><br></pre></td></tr></table></figure>
+<p>从引入的依赖便可看出本篇文章以常用的一些网络请求为例。采用RxJava和Retroifit结合的方式，返回的数据json格式。<br>下面开始一步步配置Retrofit常用的网络请求配置。</p>
+<h3 id="Log信息拦截器"><a href="#Log信息拦截器" class="headerlink" title="Log信息拦截器"></a>Log信息拦截器</h3><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// log用拦截器</span></span><br><span class="line"><span class="type">HttpLoggingInterceptor</span> loggingInterceptor= <span class="function"><span class="keyword">new</span> <span class="title">HttpLoggingInterceptor</span>();</span></span><br><span class="line"><span class="function"><span class="comment">// 开发模式记录整个body，否则只记录基本信息如返回200，http协议版本等</span></span></span><br><span class="line"><span class="function"><span class="title">if</span> (<span class="type">BuildConfig</span>.<span class="type">DEBUG</span>) &#123;</span></span><br><span class="line"><span class="function">    <span class="title">loggingInterceptor</span>.<span class="title">setLevel</span>(<span class="type">HttpLoggingInterceptor</span>.<span class="type">Level</span>.<span class="type">BODY</span>);</span></span><br><span class="line"><span class="function">&#125; <span class="title">else</span> &#123;</span></span><br><span class="line"><span class="function">    <span class="title">loggingInterceptor</span>.<span class="title">setLevel</span>(<span class="type">HttpLoggingInterceptor</span>.<span class="type">Level</span>.<span class="type">BASIC</span>);</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>HttpLoggingInterceptor 是一个拦截器，用于输出网络请求和结果的 Log，可以配置 level 为 BASIC / HEADERS / BODY。通过Log信息拦截器方便我们进行调试，验证网络请求结果。<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OkHttpClient.<span class="keyword">Builder </span><span class="keyword">builder= </span>new OkHttpClient.<span class="keyword">Builder();</span></span><br><span class="line"><span class="keyword"> </span><span class="keyword">builder.addInterceptor(loggingInterceptor);</span></span><br></pre></td></tr></table></figure></p>
+<p>向okhttp中添加拦截器。拦截器的功能很强大，关于拦截器，可以看<a href="http://www.jianshu.com/p/ba6e219a0af6" target="_blank" rel="noopener">这篇文章</a>了解。</p>
+<h3 id="缓存机制"><a href="#缓存机制" class="headerlink" title="缓存机制"></a>缓存机制</h3><p>无网络时，也能显示数据</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置缓存目录</span></span><br><span class="line">        File cacheFile = <span class="keyword">new</span> <span class="type">File</span>(RetrofitApplication.getContext().getExternalCacheDir(), CACHE_NAME);</span><br><span class="line">        <span class="comment">//生成缓存，50M</span></span><br><span class="line">        Cache cache = <span class="keyword">new</span> <span class="type">Cache</span>(cacheFile, <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">50</span>);</span><br><span class="line">        <span class="comment">//缓存拦截器</span></span><br><span class="line">        Interceptor cacheInterceptor = <span class="keyword">new</span> <span class="type">Interceptor</span>() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> Response intercept(Chain chain) throws IOException &#123;</span><br><span class="line">                Request request = chain.request();</span><br><span class="line">                <span class="comment">//网络不可用</span></span><br><span class="line">                <span class="keyword">if</span> (!NetworkUtils.isAvailable(RetrofitApplication.getContext())) &#123;</span><br><span class="line">                    <span class="comment">//在请求头中加入：强制使用缓存，不访问网络</span></span><br><span class="line">                    request = request.<span class="keyword">new</span><span class="type">Builder</span>()</span><br><span class="line">                            .cacheControl(CacheControl.FORCE_CACHE)</span><br><span class="line">                            .build();</span><br><span class="line">                &#125;</span><br><span class="line">                Response response = chain.proceed(request);</span><br><span class="line">                <span class="comment">//网络可用</span></span><br><span class="line">                <span class="keyword">if</span> (NetworkUtils.isAvailable(RetrofitApplication.getContext())) &#123;</span><br><span class="line">                    int maxAge = <span class="number">0</span>;</span><br><span class="line">                    <span class="comment">// 有网络时 在响应头中加入：设置缓存超时时间0个小时</span></span><br><span class="line">                    response.<span class="keyword">new</span><span class="type">Builder</span>()</span><br><span class="line">                            .header(<span class="string">"Cache-Control"</span>, <span class="string">"public, max-age="</span> + maxAge)</span><br><span class="line">                            .build();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 无网络时，在响应头中加入：设置超时为4周</span></span><br><span class="line">                    int maxStale = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">28</span>;</span><br><span class="line">                    response.<span class="keyword">new</span><span class="type">Builder</span>()</span><br><span class="line">                            .header(<span class="string">"Cache-Control"</span>, <span class="string">"public, only-if-cached, max-stale="</span> + maxStale)</span><br><span class="line">                            .build();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> response;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br></pre></td></tr></table></figure>
+<p>当网络不可用的时候，强制使用缓存。当网络可用的时候，直接访问网络，即把缓存中内容的期限设置为0。这样浏览器直接认为缓存过期，走网络访问途径。当网络不可用的时候，把缓存中内容的期限设置为4周，即4周内只要进行访问，都认为数据有效。<br>Cache-control 是由服务器返回的 Response 中添加的头信息，它的目的是告诉客户端是要从本地读取缓存还是直接从服务器摘取消息。它有不同的值，每一个值有不同的作用。关于更多CacheControl缓存策略的了解，可以参考<a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching?hl=zh-cn" target="_blank" rel="noopener">这篇文章</a>。</p>
+<h3 id="超时、重连"><a href="#超时、重连" class="headerlink" title="超时、重连"></a>超时、重连</h3><p>超时需重连<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置超时</span></span><br><span class="line"> <span class="selector-tag">builder</span><span class="selector-class">.connectTimeout</span>(<span class="number">15</span>, TimeUnit.SECONDS);</span><br><span class="line"> <span class="selector-tag">builder</span><span class="selector-class">.readTimeout</span>(<span class="number">20</span>, TimeUnit.SECONDS);</span><br><span class="line"> <span class="selector-tag">builder</span><span class="selector-class">.writeTimeout</span>(<span class="number">20</span>, TimeUnit.SECONDS);</span><br><span class="line"> <span class="comment">//错误重连</span></span><br><span class="line"> <span class="selector-tag">builder</span><span class="selector-class">.retryOnConnectionFailure</span>(true);</span><br></pre></td></tr></table></figure></p>
+<h3 id="设置Retrofit"><a href="#设置Retrofit" class="headerlink" title="设置Retrofit"></a>设置Retrofit</h3><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">retrofit = <span class="function"><span class="keyword">new</span> <span class="title">Retrofit</span>.<span class="title">Builder</span>()</span></span><br><span class="line"><span class="function">                .<span class="title">baseUrl</span>(url)</span></span><br><span class="line"><span class="function">                <span class="comment">//设置 Json 转换器</span></span></span><br><span class="line"><span class="function">                .<span class="title">addConverterFactory</span>(<span class="type">GsonConverterFactory</span>.create())</span></span><br><span class="line"><span class="function">                <span class="comment">//RxJava 适配器</span></span></span><br><span class="line"><span class="function">                .<span class="title">addCallAdapterFactory</span>(<span class="type">RxJava2CallAdapterFactory</span>.create())</span></span><br><span class="line"><span class="function">                .<span class="title">client</span>(client)</span></span><br><span class="line"><span class="function">                .<span class="title">build</span>();</span></span><br></pre></td></tr></table></figure>
+<p>至此，便完成了Retrofit配置的简单配置，以上配置仅仅满足常用的网络请求。如果有其他要求，可以在此基础上进行修改。</p>
+<p>下面是以上配置的全部代码的地址，并进行了简单的封装，感兴趣的可以下载。<br><a href="https://github.com/LRH1993/RetrofitSetting" target="_blank" rel="noopener">代码地址</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/21/由浅入深理解java集合(三)——集合-List/" rel="next" title="由浅入深理解java集合(三)——集合-List">
+                <i class="fa fa-chevron-left"></i> 由浅入深理解java集合(三)——集合-List
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/23/Retrofit+RxJava网络请求异常处理/" rel="prev" title="Retrofit+RxJava网络请求异常处理">
+                Retrofit+RxJava网络请求异常处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入依赖"><span class="nav-number">1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Log信息拦截器"><span class="nav-number">2.</span> <span class="nav-text">Log信息拦截器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存机制"><span class="nav-number">3.</span> <span class="nav-text">缓存机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#超时、重连"><span class="nav-number">4.</span> <span class="nav-text">超时、重连</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置Retrofit"><span class="nav-number">5.</span> <span class="nav-text">设置Retrofit</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

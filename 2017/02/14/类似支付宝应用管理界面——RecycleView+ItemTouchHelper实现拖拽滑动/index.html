@@ -1,0 +1,812 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="要实现RecycleView中的拖拽滑动，在以往的经验中经常要依赖GestureDetectors、onInterceptTouchEvent等来实现，然而在RecyclerView上添加拖动特性有一个非常简单的方法它就是：ItemTouchHelper。  一、效果图以下就是通过RecycleView+ItemTouchHelper实现拖拽滑动的效果图，看起来有没有很炫酷。其实实现起来很简单，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="类似支付宝应用管理界面——RecyclerView+ItemTouchHelper实现拖拽滑动">
+<meta property="og:url" content="https://lrh1993.github.io/2017/02/14/类似支付宝应用管理界面——RecycleView+ItemTouchHelper实现拖拽滑动/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="要实现RecycleView中的拖拽滑动，在以往的经验中经常要依赖GestureDetectors、onInterceptTouchEvent等来实现，然而在RecyclerView上添加拖动特性有一个非常简单的方法它就是：ItemTouchHelper。  一、效果图以下就是通过RecycleView+ItemTouchHelper实现拖拽滑动的效果图，看起来有没有很炫酷。其实实现起来很简单，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-a6ec80528e87c831.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-05-23T13:07:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="类似支付宝应用管理界面——RecyclerView+ItemTouchHelper实现拖拽滑动">
+<meta name="twitter:description" content="要实现RecycleView中的拖拽滑动，在以往的经验中经常要依赖GestureDetectors、onInterceptTouchEvent等来实现，然而在RecyclerView上添加拖动特性有一个非常简单的方法它就是：ItemTouchHelper。  一、效果图以下就是通过RecycleView+ItemTouchHelper实现拖拽滑动的效果图，看起来有没有很炫酷。其实实现起来很简单，">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-a6ec80528e87c831.gif?imageMogr2/auto-orient/strip">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/02/14/类似支付宝应用管理界面——RecycleView+ItemTouchHelper实现拖拽滑动/"/>
+
+
+
+
+
+  <title>类似支付宝应用管理界面——RecyclerView+ItemTouchHelper实现拖拽滑动 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/02/14/类似支付宝应用管理界面——RecycleView+ItemTouchHelper实现拖拽滑动/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">类似支付宝应用管理界面——RecyclerView+ItemTouchHelper实现拖拽滑动</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-14T21:47:57+08:00">
+                2017-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RecyclerView/" itemprop="url" rel="index">
+                    <span itemprop="name">RecyclerView</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/02/14/类似支付宝应用管理界面——RecycleView+ItemTouchHelper实现拖拽滑动/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/02/14/类似支付宝应用管理界面——RecycleView+ItemTouchHelper实现拖拽滑动/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>要实现RecycleView中的拖拽滑动，在以往的经验中经常要依赖GestureDetectors、onInterceptTouchEvent等来实现，然而在RecyclerView上添加拖动特性有一个非常简单的方法它就是：ItemTouchHelper。</p>
+</blockquote>
+<h3 id="一、效果图"><a href="#一、效果图" class="headerlink" title="一、效果图"></a>一、效果图</h3><p>以下就是通过RecycleView+ItemTouchHelper实现拖拽滑动的效果图，看起来有没有很炫酷。其实实现起来很简单，我们接下来就开始介绍。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-a6ec80528e87c831.gif?imageMogr2/auto-orient/strip" alt=""></p>
+<h3 id="二、ItemTouchHelper的介绍"><a href="#二、ItemTouchHelper的介绍" class="headerlink" title="二、ItemTouchHelper的介绍"></a>二、ItemTouchHelper的介绍</h3><p>ItemTouchHelper是一个强大的工具，它处理好了关于在RecyclerView上添加拖动排序与滑动删除的所有事情。它是RecyclerView.ItemDecoration的子类，也就是说它可以轻易的添加到几乎所有的LayoutManager和Adapter中。它还可以和现有的item动画一起工作，提供受类型限制的拖放动画等等。</p>
+<h5 id="1-添加依赖"><a href="#1-添加依赖" class="headerlink" title="1.添加依赖"></a>1.添加依赖</h5><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span> <span class="string">'com.android.support:recyclerview-v7:25.1.0'</span></span><br></pre></td></tr></table></figure>
+<p>因为要使用RecycleView，同时ItemTouchHelper也是RecycleView中的类。</p>
+<h5 id="2-自定义ItemTouchHelper-Callback类"><a href="#2-自定义ItemTouchHelper-Callback类" class="headerlink" title="2.自定义ItemTouchHelper.Callback类"></a>2.自定义ItemTouchHelper.Callback类</h5><p>为了使用ItemTouchHelper，你需要实现ItemTouchHelper.Callback接口，通过这个接口，你可以监听“move”和 “swipe”事件，在这里你也可以控制View的选择状态和重写默认动画。</p>
+<p><strong>必须实现主要的回调方法：</strong><br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">getMovementFlags</span><span class="params">(RecyclerView, ViewHolder)</span></span></span><br><span class="line"><span class="function"><span class="title">onMove</span><span class="params">(RecyclerView, ViewHolder, ViewHolder)</span></span></span><br><span class="line"><span class="function"><span class="title">onSwiped</span><span class="params">(ViewHolder, int)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>具体解释这三个方法：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>  getMovementFlags(RecyclerView recyclerView, </span><br><span class="line">RecyclerView.ViewHolder viewHolder) &#123;</span><br><span class="line">          <span class="keyword">int</span> dragFlags = ItemTouchHelper.UP| ItemTouchHelper.DOWN;</span><br><span class="line">          <span class="keyword">int</span> swipeFlags = ItemTouchHelper.START| ItemTouchHelper.END;</span><br><span class="line">          <span class="function"><span class="keyword">return</span> <span class="title">makeMovementFlags</span><span class="params">(dragFlags, swipeFlags)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ItemTouchHelper允许你判断事件方向。但你必须覆写getMovementFlags()方法去指定支持哪些方向。使用ItemTouchHelper.makeMovementFlags(int, int)创建代表方向的Flag。这里我们同时支持drag和swipe。实现这个方法，ItemTouchHelper可以只能drag而不能swipe（反之亦然）,总之根据自己的需求指定。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">onMove</span><span class="params">(RecyclerView, ViewHolder, ViewHolder)</span></span></span><br><span class="line"><span class="function"><span class="title">onSwiped</span><span class="params">(ViewHolder, int)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>当Item移动或者滑动时，会回调这两个方法，然后可以在这两个方法内部设置回调通知更新适配器或者页面显示的数据。</p>
+<p><strong>我们还将使用2个帮助方法：</strong><br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">isLongPressDragEnabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>实现isLongPressDragEnabled()方法返回true去支持长按RecyclerView的item时的drag事件。或者，也可以调用ItemTouchHelper.startDrag(RecyclerView.ViewHolder) 方法来开始一个拖动。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">isItemViewSwipeEnabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>实现isItemViewSwipeEnabled()方法返回true开启触摸视图时的swipe功能。另外ItemTouchHelper.startSwipe(RecyclerView.ViewHolder)也开始swipe事件。</p>
+<p><strong>设置给RecycleView:</strong><br>实现了以上的方法后，就会监听到拖拽和滑动的手势，并会处理相关操作。<br>接下来需要做的就是把实现的自定义ItemTouchHelper.Callback类设置给RecycleView。<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ItemDragHelperCallback </span>callback = new <span class="keyword">ItemDragHelperCallback(mMineAdapter);</span></span><br><span class="line"><span class="keyword">ItemTouchHelper </span>touchHelper = new <span class="keyword">ItemTouchHelper(callback);</span></span><br><span class="line"><span class="keyword">touchHelper.attachToRecyclerView(mNewsChannelMineRv);</span></span><br></pre></td></tr></table></figure></p>
+<p>以上就是关于RecycleView+ItemTouchHelper实现拖拽滑动的简单介绍，下面为实现上述效果图，具体讲解其实现过程。</p>
+<h3 id="三、RecycleView-ItemTouchHelper实现拖拽的实例应用"><a href="#三、RecycleView-ItemTouchHelper实现拖拽的实例应用" class="headerlink" title="三、RecycleView+ItemTouchHelper实现拖拽的实例应用"></a>三、RecycleView+ItemTouchHelper实现拖拽的实例应用</h3><h6 id="1-布局文件"><a href="#1-布局文件" class="headerlink" title="1.布局文件"></a>1.布局文件</h6><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;LinearLayout xmlns:android=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">              xmlns:app=<span class="string">"http://schemas.android.com/apk/res-auto"</span></span><br><span class="line">              android:layout_width=<span class="string">"match_parent"</span></span><br><span class="line">              android:layout_height=<span class="string">"match_parent"</span></span><br><span class="line">              android:<span class="attribute">background</span>=<span class="string">"@color/white"</span></span><br><span class="line">              android:clipToPadding=<span class="string">"true"</span></span><br><span class="line">              android:fitsSystemWindows=<span class="string">"true"</span></span><br><span class="line">              android:orientation=<span class="string">"vertical"</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;android<span class="selector-class">.support</span><span class="selector-class">.v7</span><span class="selector-class">.widget</span><span class="selector-class">.Toolbar</span></span><br><span class="line">        android:id=<span class="string">"@+id/toolbar"</span></span><br><span class="line">        style=<span class="string">"@style/action_bar"</span></span><br><span class="line">        android:<span class="attribute">background</span>=<span class="string">"@color/colorPrimary"</span></span><br><span class="line">        app:navigationIcon=<span class="string">"@drawable/ic_arrow_back"</span></span><br><span class="line">        app:theme=<span class="string">"@style/AppTheme.PopupOverlay"</span></span><br><span class="line">        app:title=<span class="string">"@string/channel_manage"</span> /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView</span><br><span class="line">        style=<span class="string">"@style/news_channel_sort_title"</span></span><br><span class="line">        android:text=<span class="string">"我的频道  长按并拖拽可排序"</span> /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;android<span class="selector-class">.support</span><span class="selector-class">.v7</span><span class="selector-class">.widget</span><span class="selector-class">.RecyclerView</span></span><br><span class="line">        android:id=<span class="string">"@+id/news_channel_mine_rv"</span></span><br><span class="line">        android:layout_width=<span class="string">"match_parent"</span></span><br><span class="line">        android:layout_height=<span class="string">"wrap_content"</span></span><br><span class="line">        android:overScrollMode=<span class="string">"never"</span>&gt;&lt;/android<span class="selector-class">.support</span><span class="selector-class">.v7</span><span class="selector-class">.widget</span><span class="selector-class">.RecyclerView</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView</span><br><span class="line">        style=<span class="string">"@style/news_channel_sort_title"</span></span><br><span class="line">        android:text=<span class="string">"@string/更多频道  点击添加"</span> /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;android<span class="selector-class">.support</span><span class="selector-class">.v7</span><span class="selector-class">.widget</span><span class="selector-class">.RecyclerView</span></span><br><span class="line">        android:id=<span class="string">"@+id/news_channel_more_rv"</span></span><br><span class="line">        android:layout_width=<span class="string">"match_parent"</span></span><br><span class="line">        android:layout_height=<span class="string">"match_parent"</span></span><br><span class="line">        android:overScrollMode=<span class="string">"never"</span>&gt;&lt;/android<span class="selector-class">.support</span><span class="selector-class">.v7</span><span class="selector-class">.widget</span><span class="selector-class">.RecyclerView</span>&gt;</span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>一共用了两个RecyclerView来分别实现我的频道和更多频道的内容，其实可以使用一个RecyclerView通过判断类型来实现多布局类型，效果会更好，后续会尝试，暂时先这样了。感兴趣的可以参考我的<a href="http://www.jianshu.com/p/40561384c7ca" target="_blank" rel="noopener">另一篇文章</a>来自行实现。</p>
+<h6 id="2-点击Item增删效果的实现"><a href="#2-点击Item增删效果的实现" class="headerlink" title="2.点击Item增删效果的实现"></a>2.点击Item增删效果的实现</h6><p>先来个简单的，就是点击Item后，我的频道和更多频道中，一个频道删除点击的频道，另一个频道增加该频道。</p>
+<p>思路：设置Item的点击事件的监听</p>
+<p>在Adaper类中，设置监听接口，并提供传入接口对象的方法让Activity调用<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Item点击事件的监听接口</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">OnItemClickListener</span> &#123;</span><br><span class="line">       <span class="function"><span class="keyword">void</span> <span class="title">onItemClick</span>(<span class="params">View view, <span class="keyword">int</span> position</span>)</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">public</span> void setOnItemClickListener(OnItemClickListener <span class="literal">on</span>ItemClickListener) &#123;</span><br><span class="line">       <span class="attribute">mOnItemClickListener</span> = <span class="literal">on</span>ItemClickListener;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>当点击Item后，出发监听，产生回调<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (mOnItemClickListener != <span class="keyword">null</span>) &#123;</span><br><span class="line">           holder.mLayout.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">               <span class="meta">@Override</span></span><br><span class="line">               <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">                   <span class="keyword">if</span> (!table.getNewsChannelFixed()) &#123;</span><br><span class="line">                       <span class="comment">//对项目点击后增删操作的监听</span></span><br><span class="line">                       mOnItemClickListener.onItemClick(view, holder.getLayoutPosition());</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure></p>
+<p>在Activity中根据传入的数据进行操作</p>
+<p>我的频道所对应的RecyclerView的操作<br><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mMineAdapter.setOnItemClickListener(<span class="function"><span class="keyword">new</span> <span class="title">NewsChannelAdapter</span>.<span class="title">OnItemClickListener</span>() &#123;</span></span><br><span class="line"><span class="function">            @<span class="title">Override</span></span></span><br><span class="line"><span class="function">            <span class="title">public</span> <span class="title">void</span> <span class="title">onItemClick</span>(<span class="type">View</span> view, int position) &#123;</span></span><br><span class="line"><span class="function">                <span class="title">NewsChannelTable</span> <span class="title">newsChannel</span> = <span class="title">mMineAdapter</span>.<span class="title">getAdapterData</span>().<span class="title">get</span>(position);</span></span><br><span class="line"><span class="function">                <span class="title">mMoreAdapter</span>.<span class="title">getAdapterData</span>().<span class="title">add</span>(newsChannel);</span></span><br><span class="line"><span class="function">                <span class="title">mMoreAdapter</span>.<span class="title">notifyDataSetChanged</span>();</span></span><br><span class="line"><span class="function">                <span class="title">mMineAdapter</span>.<span class="title">getAdapterData</span>().<span class="title">remove</span>(position);</span></span><br><span class="line"><span class="function">                <span class="title">mMineAdapter</span>.<span class="title">notifyDataSetChanged</span>();</span></span><br><span class="line"><span class="function">                <span class="comment">//进行添加或删除操作后，要更新的列表 进行存储</span></span></span><br><span class="line"><span class="function">                <span class="title">mPresenter</span>.<span class="title">onItemAddOrRemove</span>((<span class="type">ArrayList</span>&lt;<span class="type">NewsChannelTable</span>&gt;) <span class="title">mMineAdapter</span>.<span class="title">getAdapterData</span>(), (<span class="type">ArrayList</span>&lt;<span class="type">NewsChannelTable</span>&gt;) <span class="title">mMoreAdapter</span>.<span class="title">getAdapterData</span>());</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">            &#125;</span></span><br><span class="line"><span class="function">        &#125;);</span></span><br></pre></td></tr></table></figure></p>
+<p>更多频道所对应的RecyclerView的操作<br><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mMoreAdapter.setOnItemClickListener(<span class="function"><span class="keyword">new</span> <span class="title">NewsChannelAdapter</span>.<span class="title">OnItemClickListener</span>() &#123;</span></span><br><span class="line"><span class="function">            @<span class="title">Override</span></span></span><br><span class="line"><span class="function">            <span class="title">public</span> <span class="title">void</span> <span class="title">onItemClick</span>(<span class="type">View</span> view, int position) &#123;</span></span><br><span class="line"><span class="function">                <span class="title">if</span>(mMineAdapter.getAdapterData().<span class="title">size</span>()==7)&#123;</span></span><br><span class="line"><span class="function">                    <span class="title">ToastUitl</span>.<span class="title">showShort</span>("最多只能添加<span class="number">7</span>个");</span></span><br><span class="line"><span class="function">                &#125;<span class="title">else</span>&#123;</span></span><br><span class="line"><span class="function">                <span class="title">NewsChannelTable</span> <span class="title">newsChannel</span> = <span class="title">mMoreAdapter</span>.<span class="title">getAdapterData</span>().<span class="title">get</span>(position);</span></span><br><span class="line"><span class="function">                <span class="title">mMoreAdapter</span>.<span class="title">getAdapterData</span>().<span class="title">remove</span>(position);</span></span><br><span class="line"><span class="function">                <span class="title">mMoreAdapter</span>.<span class="title">notifyDataSetChanged</span>();</span></span><br><span class="line"><span class="function">                <span class="title">mMineAdapter</span>.<span class="title">getAdapterData</span>().<span class="title">add</span>(newsChannel);</span></span><br><span class="line"><span class="function">                <span class="title">mMineAdapter</span>.<span class="title">notifyDataSetChanged</span>();</span></span><br><span class="line"><span class="function">                <span class="title">List</span>&lt;<span class="title">NewsChannelTable</span>&gt; <span class="title">data</span> = <span class="title">mMineAdapter</span>.<span class="title">getAdapterData</span>();</span></span><br><span class="line"><span class="function">                <span class="title">for</span> (<span class="type">NewsChannelTable</span> table : data) &#123;</span></span><br><span class="line"><span class="function">                    <span class="title">System</span>.<span class="title">out</span>.<span class="title">println</span>(table);</span></span><br><span class="line"><span class="function">                &#125;</span></span><br><span class="line"><span class="function">                <span class="comment">//进行添加或删除操作后，要更新的列表 进行存储</span></span></span><br><span class="line"><span class="function">                <span class="title">mPresenter</span>.<span class="title">onItemAddOrRemove</span>((<span class="type">ArrayList</span>&lt;<span class="type">NewsChannelTable</span>&gt;) <span class="title">mMineAdapter</span>.<span class="title">getAdapterData</span>(), (<span class="type">ArrayList</span>&lt;<span class="type">NewsChannelTable</span>&gt;) <span class="title">mMoreAdapter</span>.<span class="title">getAdapterData</span>());</span></span><br><span class="line"><span class="function">            &#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>主要实现两个内容：<br>第一：RecyclerView中内容数据的修改更新，呈现点击后增删的效果。<br>第二：调用方法通知进行缓存处理，记录修改后的效果。同时通知新闻首页中频道的更新显示。关于第二部分的内容不详细介绍了，可以看最下方的源码地址。</p>
+<h6 id="3-自定义ItemTouchHelper-Callback类实现拖拽效果"><a href="#3-自定义ItemTouchHelper-Callback类实现拖拽效果" class="headerlink" title="3.自定义ItemTouchHelper.Callback类实现拖拽效果"></a>3.自定义ItemTouchHelper.Callback类实现拖拽效果</h6><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getMovementFlags</span><span class="params">(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//根据recyclerView的布局，进行设置拖拽的方向</span></span><br><span class="line">        <span class="keyword">int</span> dragFlags = setDragFlags(recyclerView);</span><br><span class="line">        <span class="comment">//不允许进行滑动</span></span><br><span class="line">        <span class="keyword">int</span> swipeFlags = <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="keyword">return</span> <span class="title">makeMovementFlags</span><span class="params">(dragFlags, swipeFlags)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">int</span> <span class="title">setDragFlags</span><span class="params">(RecyclerView recyclerView)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> dragFlags;</span><br><span class="line">        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();</span><br><span class="line">        <span class="keyword">if</span> (layoutManager <span class="keyword">instanceof</span> GridLayoutManager || layoutManager <span class="keyword">instanceof</span> StaggeredGridLayoutManager) &#123;</span><br><span class="line">            dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dragFlags;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>先根据布局<strong>判断支持的拖拽的方向</strong>，如果是GridLayoutManager 和StaggeredGridLayoutManager支持上下左右拖拽，如果是LinearLayoutManager支持上下拖拽，本例中不支持滑动操作。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onMove</span><span class="params">(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder <span class="keyword">target</span>)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> mOnItemMoveListener.onItemMove(viewHolder.getAdapterPosition(), <span class="keyword">target</span>.getAdapterPosition());</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>监听移动事件，其中<code>mOnItemMoveListener.onItemMove</code>是对移动的监听的回调，判断是否可以移动并通知Adapter类数据更新。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onItemMove</span><span class="params">(<span class="keyword">int</span> fromPosition, <span class="keyword">int</span> toPosition)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (isChannelFixed(fromPosition, toPosition)) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//在我的频道中进行子频道的移动</span></span><br><span class="line">       Collections.swap(getAdapterData(), fromPosition, toPosition);</span><br><span class="line">       notifyItemMoved(fromPosition, toPosition);</span><br><span class="line">       <span class="comment">//通知顺序变换，存储，设置频道顺序，以及显示的顺序</span></span><br><span class="line">       System.out.println(<span class="string">"发送移动的消息"</span>);</span><br><span class="line">       EventBus.getDefault().post(<span class="keyword">new</span> ChannelBean(getAdapterData()));</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不能移动头条</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">boolean</span> <span class="title">isChannelFixed</span><span class="params">(<span class="keyword">int</span> fromPosition, <span class="keyword">int</span> toPosition)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fromPosition == <span class="number">0</span> || toPosition == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>两种情况：<br>第一：如果移动的是“头条”频道或者移动到“头条”频道，返回false，则不能进行移动。<br>第二：不是上面的情况。更新我的频道栏目中频道的显示顺序，同时通知数据缓存并通知新闻首页频道顺序的更新。关于这部分的详细内容，可以看最下方的源码。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回true 允许拖拽</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">isLongPressDragEnabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> mIsLongPressEnabled;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>是否允许拖拽，通过外部传入来开启。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setLongPressEnabled</span><span class="params">(<span class="keyword">boolean</span> longPressEnabled)</span> </span>&#123;</span><br><span class="line">        mIsLongPressEnabled = longPressEnabled;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>在Adapter类中，根据触摸的Item的类型来判断是否开启长按拖拽。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (mItemDragHelperCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">            holder.mLayout.setOnTouchListener(<span class="keyword">new</span> View.OnTouchListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onTouch</span><span class="params">(View v, MotionEvent event)</span> </span>&#123;</span><br><span class="line">                    mItemDragHelperCallback.setLongPressEnabled(table.getNewsChannelIndex() == <span class="number">0</span> ? <span class="keyword">false</span> : <span class="keyword">true</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果触摸的对象是“头条”频道，则不开启拖拽，其他情况就会开启长按。</p>
+<h6 id="4-设置给RecycleView"><a href="#4-设置给RecycleView" class="headerlink" title="4.设置给RecycleView"></a>4.设置给RecycleView</h6><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//Adapter类实现了OnItemMoveListener的接口，将其传入<span class="keyword">ItemDragHelperCallback方便接口回调</span></span><br><span class="line"><span class="keyword"> </span><span class="keyword">ItemDragHelperCallback </span>callback = new <span class="keyword">ItemDragHelperCallback(mMineAdapter);</span></span><br><span class="line"><span class="keyword">//将自定义的ItemDragHelperCallback类传给ItemTouchHelper</span></span><br><span class="line"><span class="keyword"> </span><span class="keyword">ItemTouchHelper </span>touchHelper = new <span class="keyword">ItemTouchHelper(callback);</span></span><br><span class="line"><span class="keyword">//将ItemTouchHelper设置给RecyclerView</span></span><br><span class="line"><span class="keyword"> </span>touchHelper.attachToRecyclerView(mNewsChannelMineRv)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>通过以上步骤就可以实现效果图中的效果，真实效果还是不错的。<a href="https://github.com/LRH1993/LiveCircle" target="_blank" rel="noopener">源码地址</a>，感兴趣的看一下，给个Star支持下，看项目中的NewsChannelActivity部分即可。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/14/Java反射机制详解（三）/" rel="next" title="Java反射机制详解（三）">
+                <i class="fa fa-chevron-left"></i> Java反射机制详解（三）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/17/简单理解Binder机制的原理/" rel="prev" title="简单理解Binder机制的原理">
+                简单理解Binder机制的原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、效果图"><span class="nav-number">1.</span> <span class="nav-text">一、效果图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、ItemTouchHelper的介绍"><span class="nav-number">2.</span> <span class="nav-text">二、ItemTouchHelper的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-添加依赖"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.添加依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-自定义ItemTouchHelper-Callback类"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.自定义ItemTouchHelper.Callback类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、RecycleView-ItemTouchHelper实现拖拽的实例应用"><span class="nav-number">3.</span> <span class="nav-text">三、RecycleView+ItemTouchHelper实现拖拽的实例应用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-布局文件"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">1.布局文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-点击Item增删效果的实现"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">2.点击Item增删效果的实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-自定义ItemTouchHelper-Callback类实现拖拽效果"><span class="nav-number">3.0.0.3.</span> <span class="nav-text">3.自定义ItemTouchHelper.Callback类实现拖拽效果</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-设置给RecycleView"><span class="nav-number">3.0.0.4.</span> <span class="nav-text">4.设置给RecycleView</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

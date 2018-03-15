@@ -1,0 +1,806 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="最近实际应用中遇到了滑动冲突的相关问题，在解决过程中，有些需要注意的问题，特别记录一下。  一、应用场景在解决具体问题之前，先介绍下实际应用场景及问题状况。从图中可以看出，一个ScrollView内部嵌套三个RecyclerView，其中两个RecyclerView是横向，一个RecyclerView是纵向。 在这个场景下，出现了滑动冲突问题，主要表现为横向RecyclerView滑动不灵敏，纵">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ScrollView嵌套RecyclerView滑动冲突相关问题">
+<meta property="og:url" content="https://lrh1993.github.io/2018/03/14/ScrollView嵌套RecyclerView滑动冲突相关问题/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="最近实际应用中遇到了滑动冲突的相关问题，在解决过程中，有些需要注意的问题，特别记录一下。  一、应用场景在解决具体问题之前，先介绍下实际应用场景及问题状况。从图中可以看出，一个ScrollView内部嵌套三个RecyclerView，其中两个RecyclerView是横向，一个RecyclerView是纵向。 在这个场景下，出现了滑动冲突问题，主要表现为横向RecyclerView滑动不灵敏，纵">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3985563-f3d215ecdb5c06b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3985563-d28a60f9b90db420.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3985563-e8f50b90995abc06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3985563-4d720b11b84bb15d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-03-15T01:55:12.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ScrollView嵌套RecyclerView滑动冲突相关问题">
+<meta name="twitter:description" content="最近实际应用中遇到了滑动冲突的相关问题，在解决过程中，有些需要注意的问题，特别记录一下。  一、应用场景在解决具体问题之前，先介绍下实际应用场景及问题状况。从图中可以看出，一个ScrollView内部嵌套三个RecyclerView，其中两个RecyclerView是横向，一个RecyclerView是纵向。 在这个场景下，出现了滑动冲突问题，主要表现为横向RecyclerView滑动不灵敏，纵">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/3985563-f3d215ecdb5c06b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2018/03/14/ScrollView嵌套RecyclerView滑动冲突相关问题/"/>
+
+
+
+
+
+  <title>ScrollView嵌套RecyclerView滑动冲突相关问题 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2018/03/14/ScrollView嵌套RecyclerView滑动冲突相关问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ScrollView嵌套RecyclerView滑动冲突相关问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T15:33:21+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">Android进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2018/03/14/ScrollView嵌套RecyclerView滑动冲突相关问题/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/03/14/ScrollView嵌套RecyclerView滑动冲突相关问题/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>最近实际应用中遇到了滑动冲突的相关问题，在解决过程中，有些需要注意的问题，特别记录一下。</p>
+</blockquote>
+<h2 id="一、应用场景"><a href="#一、应用场景" class="headerlink" title="一、应用场景"></a>一、应用场景</h2><p>在解决具体问题之前，先介绍下实际应用场景及问题状况。<br><img src="https://upload-images.jianshu.io/upload_images/3985563-f3d215ecdb5c06b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>从图中可以看出，一个ScrollView内部嵌套三个RecyclerView，其中两个RecyclerView是横向，一个RecyclerView是纵向。</p>
+<p>在这个场景下，出现了滑动冲突问题，主要表现为横向RecyclerView滑动不灵敏，纵向RecyclerView滑动卡顿。</p>
+<h2 id="二、问题分析"><a href="#二、问题分析" class="headerlink" title="二、问题分析"></a>二、问题分析</h2><h3 id="1-横向RecyclerView滑动不灵敏"><a href="#1-横向RecyclerView滑动不灵敏" class="headerlink" title="1.横向RecyclerView滑动不灵敏"></a>1.横向RecyclerView滑动不灵敏</h3><p><img src="https://upload-images.jianshu.io/upload_images/3985563-d28a60f9b90db420.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>该问题所产生的滑动冲突如上图所示。</p>
+<p>针对该问题，解决的方案是根据当前滑动方向，水平还是垂直来判断这个事件到底该交给谁来处理。</p>
+<p>一般情况下根据滑动路径形成的夹角（或者说是斜率如下图）、水平和竖直方向滑动速度差来判断。<br><img src="https://upload-images.jianshu.io/upload_images/3985563-e8f50b90995abc06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="2-纵向RecyclerView滑动卡顿"><a href="#2-纵向RecyclerView滑动卡顿" class="headerlink" title="2.纵向RecyclerView滑动卡顿"></a>2.纵向RecyclerView滑动卡顿</h3><p><img src="https://upload-images.jianshu.io/upload_images/3985563-4d720b11b84bb15d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>该问题所产生的滑动冲突如上图所示。</p>
+<p>针对该问题，一般情况下必需通过业务逻辑来进行判断，决定到底谁来处理该事件。</p>
+<h2 id="三、滑动冲突解决方法"><a href="#三、滑动冲突解决方法" class="headerlink" title="三、滑动冲突解决方法"></a>三、滑动冲突解决方法</h2><p>针对滑动冲突，一般有两个解决方法。</p>
+<h3 id="1-外部拦截法"><a href="#1-外部拦截法" class="headerlink" title="1.外部拦截法"></a>1.外部拦截法</h3><p>事件都先经过父容器的拦截处理，如果不需要此事件就不拦截，这样就可以解决滑动冲突的问题。外部拦截法需要重写父容器的<code>onInterceptTouchEvent()</code>方法，在内部完成相应的拦截即可<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">boolean</span> onInterceptTouchEvent(MotionEvent ev) &#123;</span><br><span class="line">    <span class="keyword">boolean</span> intercepted = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">int</span> x = (<span class="keyword">int</span>) ev.getX();</span><br><span class="line">    <span class="keyword">int</span> y = (<span class="keyword">int</span>) ev.getY();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (ev.getAction()) &#123;</span><br><span class="line">        <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_DOWN:</span></span><br><span class="line">            intercepted = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_MOVE:</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (父容器需要事件) &#123;</span><br><span class="line">                intercepted = <span class="literal">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                intercepted = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_UP:</span> &#123;</span><br><span class="line">            intercepted = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> intercepted;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>ACTION_DOWN 这个事件里父容器必须返回 false，即不拦截ACTION_DOWN事件，因为一旦拦截了那么后续的 ACTION_MOVE、ACTION_UP都由父容器去处理，事件就无法传到子view了</p>
+</li>
+<li><p>ACTION_MOVE 事件可以根据需要来进行拦截或者不拦截</p>
+</li>
+<li><p>ACTION_UP 这个事件必须返回false，就会导致子View无法接受到UP事件，这个时候子元素中的<code>onClick()</code>事件就无法处触发。</p>
+<h3 id="2-内部拦截法"><a href="#2-内部拦截法" class="headerlink" title="2.内部拦截法"></a>2.内部拦截法</h3><p>父容器不拦截任何事件，所有的事件都传递给子元素，如果子元素需要此事件就直接消耗掉，否则就交由父容器进行处理。这种方法需要配合<code>requestDisallowInterceptTouchEvent()</code>方法才能正常工作。</p>
+</li>
+</ul>
+<p>主要是修改子view的<code>dispatchTouchEvent()</code>方法<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">boolean</span> dispatchTouchEvent(MotionEvent ev) &#123;</span><br><span class="line">    <span class="keyword">int</span> x = (<span class="keyword">int</span>) ev.getX();</span><br><span class="line">    <span class="keyword">int</span> y = (<span class="keyword">int</span>) ev.getY();</span><br><span class="line">    <span class="keyword">switch</span> (ev.getAction()) &#123;</span><br><span class="line">        <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_DOWN:</span> &#123;</span><br><span class="line">            getParent().requestDisallowInterceptTouchEvent(<span class="literal">true</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_MOVE:</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (父容器需要此类事件) &#123;</span><br><span class="line">                getParent().requestDisallowInterceptTouchEvent(<span class="literal">false</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_UP:</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.dispatchTouchEvent(ev);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>父容器需要重写<code>onInterceptTouchEvent()</code>方法<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> action = ev.getAction();</span><br><span class="line">    <span class="keyword">if</span>(action == MotionEvent.ACTION_DOWN)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>父容器拦截ACTION_DOWN以外的其他事件，因为ACTION_DOWN 事件不受 FLAG_DISALLOW_INTERCEPT这个标记的控制，所以<strong>一旦父容器拦截了ACTION_DOWN 事件那么所有的事件都无法传到子view中去了</strong>，这样内部拦截法就不起作用了。</p>
+<h2 id="四、问题解决"><a href="#四、问题解决" class="headerlink" title="四、问题解决"></a>四、问题解决</h2><p>下面就来实际解决本文中遇到的滑动冲突问题。通过上述分析可知，本文所遇到的问题通过外部拦截法，重写ScrollView的<code>onInterceptTouchEvent()</code>方法即可快速简单的解决。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FScrollView</span> <span class="keyword">extends</span> <span class="title">ScrollView</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mLastXIntercept = <span class="number">0</span>f;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mLastYIntercept = <span class="number">0</span>f;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> FScrollView(Context context, AttributeSet attrs) &#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> onInterceptTouchEvent(MotionEvent ev) &#123;</span><br><span class="line">        <span class="keyword">boolean</span> intercepted = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">float</span> x = ev.getX();</span><br><span class="line">        <span class="keyword">float</span> y = ev.getY();</span><br><span class="line">        <span class="keyword">int</span> action = ev.getAction() &amp; MotionEvent.ACTION_MASK;</span><br><span class="line">        <span class="keyword">switch</span> (action) &#123;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_DOWN:</span> &#123;</span><br><span class="line">                intercepted = <span class="literal">false</span>;</span><br><span class="line">                <span class="comment">//初始化mActivePointerId</span></span><br><span class="line">                <span class="keyword">super</span>.onInterceptTouchEvent(ev);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_MOVE:</span> &#123;</span><br><span class="line">                <span class="comment">//横坐标位移增量</span></span><br><span class="line">                <span class="keyword">float</span> deltaX = x - mLastXIntercept;</span><br><span class="line">                <span class="comment">//纵坐标位移增量</span></span><br><span class="line">                <span class="keyword">float</span> deltaY = y - mLastYIntercept;</span><br><span class="line">                <span class="keyword">if</span> (Math.abs(deltaX) &lt; Math.abs(deltaY)) &#123;</span><br><span class="line">                    intercepted = <span class="literal">true</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    intercepted = <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.<span class="string">ACTION_UP:</span> &#123;</span><br><span class="line">                intercepted = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        mLastXIntercept = x;</span><br><span class="line">        mLastYIntercept = y;</span><br><span class="line">        <span class="keyword">return</span> intercepted;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p><code>Math.abs(deltaX) &lt; Math.abs(deltaY)</code>表示横向位移增量小于于竖向位移增量，即竖直滑动，则ScrollView 拦截事件。</p>
+</li>
+<li><p><code>super.onInterceptTouchEvent(ev)</code>，初始化<code>mActivePointerId</code>，避免出现<code>Invalid pointerId=-1 in onTouchEvent</code>问题。</p>
+</li>
+<li><p>纵向RecyclerView的滑动被拦截，交给ScrollView处理，需要测量高度，会默认加载所有item，相当于LinearLayout，从而导致复用效率大大降低。所以如果情况复杂，建议采用头布局。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/28/从google-todo-mvp示例再次学习MVP/" rel="next" title="从google-todo-mvp示例再次学习MVP">
+                <i class="fa fa-chevron-left"></i> 从google-todo-mvp示例再次学习MVP
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、应用场景"><span class="nav-number">1.</span> <span class="nav-text">一、应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、问题分析"><span class="nav-number">2.</span> <span class="nav-text">二、问题分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-横向RecyclerView滑动不灵敏"><span class="nav-number">2.1.</span> <span class="nav-text">1.横向RecyclerView滑动不灵敏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-纵向RecyclerView滑动卡顿"><span class="nav-number">2.2.</span> <span class="nav-text">2.纵向RecyclerView滑动卡顿</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、滑动冲突解决方法"><span class="nav-number">3.</span> <span class="nav-text">三、滑动冲突解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-外部拦截法"><span class="nav-number">3.1.</span> <span class="nav-text">1.外部拦截法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-内部拦截法"><span class="nav-number">3.2.</span> <span class="nav-text">2.内部拦截法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、问题解决"><span class="nav-number">4.</span> <span class="nav-text">四、问题解决</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,846 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在Android开发中，经常会用到数据库操作，各种增删改查语句，烦不胜烦。今天介绍一款好用的数据库Realm，可以让数据库操作更加便捷。  一、目录 二、Realm简介数据库Realm，是用来替代sqlite的一种解决方案，它有一套自己的数据库存储引擎，比sqlite更轻量级，拥有更快的速度，并且具有很多现代数据库的特性，比如支持JSON，流式api，数据变更通知，自动数据同步,简单身份验证，访">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Realm For Android，操作更简单的数据库">
+<meta property="og:url" content="https://lrh1993.github.io/2017/04/20/Realm-For-Android，操作更简单的数据库/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="在Android开发中，经常会用到数据库操作，各种增删改查语句，烦不胜烦。今天介绍一款好用的数据库Realm，可以让数据库操作更加便捷。  一、目录 二、Realm简介数据库Realm，是用来替代sqlite的一种解决方案，它有一套自己的数据库存储引擎，比sqlite更轻量级，拥有更快的速度，并且具有很多现代数据库的特性，比如支持JSON，流式api，数据变更通知，自动数据同步,简单身份验证，访">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-ca94555f763e7600.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-8fd2828d297cddf3.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-05-24T05:34:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Realm For Android，操作更简单的数据库">
+<meta name="twitter:description" content="在Android开发中，经常会用到数据库操作，各种增删改查语句，烦不胜烦。今天介绍一款好用的数据库Realm，可以让数据库操作更加便捷。  一、目录 二、Realm简介数据库Realm，是用来替代sqlite的一种解决方案，它有一套自己的数据库存储引擎，比sqlite更轻量级，拥有更快的速度，并且具有很多现代数据库的特性，比如支持JSON，流式api，数据变更通知，自动数据同步,简单身份验证，访">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-ca94555f763e7600.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/04/20/Realm-For-Android，操作更简单的数据库/"/>
+
+
+
+
+
+  <title>Realm For Android，操作更简单的数据库 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/04/20/Realm-For-Android，操作更简单的数据库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Realm For Android，操作更简单的数据库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-20T18:28:21+08:00">
+                2017-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">Android进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/04/20/Realm-For-Android，操作更简单的数据库/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/04/20/Realm-For-Android，操作更简单的数据库/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在Android开发中，经常会用到数据库操作，各种增删改查语句，烦不胜烦。今天介绍一款好用的数据库Realm，可以让数据库操作更加便捷。</p>
+</blockquote>
+<h3 id="一、目录"><a href="#一、目录" class="headerlink" title="一、目录"></a>一、目录</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-ca94555f763e7600.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="二、Realm简介"><a href="#二、Realm简介" class="headerlink" title="二、Realm简介"></a>二、Realm简介</h3><p>数据库Realm，是用来替代sqlite的一种解决方案，它有一套自己的数据库存储引擎，比sqlite更轻量级，拥有更快的速度，并且具有很多现代数据库的特性，比如支持JSON，流式api，数据变更通知，自动数据同步,简单身份验证，访问控制，事件处理，最重要的是跨平台，目前已有Java，Objective C，Swift，React-Native，Xamarin这五种实现。</p>
+<h4 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h4><h5 id="易用"><a href="#易用" class="headerlink" title="易用"></a>易用</h5><p>Ream 不是在SQLite基础上的ORM，它有自己的数据查询引擎。并且十分容易使用。</p>
+<h5 id="快速"><a href="#快速" class="headerlink" title="快速"></a>快速</h5><p>由于它是完全重新开始开发的数据库实现，所以它比任何的ORM速度都快很多，甚至比SLite速度都要快。</p>
+<h5 id="跨平台"><a href="#跨平台" class="headerlink" title="跨平台"></a>跨平台</h5><p>Realm 支持 iOS &amp; OS X (Objective‑C &amp; Swift) &amp; Android。我们可以在这些平台上共享Realm数据库文件，并且上层逻辑可以不用任何改动的情况下实现移植。</p>
+<h5 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h5><p>Ream支持加密，格式化查询，易于移植，支持JSON，流式api，数据变更通知等高级特性</p>
+<h5 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h5><p>Realm 还提供了一个轻量级的数据库查看工具，在Mac Appstore 可以下载“Realm Browser”这个工具，开发者可以查看数据库当中的内容，执行简单的插入和删除数据的操作。</p>
+<h3 id="三、环境配置"><a href="#三、环境配置" class="headerlink" title="三、环境配置"></a>三、环境配置</h3><p>（1） 在项目的build文件加上<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">buildscript</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">"io.realm:realm-gradle-plugin:3.0.0"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>（2） 在app的build文件加上<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'realm-android'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="四、初始化Realm"><a href="#四、初始化Realm" class="headerlink" title="四、初始化Realm"></a>四、初始化Realm</h3><p>（1） 在Application的oncreate()方法中Realm.init()<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  public void onCreate() &#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    <span class="type">Realm</span>.init(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>（2）在Application的oncreate()方法中对Realm进行相关配置</p>
+<p>①使用默认配置<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  public void onCreate() &#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    <span class="comment">// The Realm file will be located in Context.getFilesDir() with name "default.realm"</span></span><br><span class="line">    <span class="type">Realm</span>.init(<span class="keyword">this</span>);</span><br><span class="line">    <span class="type">RealmConfiguration</span> config = <span class="keyword">new</span> <span class="type">RealmConfiguration</span>.<span class="type">Builder</span>().build();</span><br><span class="line">    <span class="type">Realm</span>.setDefaultConfiguration(config);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>②使用自定义配置<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  public void onCreate() &#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    <span class="type">Realm</span>.init(<span class="keyword">this</span>);</span><br><span class="line">    <span class="type">RealmConfiguration</span> config = <span class="keyword">new</span>  <span class="type">RealmConfiguration</span>.<span class="type">Builder</span>()</span><br><span class="line">                                         .name(<span class="string">"myRealm.realm"</span>)</span><br><span class="line">                                         .deleteRealmIfMigrationNeeded()</span><br><span class="line">                                         .build();</span><br><span class="line">    <span class="type">Realm</span>.setDefaultConfiguration(config);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>（3）在AndroidManifest.xml配置自定义的Application<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="built_in">application</span></span><br><span class="line">  android:<span class="built_in">name</span>=<span class="string">".MyApplication"</span></span><br><span class="line">  ...</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="五、创建实体"><a href="#五、创建实体" class="headerlink" title="五、创建实体"></a>五、创建实体</h3><p>（1）新建一个类继承RealmObject<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">TimeInfo</span> <span class="keyword">extends</span> <span class="title">RealmObject</span> </span>&#123;</span><br><span class="line">        <span class="comment">//年月日信息</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">String</span> ymD;</span><br><span class="line">        <span class="comment">//标题</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">String</span> title;</span><br><span class="line">        <span class="comment">//内容</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">String</span> content;</span><br><span class="line">        <span class="comment">//时间段信息  12：00-13：00</span></span><br><span class="line">        <span class="meta">@PrimaryKey</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">String</span> addTime;</span><br><span class="line">        <span class="comment">//创建该条目时的时间</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">String</span> createTime;</span><br><span class="line">        <span class="comment">//是否是新的任务</span></span><br><span class="line">        <span class="keyword">private</span> boolean isNew = <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">//在列表中所处位置</span></span><br><span class="line">        <span class="keyword">private</span> int position = <span class="number">-1</span>;</span><br><span class="line">       ................省略get,set方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>（2）其他相关说明</p>
+<p>1、支持的数据类型：<br>boolean, byte, short, int, long, float, double, String, Date and byte[]<br>在Realm中byte, short, int, long最终都被映射成long类型</p>
+<p>2、注解说明</p>
+<p>@PrimaryKey</p>
+<p>①字段必须是String、 integer、byte、short、 int、long 以及它们的封装类Byte, Short, Integer, and Long</p>
+<p>②使用了该注解之后可以使用copyToRealmOrUpdate()方法，通过主键查询它的对象，如果查询到了，则更新它，否则新建一个对象来代替。</p>
+<p>③使用了该注解将默认设置（@index）注解</p>
+<p>④使用了该注解之后，创建和更新数据将会慢一点，查询数据会快一点。</p>
+<p>@Required</p>
+<p>数据不能为null</p>
+<p>@Ignore</p>
+<p>忽略，即该字段不被存储到本地</p>
+<p>@Index</p>
+<p>为这个字段添加一个搜索引擎，这将使插入数据变慢、数据增大，但是查询会变快。建议在需要优化读取性能的情况下使用。</p>
+<h3 id="六、增删改查"><a href="#六、增删改查" class="headerlink" title="六、增删改查"></a>六、增删改查</h3><h4 id="1-增"><a href="#1-增" class="headerlink" title="1.增"></a>1.增</h4><p>1）实现方法一：事务操作<br><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mRealm.beginTransaction()<span class="comment">;</span></span><br><span class="line">TimeInfo info= realm.createObject(TimeInfo.class)<span class="comment">; // Create a new object</span></span><br><span class="line">info.setTitle(<span class="string">"realm"</span>)<span class="comment">;</span></span><br><span class="line">realm.commitTransaction()<span class="comment">;</span></span><br></pre></td></tr></table></figure></p>
+<p>2）实现方法二：使用事务块<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mRealm.executeTransaction(<span class="keyword">new</span> Realm.Transaction() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Realm realm)</span> </span>&#123;</span><br><span class="line">                realm.copyToRealm(bean);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-查"><a href="#2-查" class="headerlink" title="2.查"></a>2.查</h4><p>（1）查询全部<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RealmResults&lt;? <span class="keyword">extends </span>RealmObject&gt; <span class="keyword">beans </span>= mRealm.where(clazz).findAll()<span class="comment">;</span></span><br></pre></td></tr></table></figure></p>
+<p>（2）条件查询<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RealmObject bean = mRealm.<span class="keyword">where</span>(clazz).equalTo(fieldName, <span class="keyword">value</span>).findFirst();</span><br></pre></td></tr></table></figure></p>
+<p>常见的条件如下（详细资料请查官方文档）：</p>
+<p>between(), greaterThan(), lessThan(), greaterThanOrEqualTo() &amp; lessThanOrEqualTo()</p>
+<p>equalTo() &amp; notEqualTo()</p>
+<p>contains(), beginsWith() &amp; endsWith()</p>
+<p>isNull() &amp; isNotNull()</p>
+<p>isEmpty() &amp; isNotEmpty()</p>
+<p>（3）对查询结果进行排序<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RealmResults&lt;? <span class="keyword">extends</span> RealmObject&gt; beans = mRealm.where(clazz).<span class="keyword">findAll</span>();</span><br><span class="line"><span class="comment">//升序排序</span></span><br><span class="line">RealmResults&lt;? <span class="keyword">extends</span> RealmObject&gt; results = beans.<span class="keyword">sort</span>(fieldName, <span class="keyword">Sort</span>.ASCENDING);</span><br><span class="line"><span class="comment">//降序排序</span></span><br><span class="line">RealmResults&lt;? <span class="keyword">extends</span> RealmObject&gt; results = beans.<span class="keyword">sort</span>(fieldName, <span class="keyword">Sort</span>.DESCENDING);</span><br></pre></td></tr></table></figure></p>
+<p>（4）其他查询<br>sum，min，max，average只支持整型数据字段<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  查询最大位置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> getMaxPosition()&#123;</span><br><span class="line">  Number <span class="built_in">max</span>=  mRealm.where(TimeInfo.class).findAll().<span class="built_in">max</span>(<span class="string">"position"</span>);</span><br><span class="line">    <span class="keyword">int</span> maxPosition=<span class="built_in">max</span>.intValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其他使用类似</p>
+<h4 id="3-删"><a href="#3-删" class="headerlink" title="3.删"></a>3.删</h4><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mRealm.executeTransaction(<span class="function"><span class="keyword">new</span> <span class="title">Realm</span>.<span class="title">Transaction</span>() &#123;</span></span><br><span class="line"><span class="function">           @<span class="title">Override</span></span></span><br><span class="line"><span class="function">           <span class="title">public</span> <span class="title">void</span> <span class="title">execute</span>(<span class="type">Realm</span> realm) &#123;</span></span><br><span class="line"><span class="function">           </span></span><br><span class="line"><span class="function">               </span></span><br><span class="line"><span class="function">               <span class="comment">//删除第一个数据</span></span></span><br><span class="line"><span class="function">               <span class="title">beans</span>.<span class="title">deleteFirstFromRealm</span>();</span></span><br><span class="line"><span class="function">               <span class="comment">//删除最后一个数据</span></span></span><br><span class="line"><span class="function">                <span class="title">beans</span>.<span class="title">deleteLastFromRealm</span>();</span></span><br><span class="line"><span class="function">               <span class="comment">//删除某个位置的数据</span></span></span><br><span class="line"><span class="function">             <span class="title">beans</span>.<span class="title">deleteFromRealm</span>(position);</span></span><br><span class="line"><span class="function">               <span class="comment">//删除所有数据</span></span></span><br><span class="line"><span class="function">            <span class="title">beans</span>.<span class="title">deleteAllFromRealm</span>();</span></span><br><span class="line"><span class="function">           &#125;</span></span><br><span class="line"><span class="function">       &#125;);</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-改"><a href="#4-改" class="headerlink" title="4.改"></a>4.改</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TimeInfo info= mRealm.where(TimeInfo.class).equalTo(<span class="string">"position"</span>, position).findFirst()<span class="comment">;</span></span><br><span class="line">mRealm.<span class="keyword">beginTransaction();</span></span><br><span class="line"><span class="keyword">info.setPosition(newPosition);</span></span><br><span class="line"><span class="keyword">mRealm.commitTransaction();</span></span><br></pre></td></tr></table></figure>
+<h3 id="七、异步操作"><a href="#七、异步操作" class="headerlink" title="七、异步操作"></a>七、异步操作</h3><p>大多数情况下，Realm的增删改查操作足够快，可以在UI线程中执行操作。但是如果遇到较复杂的增删改查，或增删改查操作的数据较多时，就可以子线程进行操作。<br>（1）异步增：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">RealmAsyncTask  addTask=  mRealm.executeTransactionAsync(<span class="keyword">new</span> Realm.Transaction() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Realm realm)</span> </span>&#123;</span><br><span class="line">                realm.copyToRealm(bean);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">new</span> Realm.Transaction.OnSuccess() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                ToastUtil.showShortToast(mContext,<span class="string">"添加成功"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">new</span> Realm.Transaction.OnError() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable <span class="keyword">error</span>)</span> </span>&#123;</span><br><span class="line">                ToastUtil.showShortToast(mContext,<span class="string">"添加失败"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>（2）异步删<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">RealmAsyncTask  deleteTask=   mRealm.executeTransactionAsync(<span class="keyword">new</span> Realm.Transaction() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Realm realm)</span> </span>&#123;</span><br><span class="line">                TimeInfo info =realm.where(TimeInfo.class).equalTo(<span class="string">"position"</span>,position).findFirst();</span><br><span class="line">                info .deleteFromRealm();</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">new</span> Realm.Transaction.OnSuccess() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                ToastUtil.showShortToast(mContext,<span class="string">"删除成功"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">new</span> Realm.Transaction.OnError() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable <span class="keyword">error</span>)</span> </span>&#123;</span><br><span class="line">                ToastUtil.showShortToast(mContext,<span class="string">"删除失败"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>（3）异步改<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">RealmAsyncTask  updateTask=   mRealm.executeTransactionAsync(<span class="keyword">new</span> Realm.Transaction() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Realm realm)</span> </span>&#123;</span><br><span class="line">                 TimeInfo info =realm.where(TimeInfo.class).equalTo(<span class="string">"position"</span>,position).findFirst();</span><br><span class="line">                info .setPosition(position);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">new</span> Realm.Transaction.OnSuccess() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                ToastUtil.showShortToast(mContext,<span class="string">"更新成功"</span>);</span><br><span class="line">             </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">new</span> Realm.Transaction.OnError() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable <span class="keyword">error</span>)</span> </span>&#123;</span><br><span class="line">                ToastUtil.showShortToast(mContext,<span class="string">"失败成功"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>（4）异步查<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">RealmResults&lt;TimeInfo&gt;   infos=mRealm.where(TimeInfo.class).findAllAsync();</span><br><span class="line">infos.addChangeListener(<span class="keyword">new</span> RealmChangeListener&lt;RealmResults&lt;TimeInfo&gt;&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onChange</span><span class="params">(RealmResults&lt;TimeInfo&gt; element)</span> </span>&#123;</span><br><span class="line">               <span class="comment">//执行接收到查询结果数据</span></span><br><span class="line">              </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：</strong>findAllAsync()立刻返回结果，结果为空。可以添加监听，当返回的结果集合infos变化时，会调用该方法。</p>
+<h5 id="最后在销毁Activity或Fragment时，要取消掉异步任务，以及取消监听。"><a href="#最后在销毁Activity或Fragment时，要取消掉异步任务，以及取消监听。" class="headerlink" title="最后在销毁Activity或Fragment时，要取消掉异步任务，以及取消监听。"></a>最后在销毁Activity或Fragment时，要取消掉异步任务，以及取消监听。</h5><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">       <span class="keyword">if</span> (updateTask!=<span class="keyword">null</span>&amp;&amp;!addTask.isCancelled())&#123;</span><br><span class="line">            updateTask.cancel();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">        infos.removeChangeListeners();</span><br><span class="line">  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="最后别忘了关掉Realm，防止内存泄漏。"><a href="#最后别忘了关掉Realm，防止内存泄漏。" class="headerlink" title="最后别忘了关掉Realm，防止内存泄漏。"></a>最后别忘了关掉Realm，防止内存泄漏。</h5><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mRealm.close()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<h3 id="八、封装使用"><a href="#八、封装使用" class="headerlink" title="八、封装使用"></a>八、封装使用</h3><p>定义一个RealmOperationHelper类，里面封装各种增删改查方法，方便我们直接调用。</p>
+<p>首先，把RealmOperationHelper设置为单例模式，使用静态内部类的方式。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Realm mRealm;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> RealmOperationHelper INSTANCE = <span class="keyword">new</span> RealmOperationHelper(</span><br><span class="line">                mRealm);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">RealmOperationHelper</span><span class="params">(Realm realm)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mRealm = realm;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取RealmOperation的单例</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> realm 传入realm实例对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回RealmOperation的单例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RealmOperationHelper <span class="title">getInstance</span><span class="params">(Realm realm)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (realm != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mRealm = realm;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">``` </span><br><span class="line">封装各种增删改查操作，包括同步与异步。异步操作中，对onSuccess，onError方法回调的没有进行处理，实用性不好，后面进一步考虑。</span><br><span class="line"></span><br><span class="line">使用实例：</span><br><span class="line">增</span><br></pre></td></tr></table></figure></p>
+<p>RealmOperationHelper.getInstance(AppApplication.REALM_INSTANCE).add(info);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删</span><br></pre></td></tr></table></figure></p>
+<p>RealmOperationHelper.getInstance(AppApplication.REALM_INSTANCE).deleteElement(TimeInfo.class,curPosition);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">异步查</span><br></pre></td></tr></table></figure></p>
+<p>final RealmResults<timeinfo> results = (RealmResults<timeinfo>) RealmOperationHelper.getInstance(AppApplication.REALM_INSTANCE).queryAllAsync(TimeInfo.class);</timeinfo></timeinfo></p>
+<pre><code>results.addChangeListener(new RealmChangeListener&lt;RealmResults&lt;TimeInfo&gt;&gt;() {
+    @Override
+    public void onChange(RealmResults&lt;TimeInfo&gt; element) {
+        //只要results改变就会回调，及时取消监听
+        results.removeAllChangeListeners();
+       //获取数据，更新UI。
+    }
+});
+</code></pre><p><code>`</code></p>
+<h4 id="使用效果，很方便，很简洁。"><a href="#使用效果，很方便，很简洁。" class="headerlink" title="使用效果，很方便，很简洁。"></a>使用效果，很方便，很简洁。</h4><p><img src="http://upload-images.jianshu.io/upload_images/3985563-8fd2828d297cddf3.gif?imageMogr2/auto-orient/strip" alt=""></p>
+<p><a href="https://github.com/LRH1993/TimeLine/blob/master/Timeline/app/src/main/java/com/lvr/timeline/utils/RealmOperationHelper.java" target="_blank" rel="noopener">Realm封装工具类地址</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/18/recyclerview-animators,让你的RecyclerView与众不同/" rel="next" title="recyclerview-animators,让你的RecyclerView与众不同">
+                <i class="fa fa-chevron-left"></i> recyclerview-animators,让你的RecyclerView与众不同
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/09/2017-Android暑期实习生面试经验谈/" rel="prev" title="2017 Android暑期实习生面试经验谈">
+                2017 Android暑期实习生面试经验谈 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、目录"><span class="nav-number">1.</span> <span class="nav-text">一、目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Realm简介"><span class="nav-number">2.</span> <span class="nav-text">二、Realm简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优势"><span class="nav-number">2.1.</span> <span class="nav-text">优势</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#易用"><span class="nav-number">2.1.1.</span> <span class="nav-text">易用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#快速"><span class="nav-number">2.1.2.</span> <span class="nav-text">快速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跨平台"><span class="nav-number">2.1.3.</span> <span class="nav-text">跨平台</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#高级"><span class="nav-number">2.1.4.</span> <span class="nav-text">高级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可视化"><span class="nav-number">2.1.5.</span> <span class="nav-text">可视化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、环境配置"><span class="nav-number">3.</span> <span class="nav-text">三、环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、初始化Realm"><span class="nav-number">4.</span> <span class="nav-text">四、初始化Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、创建实体"><span class="nav-number">5.</span> <span class="nav-text">五、创建实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、增删改查"><span class="nav-number">6.</span> <span class="nav-text">六、增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-增"><span class="nav-number">6.1.</span> <span class="nav-text">1.增</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-查"><span class="nav-number">6.2.</span> <span class="nav-text">2.查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-删"><span class="nav-number">6.3.</span> <span class="nav-text">3.删</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-改"><span class="nav-number">6.4.</span> <span class="nav-text">4.改</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、异步操作"><span class="nav-number">7.</span> <span class="nav-text">七、异步操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#最后在销毁Activity或Fragment时，要取消掉异步任务，以及取消监听。"><span class="nav-number">7.0.1.</span> <span class="nav-text">最后在销毁Activity或Fragment时，要取消掉异步任务，以及取消监听。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#最后别忘了关掉Realm，防止内存泄漏。"><span class="nav-number">7.0.2.</span> <span class="nav-text">最后别忘了关掉Realm，防止内存泄漏。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、封装使用"><span class="nav-number">8.</span> <span class="nav-text">八、封装使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用效果，很方便，很简洁。"><span class="nav-number">8.1.</span> <span class="nav-text">使用效果，很方便，很简洁。</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

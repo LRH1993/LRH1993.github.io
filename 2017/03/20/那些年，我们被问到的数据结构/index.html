@@ -1,0 +1,797 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="作为一个非CS专业的应届生，在面试的时候经常会被问到关于数据结构中的概念以及算法实现。既然要成为一名程序员，那么掌握数据结构也是无可厚非的，毕竟有着很多的应用与实现。所以自己就整理了一些关于数据结构应该掌握的概念和算法，以及面试常问的问题（实现语言用的Java），有些算法可能手写不出，但思路一定要会，自己也是菜鸟一枚，也在学习。   线性表线性表的相关概念，对于其中的链表，栈，队列，后面展开介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="那些年，我们被问到的数据结构">
+<meta property="og:url" content="https://lrh1993.github.io/2017/03/20/那些年，我们被问到的数据结构/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="作为一个非CS专业的应届生，在面试的时候经常会被问到关于数据结构中的概念以及算法实现。既然要成为一名程序员，那么掌握数据结构也是无可厚非的，毕竟有着很多的应用与实现。所以自己就整理了一些关于数据结构应该掌握的概念和算法，以及面试常问的问题（实现语言用的Java），有些算法可能手写不出，但思路一定要会，自己也是菜鸟一枚，也在学习。   线性表线性表的相关概念，对于其中的链表，栈，队列，后面展开介绍">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-2c07cf164db9bd3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-ffa44ebe0c0c7a19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-a188bd08dcc1fbec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-aa682bd4f927cd4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-24T03:10:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="那些年，我们被问到的数据结构">
+<meta name="twitter:description" content="作为一个非CS专业的应届生，在面试的时候经常会被问到关于数据结构中的概念以及算法实现。既然要成为一名程序员，那么掌握数据结构也是无可厚非的，毕竟有着很多的应用与实现。所以自己就整理了一些关于数据结构应该掌握的概念和算法，以及面试常问的问题（实现语言用的Java），有些算法可能手写不出，但思路一定要会，自己也是菜鸟一枚，也在学习。   线性表线性表的相关概念，对于其中的链表，栈，队列，后面展开介绍">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-2c07cf164db9bd3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/03/20/那些年，我们被问到的数据结构/"/>
+
+
+
+
+
+  <title>那些年，我们被问到的数据结构 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/03/20/那些年，我们被问到的数据结构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">那些年，我们被问到的数据结构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T11:20:57+08:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/03/20/那些年，我们被问到的数据结构/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/03/20/那些年，我们被问到的数据结构/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>作为一个非CS专业的应届生，在面试的时候经常会被问到关于数据结构中的概念以及算法实现。既然要成为一名程序员，那么掌握数据结构也是无可厚非的，毕竟有着很多的应用与实现。所以自己就整理了一些关于数据结构应该掌握的概念和算法，以及面试常问的问题（实现语言用的Java），有些算法可能手写不出，但思路一定要会，自己也是菜鸟一枚，也在学习。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-2c07cf164db9bd3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h3><p>线性表的相关概念，对于其中的链表，栈，队列，后面展开介绍。</p>
+<p><a href="http://blog.csdn.net/chenleixing/article/details/42392283" target="_blank" rel="noopener">线性表 及Java实现 顺序表、链表、栈、队列</a></p>
+<h3 id="栈和队"><a href="#栈和队" class="headerlink" title="栈和队"></a>栈和队</h3><p>1.栈的创建<br>2.队列的创建<br>3.两个栈实现一个队列<br>4.两个队列实现一个栈<br>5.设计含最小函数min()的栈，要求min、push、pop、的时间复杂度都是O(1)<br>6.判断栈的push和pop序列是否一致</p>
+<p><a href="http://www.cnblogs.com/smyhvae/p/4795984.html" target="_blank" rel="noopener">栈和队列的面试题Java实现</a></p>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>1、单链表的创建和遍历<br>2、求单链表中节点的个数<br>3、查找单链表中的倒数第k个结点（剑指offer，题15）<br>4、查找单链表中的中间结点<br>5、合并两个有序的单链表，合并之后的链表依然有序【出现频率高】（剑指offer，题17）<br>6、单链表的反转【出现频率最高】（剑指offer，题16）<br>7、从尾到头打印单链表（剑指offer，题5）<br>8、判断单链表是否有环<br>9、取出有环链表中，环的长度<br>10、单链表中，取出环的起始点（剑指offer，题56）。本题需利用上面的第8题和第9题。<br>11、判断两个单链表相交的第一个交点（剑指offer，题37）</p>
+<p><a href="http://www.cnblogs.com/smyhvae/p/4782595.html" target="_blank" rel="noopener">链表面试题Java实现</a></p>
+<p>上个文章中对链表反转的递归方法没给出，这篇有：<a href="http://hanhailong.com/2016/02/25/Java%E5%8F%8D%E8%BD%AC%E5%8D%95%E9%93%BE%E8%A1%A8%E5%AE%9E%E6%88%98/" target="_blank" rel="noopener">Java反转单链表实战</a></p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>1.冒泡排序<br>2.插入排序<br>3.选择排序<br>4.希尔排序<br>5.快速排序<br>6.归并排序<br>7.堆排序</p>
+<p><a href="http://www.jianshu.com/p/1b8d49a12086" target="_blank" rel="noopener">排序算法的比较与java实现</a></p>
+<h3 id="树"><a href="#树" class="headerlink" title="树"></a>树</h3><p>1.二叉查找树<br><a href="http://www.cnblogs.com/skywang12345/p/3576452.html" target="_blank" rel="noopener">二叉查找树(三)之 Java的实现</a><br>2.树的深度遍历与广度遍历<br><a href="http://outofmemory.cn/code-snippet/4189/biinary-tree-java" target="_blank" rel="noopener">树的深度优先遍历和广度优先遍历的原理和java实现代码</a><br>3.平衡树<br><a href="http://www.cnblogs.com/skywang12345/p/3577479.html" target="_blank" rel="noopener">AVL树(三)之 Java的实现</a><br>4.红黑树<br><a href="http://www.voidcn.com/blog/u010853261/article/p-6370601.html" target="_blank" rel="noopener">红黑树原理解析以及Java实现</a><br>5.哈夫曼树<br><a href="http://www.cnblogs.com/skywang12345/p/3706833.html" target="_blank" rel="noopener">哈夫曼树(三)之 Java详解</a><br>6.并查集<br><a href="http://www.cnblogs.com/hapjin/p/5478352.html" target="_blank" rel="noopener">数据结构–并查集的原理及实现</a><br>7.B树系列　　<br><a href="http://www.bigming.me/2016/12/28/%E8%AF%B4%E8%AF%B4B-%E6%A0%91%EF%BC%8CB-%E6%A0%91%EF%BC%8CB-%E6%A0%91/" target="_blank" rel="noopener">B-树,B+树,B*树</a></p>
+<h3 id="图"><a href="#图" class="headerlink" title="图"></a>图</h3><p>1.图的基础概念<br><a href="http://www.cnblogs.com/skywang12345/p/3691463.html" target="_blank" rel="noopener">图的理论基础</a><br>2.深度遍历与广度遍历<br><a href="http://www.cnblogs.com/skywang12345/p/3711483.html" target="_blank" rel="noopener">图的遍历之 深度优先搜索和广度优先搜索</a><br>3.单源最短路径<br><a href="http://www.cnblogs.com/skywang12345/p/3711516.html" target="_blank" rel="noopener">Dijkstra算法(三)之 Java详解</a><br>4.多源最短路径<br><a href="http://www.cnblogs.com/skywang12345/p/3711532.html" target="_blank" rel="noopener">Floyd算法(三)之 Java详解</a><br>5.最小生成树<br><a href="http://www.cnblogs.com/skywang12345/p/3711510.html" target="_blank" rel="noopener">Prim算法(三)之 Java详解</a><br><a href="http://www.cnblogs.com/skywang12345/p/3711504.html" target="_blank" rel="noopener">Kruskal算法(三)之 Java详解</a><br>6.拓扑排序<br><a href="http://www.cnblogs.com/skywang12345/p/3711494.html" target="_blank" rel="noopener">拓扑排序(三)之 Java详解</a></p>
+<h3 id="散列查找"><a href="#散列查找" class="headerlink" title="散列查找"></a>散列查找</h3><p>1.散列表的概念<br><a href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8" target="_blank" rel="noopener">散列表</a><br>2.散列表的一些算法应用<br><a href="http://blog.csdn.net/v_july_v/article/details/6256463" target="_blank" rel="noopener">从头到尾解析Hash表算法</a></p>
+<p>散列表可以和Java中集合HashMap等对照学习。</p>
+<h5 id="推荐书籍：《大话数据结构》"><a href="#推荐书籍：《大话数据结构》" class="headerlink" title="推荐书籍：《大话数据结构》"></a>推荐书籍：《大话数据结构》</h5><p><img src="http://upload-images.jianshu.io/upload_images/3985563-ffa44ebe0c0c7a19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h5 id="《剑指Offer》"><a href="#《剑指Offer》" class="headerlink" title="《剑指Offer》"></a>《剑指Offer》</h5><p><img src="http://upload-images.jianshu.io/upload_images/3985563-a188bd08dcc1fbec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><a href="http://blog.csdn.net/derrantcm/article/details/46887821" target="_blank" rel="noopener">【剑指Offer学习】【所有面试题汇总】</a></p>
+<h5 id="推荐课程学习：数据结构，是浙大的两位老师讲的，很好，在中国大学MOOC上。"><a href="#推荐课程学习：数据结构，是浙大的两位老师讲的，很好，在中国大学MOOC上。" class="headerlink" title="推荐课程学习：数据结构，是浙大的两位老师讲的，很好，在中国大学MOOC上。"></a>推荐课程学习：<a href="http://www.icourse163.org/learn/ZJU-93001?tid=120001#/learn/content" target="_blank" rel="noopener">数据结构</a>，是浙大的两位老师讲的，很好，在中国大学MOOC上。</h5><p><img src="http://upload-images.jianshu.io/upload_images/3985563-aa682bd4f927cd4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h5 id="后续有新的内容会持续更新……"><a href="#后续有新的内容会持续更新……" class="headerlink" title="后续有新的内容会持续更新……."></a>后续有新的内容会持续更新…….</h5>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/18/关于Android性能优化，该从哪些方面入手？/" rel="next" title="关于Android性能优化，该从哪些方面入手？">
+                <i class="fa fa-chevron-left"></i> 关于Android性能优化，该从哪些方面入手？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/20/设计模式详解——模版方法模式/" rel="prev" title="设计模式详解——模版方法模式">
+                设计模式详解——模版方法模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性表"><span class="nav-number">1.</span> <span class="nav-text">线性表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈和队"><span class="nav-number">2.</span> <span class="nav-text">栈和队</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表"><span class="nav-number">3.</span> <span class="nav-text">链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序"><span class="nav-number">4.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树"><span class="nav-number">5.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图"><span class="nav-number">6.</span> <span class="nav-text">图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#散列查找"><span class="nav-number">7.</span> <span class="nav-text">散列查找</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐书籍：《大话数据结构》"><span class="nav-number">7.0.1.</span> <span class="nav-text">推荐书籍：《大话数据结构》</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#《剑指Offer》"><span class="nav-number">7.0.2.</span> <span class="nav-text">《剑指Offer》</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐课程学习：数据结构，是浙大的两位老师讲的，很好，在中国大学MOOC上。"><span class="nav-number">7.0.3.</span> <span class="nav-text">推荐课程学习：数据结构，是浙大的两位老师讲的，很好，在中国大学MOOC上。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#后续有新的内容会持续更新……"><span class="nav-number">7.0.4.</span> <span class="nav-text">后续有新的内容会持续更新…….</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

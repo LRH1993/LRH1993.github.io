@@ -1,0 +1,811 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇文章介绍一种设计模式——工厂模式。工厂模式是用来封装对象的创建，减少应用程序和具体类之间的依赖，促进松耦合。根据工厂模式的应用特性，一共分为三种子模式：简单工厂模式，工厂方法模式和抽象工厂模式。本篇文章主要介绍工厂方法模式。本篇文章内容参考工厂方法模式，【原】从头学习设计模式（三）——工厂方法模式。  一、工厂方法模式简介1.定义工厂方法模式(Factory Method Pattern)又">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式详解——工厂模式（二）">
+<meta property="og:url" content="https://lrh1993.github.io/2017/02/28/设计模式详解——工厂模式（二）/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="本篇文章介绍一种设计模式——工厂模式。工厂模式是用来封装对象的创建，减少应用程序和具体类之间的依赖，促进松耦合。根据工厂模式的应用特性，一共分为三种子模式：简单工厂模式，工厂方法模式和抽象工厂模式。本篇文章主要介绍工厂方法模式。本篇文章内容参考工厂方法模式，【原】从头学习设计模式（三）——工厂方法模式。  一、工厂方法模式简介1.定义工厂方法模式(Factory Method Pattern)又">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-8ce4534a7a872a09.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-bb6ceace257078ed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-c5a708a3fbf93c26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-24T02:38:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式详解——工厂模式（二）">
+<meta name="twitter:description" content="本篇文章介绍一种设计模式——工厂模式。工厂模式是用来封装对象的创建，减少应用程序和具体类之间的依赖，促进松耦合。根据工厂模式的应用特性，一共分为三种子模式：简单工厂模式，工厂方法模式和抽象工厂模式。本篇文章主要介绍工厂方法模式。本篇文章内容参考工厂方法模式，【原】从头学习设计模式（三）——工厂方法模式。  一、工厂方法模式简介1.定义工厂方法模式(Factory Method Pattern)又">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-8ce4534a7a872a09.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/02/28/设计模式详解——工厂模式（二）/"/>
+
+
+
+
+
+  <title>设计模式详解——工厂模式（二） | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/02/28/设计模式详解——工厂模式（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">设计模式详解——工厂模式（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-28T12:51:57+08:00">
+                2017-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/02/28/设计模式详解——工厂模式（二）/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/02/28/设计模式详解——工厂模式（二）/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇文章介绍一种设计模式——工厂模式。工厂模式是用来封装对象的创建，减少应用程序和具体类之间的依赖，促进松耦合。根据工厂模式的应用特性，一共分为三种子模式：简单工厂模式，工厂方法模式和抽象工厂模式。本篇文章主要介绍工厂方法模式。本篇文章内容参考<a href="http://design-patterns.readthedocs.io/zh_CN/latest/creational_patterns/factory_method.html" target="_blank" rel="noopener">工厂方法模式</a>，<a href="http://www.cnblogs.com/ytaozhao/p/3389883.html" target="_blank" rel="noopener">【原】从头学习设计模式（三）——工厂方法模式</a>。</p>
+</blockquote>
+<h3 id="一、工厂方法模式简介"><a href="#一、工厂方法模式简介" class="headerlink" title="一、工厂方法模式简介"></a>一、工厂方法模式简介</h3><h5 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h5><p>工厂方法模式(Factory Method Pattern)又称为工厂模式，也叫虚拟构造器(Virtual Constructor)模式或者多态工厂(Polymorphic Factory)模式，它属于类创建型模式。</p>
+<p>在工厂方法模式中，工厂父类负责定义创建产品对象的公共接口，而工厂子类则负责生成具体的产品对象，这样做的目的是将产品类的实例化操作延迟到工厂子类中完成，即通过工厂子类来确定究竟应该实例化哪一个具体产品类。</p>
+<h6 id="2-使用动机"><a href="#2-使用动机" class="headerlink" title="2.使用动机"></a>2.使用动机</h6><p>现在对该系统（上篇文章提到）进行修改，不再设计一个按钮工厂类来统一负责所有产品的创建，而是将具体按钮的创建过程交给专门的工厂子类去完成。</p>
+<p>我们先定义一个抽象的按钮工厂类，再定义具体的工厂类来生成圆形按钮、矩形按钮、菱形按钮等，它们实现在抽象按钮工厂类中定义的方法。这种抽象化的结果使这种结构可以在不修改具体工厂类的情况下引进新的产品，如果出现新的按钮类型，只需要为这种新类型的按钮创建一个具体的工厂类就可以获得该新按钮的实例，这一特点无疑使得工厂方法模式具有超越简单工厂模式的优越性，更加符合“开闭原则”。</p>
+<h3 id="二、工厂方法模式结构"><a href="#二、工厂方法模式结构" class="headerlink" title="二、工厂方法模式结构"></a>二、工厂方法模式结构</h3><h5 id="1-模式结构"><a href="#1-模式结构" class="headerlink" title="1.模式结构"></a>1.模式结构</h5><p><img src="http://upload-images.jianshu.io/upload_images/3985563-8ce4534a7a872a09.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>工厂方法模式包含如下角色：</p>
+<p>●Product：抽象产品，工厂方法模式所创建的对象的超类，也就是所有产品类的共同父类或共同拥有的接口。在实际的系统中，这个角色也常常使用抽象类实现。</p>
+<p>●ConcreteProduct：具体产品，这个角色实现了抽象产品（Product）所声明的接口，工厂方法模式所创建的每一个对象都是某个具体产品的实例。</p>
+<p>●Factory：抽象工厂，担任这个角色的是工厂方法模式的核心，任何在模式中创建对象的工厂类必须实现这个接口。在实际的系统中，这个角色也常常使用抽象类实现。</p>
+<p>●ConcreteFactory：具体工厂，担任这个角色的是实现了抽象工厂接口的具体Java类。具体工厂角色含有与业务密切相关的逻辑，并且受到使用者的调用以创建具体产品对象。</p>
+<h5 id="2-时序图"><a href="#2-时序图" class="headerlink" title="2.时序图"></a>2.时序图</h5><p><img src="http://upload-images.jianshu.io/upload_images/3985563-bb6ceace257078ed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>①先调用具体工厂对象中的方法createProduct()</p>
+<p>②根据传入产品类型参数（也可以无参），获得具体的产品对象</p>
+<p>③返回产品对象并使用</p>
+<h3 id="三、工厂方法模式的使用实例"><a href="#三、工厂方法模式的使用实例" class="headerlink" title="三、工厂方法模式的使用实例"></a>三、工厂方法模式的使用实例</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-c5a708a3fbf93c26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>上面的类图中，在灯这个品类下，有<strong>灯泡</strong>和<strong>灯管</strong>两种产品，并且都实现了灯的通用方法：关灯和开灯。在工厂类下，有各种生产具体产品的子工厂负责生产相应的两种灯具。</p>
+<p>如果还不是太明白，那我们来假设一个情景。小明（客户端）想要买一个灯泡，他不认识工厂，只能去供销店（工厂类）买，于是和老板说“我要一个灯泡”，老板说 “没问题！您稍等”。转身到了后院，对生产灯泡的小弟（灯泡工厂子类）吆喝一声，给我造个灯泡！不一会灯泡造好了，老板拿给小明，“嘿嘿，灯泡给您作了一个，您试试？”，小明把灯泡拧在灯口上，开关了两下（灯的通用方法）“嘿！挺好，没问题！”，付了钱高高兴兴走了。<br><strong> 抽象的产品接口ILight</strong><br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>ILight</span><br><span class="line">   &#123;</span><br><span class="line">       void TurnOn();</span><br><span class="line">       void TurnOff();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>具体的产品类：BulbLight</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BulbLight</span> <span class="keyword">implements</span> <span class="title">ILight</span></span></span><br><span class="line"><span class="class">   </span>&#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TurnOn</span><span class="params">()</span></span></span><br><span class="line"><span class="function">       </span>&#123;</span><br><span class="line">           Console.WriteLine(<span class="string">"BulbLight turns on."</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TurnOff</span><span class="params">()</span></span></span><br><span class="line"><span class="function">       </span>&#123;</span><br><span class="line">           Console.WriteLine(<span class="string">"BulbLight turns off."</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>具体的产品类：TubeLight </strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TubeLight</span> <span class="keyword">implements</span> <span class="title">ILight</span></span></span><br><span class="line"><span class="class">   </span>&#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TurnOn</span><span class="params">()</span></span></span><br><span class="line"><span class="function">       </span>&#123;</span><br><span class="line">           Console.WriteLine(<span class="string">"TubeLight turns on."</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TurnOff</span><span class="params">()</span></span></span><br><span class="line"><span class="function">       </span>&#123;</span><br><span class="line">           Console.WriteLine(<span class="string">"TubeLight turns off."</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong> 抽象的工厂类</strong><br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>ICreator</span><br><span class="line">    &#123;</span><br><span class="line">        ILight CreateLight();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>具体的工厂类:BulbCreator</strong><br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BulbCreator</span> <span class="keyword"><span class="keyword">implements</span> <span class="type">ICreator</span></span></span></span><br><span class="line"><span class="class">   </span>&#123;</span><br><span class="line">       <span class="keyword">public</span> ILight CreateLight()</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">BulbLight</span>();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>具体的工厂类:TubeCreator</strong><br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TubeCreator</span> <span class="keyword"><span class="keyword">implements</span> <span class="type">ICreator</span></span></span></span><br><span class="line"><span class="class">   </span>&#123;</span><br><span class="line">       <span class="keyword">public</span> ILight CreateLight()</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">TubeLight</span>();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong> 客户端调用</strong><br><figure class="highlight rsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//先给我来个灯泡</span></span><br><span class="line">            ICreator creator = new BulbCreator();</span><br><span class="line">            ILight <span class="class"><span class="keyword">light</span> = creator.CreateLight(</span>);</span><br><span class="line">            <span class="class"><span class="keyword">light</span>.TurnOn(</span>);</span><br><span class="line">            <span class="class"><span class="keyword">light</span>.TurnOff(</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//再来个灯管看看</span></span><br><span class="line">            creator = new TubeCreator();</span><br><span class="line">            <span class="class"><span class="keyword">light</span> = creator.CreateLight(</span>);</span><br><span class="line">            <span class="class"><span class="keyword">light</span>.TurnOn(</span>);</span><br><span class="line">            <span class="class"><span class="keyword">light</span>.TurnOff(</span>);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过一个引用变量ICreator来创建产品对象，创建何种产品对象由指向的具体工厂类决定。通过工厂方法模式，将具体的应用逻辑和产品的创建分离开，促进松耦合。</p>
+<p>本例中每个具体工厂类只负责生产一种类型的产品，当然每个具体工厂类也内部可以维护少数几种产品实例对象，类似于简单工厂模式。</p>
+<h3 id="四、工厂方法模式的优缺点"><a href="#四、工厂方法模式的优缺点" class="headerlink" title="四、工厂方法模式的优缺点"></a>四、工厂方法模式的优缺点</h3><h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><p>①在工厂方法模式中，工厂方法用来创建客户所需要的产品，同时还向客户隐藏了哪种具体产品类将被实例化这一细节，用户只需要关心所需产品对应的工厂，无须关心创建细节，甚至无须知道具体产品类的类名。</p>
+<p>②基于工厂角色和产品角色的多态性设计是工厂方法模式的关键。它能够使<strong>工厂可以自主确定创建何种产品对象</strong>，而如何创建这个对象的细节则完全封装在具体工厂内部。工厂方法模式之所以又被称为多态工厂模式，是因为所有的具体工厂类都具有同一抽象父类。</p>
+<p>③使用工厂方法模式的另一个优点是<strong>在系统中加入新产品时</strong>，无须修改抽象工厂和抽象产品提供的接口，无须修改客户端，也无须修改其他的具体工厂和具体产品，而<strong>只要添加一个具体工厂和具体产品就可以了</strong>。这样，系统的可扩展性也就变得非常好，<strong>完全符合“开闭原则”</strong>，这点比简单工厂模式更优秀。</p>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><p>①在添加新产品时，需要编写新的具体产品类，而且还要提供与之对应的具体工厂类，<strong>系统中类的个数将成对增加，在一定程度上增加了系统的复杂度</strong>，有更多的类需要编译和运行，会给系统带来一些额外的开销。</p>
+<p>②由于考虑到系统的可扩展性，需要引入抽象层，在客户端代码中均使用抽象层进行定义，增加了系统的抽象性和理解难度，且在实现时可能需要用到DOM、反射等技术，增加了系统的实现难度。</p>
+<h5 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h5><p>在以下情况下可以使用工厂方法模式：</p>
+<p>①一个类不知道它所需要的对象的类：在工厂方法模式中，客户端不需要知道具体产品类的类名，只需要知道所对应的工厂即可，具体的产品对象由具体工厂类创建；客户端需要知道创建具体产品的工厂类。</p>
+<p>②一个类通过其子类来指定创建哪个对象：在工厂方法模式中，对于抽象工厂类只需要提供一个创建产品的接口，而由其子类来确定具体要创建的对象，利用面向对象的多态性和里氏代换原则，在程序运行时，子类对象将覆盖父类对象，从而使得系统更容易扩展。</p>
+<p>③将创建对象的任务委托给多个工厂子类中的某一个，客户端在使用时可以无须关心是哪一个工厂子类创建产品子类，需要时再动态指定，可将具体工厂类的类名存储在配置文件或数据库中。</p>
+<h3 id="五、工厂方法模式在Java中应用"><a href="#五、工厂方法模式在Java中应用" class="headerlink" title="五、工厂方法模式在Java中应用"></a>五、工厂方法模式在Java中应用</h3><p>JDBC中的工厂方法:<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Connection <span class="attribute">conn</span>=DriverManager.getConnection("jdbc:microsoft:sqlserver://localhost:1433; <span class="attribute">DatabaseName</span>=DB;user=sa;password=");</span><br><span class="line">Statement <span class="attribute">statement</span>=conn.createStatement();</span><br><span class="line">ResultSet <span class="attribute">rs</span>=statement.executeQuery("select * <span class="keyword">from</span> UserInfo<span class="string">");</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/28/设计模式详解——工厂模式（一）/" rel="next" title="设计模式详解——工厂模式（一）">
+                <i class="fa fa-chevron-left"></i> 设计模式详解——工厂模式（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/28/设计模式详解——工厂模式（三）/" rel="prev" title="设计模式详解——工厂模式（三）">
+                设计模式详解——工厂模式（三） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、工厂方法模式简介"><span class="nav-number">1.</span> <span class="nav-text">一、工厂方法模式简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.定义</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-使用动机"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">2.使用动机</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、工厂方法模式结构"><span class="nav-number">2.</span> <span class="nav-text">二、工厂方法模式结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-模式结构"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.模式结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-时序图"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.时序图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、工厂方法模式的使用实例"><span class="nav-number">3.</span> <span class="nav-text">三、工厂方法模式的使用实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、工厂方法模式的优缺点"><span class="nav-number">4.</span> <span class="nav-text">四、工厂方法模式的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点"><span class="nav-number">4.0.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点"><span class="nav-number">4.0.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#适用场景"><span class="nav-number">4.0.3.</span> <span class="nav-text">适用场景</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、工厂方法模式在Java中应用"><span class="nav-number">5.</span> <span class="nav-text">五、工厂方法模式在Java中应用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

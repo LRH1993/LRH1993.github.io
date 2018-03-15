@@ -1,0 +1,808 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在Fragment和ViewPager配合使用的时候，ViewPager会使用预加载机制，使得我们在没有跳转到对应页面时，可能已经加载好了，这是个非常不好的用户体验，浪费用户的流量。本篇文章主要讲解在ViewPager+TabLayout+Fragment的情况下，Fragment的懒加载机制的实现以及项目封装情况。  一、setUserVisibleHint(boolean isVisible">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ViewPager+TabLayout+Fragment懒加载机制完全解析">
+<meta property="og:url" content="https://lrh1993.github.io/2017/03/03/ViewPager+TabLayout+Fragment懒加载机制完全解析/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="在Fragment和ViewPager配合使用的时候，ViewPager会使用预加载机制，使得我们在没有跳转到对应页面时，可能已经加载好了，这是个非常不好的用户体验，浪费用户的流量。本篇文章主要讲解在ViewPager+TabLayout+Fragment的情况下，Fragment的懒加载机制的实现以及项目封装情况。  一、setUserVisibleHint(boolean isVisible">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-f07ad6fd047d2c81.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-5cdcdd11d65b8a0e.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-05-24T05:35:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViewPager+TabLayout+Fragment懒加载机制完全解析">
+<meta name="twitter:description" content="在Fragment和ViewPager配合使用的时候，ViewPager会使用预加载机制，使得我们在没有跳转到对应页面时，可能已经加载好了，这是个非常不好的用户体验，浪费用户的流量。本篇文章主要讲解在ViewPager+TabLayout+Fragment的情况下，Fragment的懒加载机制的实现以及项目封装情况。  一、setUserVisibleHint(boolean isVisible">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-f07ad6fd047d2c81.gif?imageMogr2/auto-orient/strip">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/03/03/ViewPager+TabLayout+Fragment懒加载机制完全解析/"/>
+
+
+
+
+
+  <title>ViewPager+TabLayout+Fragment懒加载机制完全解析 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/03/03/ViewPager+TabLayout+Fragment懒加载机制完全解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ViewPager+TabLayout+Fragment懒加载机制完全解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-03T10:52:21+08:00">
+                2017-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">Android进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/03/03/ViewPager+TabLayout+Fragment懒加载机制完全解析/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/03/03/ViewPager+TabLayout+Fragment懒加载机制完全解析/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在Fragment和ViewPager配合使用的时候，ViewPager会使用预加载机制，使得我们在没有跳转到对应页面时，可能已经加载好了，这是个非常不好的用户体验，浪费用户的流量。本篇文章主要讲解在ViewPager+TabLayout+Fragment的情况下，Fragment的懒加载机制的实现以及项目封装情况。</p>
+</blockquote>
+<h3 id="一、setUserVisibleHint-boolean-isVisibleToUser"><a href="#一、setUserVisibleHint-boolean-isVisibleToUser" class="headerlink" title="一、setUserVisibleHint(boolean isVisibleToUser)"></a>一、setUserVisibleHint(boolean isVisibleToUser)</h3><p>setUserVisibleHint(boolean isVisibleToUser)是Fragment中的一个回调函数。当前Fragment可见时，setUserVisibleHint()回调，其中isVisibleToUser=true。当前Fragment由可见到不可见或实例化时，setUserVisibleHint()回调，其中isVisibleToUser=false。</p>
+<p><strong>setUserVisibleHint(boolean isVisibleToUser)调用时机</strong></p>
+<p>①在Fragment实例化，即在ViewPager中，由于ViewPager默认会预加载左右两个页面。此时预加载页面回调的生命周期流程：setUserVisibleHint() –&gt;onAttach()  –&gt; onCreate()–&gt;onCreateView()–&gt; onActivityCreate() –&gt; onStart()   –&gt; onResume()  </p>
+<p>此时，<strong>setUserVisibleHint() 中的参数为false，因为不可见。</strong></p>
+<p>②在Fragmetn可见时，即ViewPager中滑动到当前页面时，因为已经预加载过了，之前生命周期已经走到onResume() ，所以现在<strong>只会回调：setUserVisibleHint() </strong>。</p>
+<p>此时，<strong>setUserVisibleHint() 中的参数为true，因为可见。</strong></p>
+<p>③在Fragment由可见变为不可见，即ViewPager由当前页面滑动到另一个页面，因为还要保持当前页面的预加载过程，所以<strong>只会回调：setUserVisibleHint()</strong>。</p>
+<p>此时，<strong>setUserVisibleHint() 中的参数为false，因为不可见。</strong></p>
+<p>④由TabLayout直接跳转到一个未预加载的页面，此时生命周期的回调过程：setUserVisibleHint() –&gt;setUserVisibleHint() –&gt;onAttach()  –&gt; onCreate()–&gt;onCreateView()–&gt; onActivityCreate()  –&gt; onStart()<br>–&gt; onResume() </p>
+<p><strong>回调了两次setUserVisibleHint() ，一次代表初始化时，传入参数是false，一次代表可见时，传入参数是true。这种情况比较特殊。</strong></p>
+<p><strong>总结：无论何时，setUserVisibleHint()都是先于其他生命周期的调用，并且初始化时调用，可见时调用，由可见转换成不可见时调用，一共三次时机。</strong> </p>
+<h3 id="二、封装实现懒加载机制"><a href="#二、封装实现懒加载机制" class="headerlink" title="二、封装实现懒加载机制"></a>二、封装实现懒加载机制</h3><p><strong>加载网络的情况：</strong><br>①setUserVisibleHint()中参数为true，即Fragment可见；</p>
+<p>②onCreateView()方法调用完毕，返回rootView，防止造成空指针问题；</p>
+<p>③第一次调用网络加载，之前没加载过，即isFirst = false（有些别扭，可以改成true，对应代码做下修改）。 </p>
+<p>满足以上条件，加载网络请求。</p>
+<p><strong>取消加载网络的情况：</strong></p>
+<p>①setUserVisibleHint()中参数由true变为false，即Fragment由可见变为不可见；</p>
+<p>②不是第一次调用网络加载，之前加载过，即isFirst = true。</p>
+<p>满足以上两者条件（只满足第一点也可以），取消网络请求。 </p>
+<h4 id="封装代码"><a href="#封装代码" class="headerlink" title="封装代码"></a>封装代码</h4><p>在BaseFragment中进行封装</p>
+<p>其中isFragment表示当前Fragment的可见情况<br>isFirst表示是否已经加载过<br>onFragmentVisibleChange()是一个可继承的空方法，子类实现，传入true，代表加载网络，传入false,代表取消网络加载。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setUserVisibleHint</span><span class="params">(<span class="keyword">boolean</span> isVisibleToUser)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.setUserVisibleHint(isVisibleToUser);</span><br><span class="line">       <span class="keyword">if</span> (isVisibleToUser) &#123;</span><br><span class="line">           isFragmentVisible = <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (rootView == <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//可见，并且没有加载过</span></span><br><span class="line">       <span class="keyword">if</span> (!isFirst&amp;&amp;isFragmentVisible) &#123;</span><br><span class="line">           onFragmentVisibleChange(<span class="keyword">true</span>);</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//由可见——&gt;不可见 已经加载过</span></span><br><span class="line">       <span class="keyword">if</span> (isFragmentVisible) &#123;</span><br><span class="line">           onFragmentVisibleChange(<span class="keyword">false</span>);</span><br><span class="line">           isFragmentVisible = <span class="keyword">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onFragmentVisibleChange</span><span class="params">(<span class="keyword">boolean</span> isVisible)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中有一种特殊情况不能满足上述代码中的条件进行网络加载。</p>
+<p><strong>特殊情况：当TabLayout跳转到一个没有预加载过的Fragment，连续调用两次setUserVisibleHint方法，但此时rootView为空，不能进行加载。需要在onCreateView()方法最后判断是否进行网络加载，然后调用onFragmentVisibleChange(true)方法</strong><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">     .................</span><br><span class="line">        <span class="comment">//可见，但是并没有加载过</span></span><br><span class="line">        <span class="keyword">if</span> (isFragmentVisible &amp;&amp; !isFirst) &#123;</span><br><span class="line">            onFragmentVisibleChange(true);</span><br><span class="line">        &#125;</span><br><span class="line">        return rootView;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>子类实现的实例：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onFragmentVisibleChange</span><span class="params">(<span class="keyword">boolean</span> isVisible)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(isVisible)&#123;</span><br><span class="line">            <span class="comment">//可见，并且是第一次加载</span></span><br><span class="line">            mPresenter.requestPhotoList(SIZE,mStartPage);</span><br><span class="line">            LoadingDialog.showDialogForLoading(getActivity());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//取消加载</span></span><br><span class="line">            RxDisposeManager.get().cancel(<span class="string">"photoList"</span>);</span><br><span class="line">            LoadingDialog.cancelDialogForLoading();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="三、效果实现"><a href="#三、效果实现" class="headerlink" title="三、效果实现"></a>三、效果实现</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-f07ad6fd047d2c81.gif?imageMogr2/auto-orient/strip" alt=""><br>上图效果可以看出实现了懒加载，并且再次滑动回对应Fragment，也不会加载，通过下拉刷新才能更新数据，减少流量的耗费。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-5cdcdd11d65b8a0e.gif?imageMogr2/auto-orient/strip" alt=""></p>
+<p>上图效果可以看出，当TabLayout直接跳转到没有预加载的页面，也可以实现懒加载，效果一样。</p>
+<p>小伙伴们有没有很心动，下面有源码，欢迎参考使用！</p>
+<p><a href="https://github.com/LRH1993/LiveCircle" target="_blank" rel="noopener">源码地址</a></p>
+<p>只需要看BaseFragment部分即可</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/28/以生产者-消费者模式实例带你理解线程间通信/" rel="next" title="以生产者/消费者模式实例带你理解线程间通信">
+                <i class="fa fa-chevron-left"></i> 以生产者/消费者模式实例带你理解线程间通信
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/03/Java并发——三种典型的死锁/" rel="prev" title="Java并发——三种典型的死锁">
+                Java并发——三种典型的死锁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、setUserVisibleHint-boolean-isVisibleToUser"><span class="nav-number">1.</span> <span class="nav-text">一、setUserVisibleHint(boolean isVisibleToUser)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、封装实现懒加载机制"><span class="nav-number">2.</span> <span class="nav-text">二、封装实现懒加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#封装代码"><span class="nav-number">2.1.</span> <span class="nav-text">封装代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、效果实现"><span class="nav-number">3.</span> <span class="nav-text">三、效果实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,878 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="SmartRecom是一款基于行为设别和个性化推荐的电影与音乐播放器。咋一听很高大上，哈哈，不过行为识别和个性化推荐的功能目前还不完善，暂时忽略。  本着学习Android技术的目的，SmartRecom使用了多款流行开源框架，以及Android中一些重要的技术点。在做SmartRecom的过程中，抱着边做边学的态度，每遇到一个问题，就进行实际解决并以写作技术文章的形式来帮助自己加深对这些技术的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SmartRecom：一款干货满满，助你进阶的App项目">
+<meta property="og:url" content="https://lrh1993.github.io/2017/05/22/SmartRecom：一款干货满满，助你进阶的App项目/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="SmartRecom是一款基于行为设别和个性化推荐的电影与音乐播放器。咋一听很高大上，哈哈，不过行为识别和个性化推荐的功能目前还不完善，暂时忽略。  本着学习Android技术的目的，SmartRecom使用了多款流行开源框架，以及Android中一些重要的技术点。在做SmartRecom的过程中，抱着边做边学的态度，每遇到一个问题，就进行实际解决并以写作技术文章的形式来帮助自己加深对这些技术的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-d8ab7a391676da27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-87afa615b847d495.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-96a30d8567ac1743.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-dd2c9c74b8109329.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-c4bab78e1aea007d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-5fed16b7a2c20698.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-69f592ff743a9230.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-f8f466bd369c0f16.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-b7e689f2109ba270.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-24T05:23:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SmartRecom：一款干货满满，助你进阶的App项目">
+<meta name="twitter:description" content="SmartRecom是一款基于行为设别和个性化推荐的电影与音乐播放器。咋一听很高大上，哈哈，不过行为识别和个性化推荐的功能目前还不完善，暂时忽略。  本着学习Android技术的目的，SmartRecom使用了多款流行开源框架，以及Android中一些重要的技术点。在做SmartRecom的过程中，抱着边做边学的态度，每遇到一个问题，就进行实际解决并以写作技术文章的形式来帮助自己加深对这些技术的">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-d8ab7a391676da27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/05/22/SmartRecom：一款干货满满，助你进阶的App项目/"/>
+
+
+
+
+
+  <title>SmartRecom：一款干货满满，助你进阶的App项目 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/05/22/SmartRecom：一款干货满满，助你进阶的App项目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SmartRecom：一款干货满满，助你进阶的App项目</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T17:06:21+08:00">
+                2017-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/开源项目/" itemprop="url" rel="index">
+                    <span itemprop="name">开源项目</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/05/22/SmartRecom：一款干货满满，助你进阶的App项目/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/05/22/SmartRecom：一款干货满满，助你进阶的App项目/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>SmartRecom是一款基于行为设别和个性化推荐的电影与音乐播放器。咋一听很高大上，哈哈，不过行为识别和个性化推荐的功能目前还不完善，暂时忽略。  本着学习Android技术的目的，<strong>SmartRecom使用了多款流行开源框架，以及Android中一些重要的技术点。</strong>在做SmartRecom的过程中，抱着边做边学的态度，每遇到一个问题，就进行实际解决并以写作技术文章的形式来帮助自己加深对这些技术的理解。现在分享出来，下文中<strong>每一个链接都对应一个实际技术的解决</strong>，可以帮助理解SmartRecom，也可以帮助一些新人如何开始做一款自己的App。  </p>
+</blockquote>
+<h5 id="Github地址：SmartRecom"><a href="#Github地址：SmartRecom" class="headerlink" title="Github地址：SmartRecom"></a>Github地址：<a href="https://github.com/LRH1993/SmartRecom" target="_blank" rel="noopener">SmartRecom</a></h5><h3 id="一、屏幕截图"><a href="#一、屏幕截图" class="headerlink" title="一、屏幕截图"></a>一、屏幕截图</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-d8ab7a391676da27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-87afa615b847d495.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-96a30d8567ac1743.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-dd2c9c74b8109329.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-c4bab78e1aea007d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-5fed16b7a2c20698.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-69f592ff743a9230.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="二、技能学习"><a href="#二、技能学习" class="headerlink" title="二、技能学习"></a>二、技能学习</h3><p>通过学习该项目，可以获得以下技能：  </p>
+<ul>
+<li><p><a href="http://www.jianshu.com/p/8fb4c0ae006e" target="_blank" rel="noopener">MVP模式</a> </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/d149043d103a" target="_blank" rel="noopener">RxJava及Retrofit使用</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/7a4b3766f86d" target="_blank" rel="noopener">Retrofit项目封装</a></p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/251a1e1b793a" target="_blank" rel="noopener">EventBus使用</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/c3a5518b58b2" target="_blank" rel="noopener">Glide使用</a> </p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzYwMTk1NA==&amp;mid=2247484516&amp;idx=1&amp;sn=1f31642399dd90bda5afa8664150a2d5&amp;chksm=96cda529a1ba2c3fa47d0fb0e8328a28480c7496e551363d05306c56aadfca8df49baf109db4&amp;mpshare=1&amp;scene=23&amp;srcid=0519RTiUoD1BCbAeAJaUajL5#rd" target="_blank" rel="noopener">沉浸式状态栏实现</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/86ca7c873cb8" target="_blank" rel="noopener">Toobar+DrawerLayout+NavigationView使用</a> </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/d229a647e705" target="_blank" rel="noopener">banner轮播图的使用</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/40561384c7ca" target="_blank" rel="noopener">RecyclerView复杂布局结构实现</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/0292bf221966" target="_blank" rel="noopener">recyclerview-animators动画效果实现与原理</a></p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/eb81f3692229" target="_blank" rel="noopener">ViewPager+TabLayout+Fragment懒加载机制</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/8060f7623f1c" target="_blank" rel="noopener">FlexboxLayout——实现灵活多变的瀑布流</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/380e05621a8d" target="_blank" rel="noopener">Android拍照、照片选择以及图片裁剪完全解析</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/817a34a5f200" target="_blank" rel="noopener">AsyncTask的使用</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/b262b6ad3456" target="_blank" rel="noopener">Android高斯模糊效果实现</a>  </p>
+</li>
+<li><p><a href="http://www.cnblogs.com/plokmju/p/android_MediaPlayer.html" target="_blank" rel="noopener">MediaPlayer使用</a>  </p>
+</li>
+<li><p><a href="http://www.jianshu.com/p/8c8637191bfd" target="_blank" rel="noopener">Service使用</a></p>
+</li>
+<li><p><a href="https://github.com/LRH1993/SmartRecom/blob/master/SmartRecom/ThreeRecom/app/src/main/java/com/lvr/threerecom/app/BaiDuMusicApi.java" target="_blank" rel="noopener">最全的百度音乐API解析</a></p>
+</li>
+</ul>
+<h3 id="三、开源清单"><a href="#三、开源清单" class="headerlink" title="三、开源清单"></a>三、开源清单</h3><p>项目中用到的一些流行开源框架：</p>
+<ul>
+<li><p><a href="https://github.com/ReactiveX/RxJava" target="_blank" rel="noopener">RxJava</a>  </p>
+</li>
+<li><p><a href="https://github.com/square/retrofit" target="_blank" rel="noopener">Retrofit</a>  </p>
+</li>
+</ul>
+<p><strong>RxJava+Retrofit实现网络加载与异步请求操作</strong></p>
+<ul>
+<li><a href="https://github.com/greenrobot/EventBus" target="_blank" rel="noopener">EventBus</a></li>
+</ul>
+<p><strong>EventBus实现组件间的通信</strong></p>
+<ul>
+<li><a href="https://github.com/bumptech/glide" target="_blank" rel="noopener">Glide</a>  </li>
+</ul>
+<p><strong>Glide,图片加载框架</strong>  </p>
+<ul>
+<li><a href="https://github.com/JakeWharton/butterknife" target="_blank" rel="noopener">butterknife</a>  </li>
+</ul>
+<p><strong>butterknife让你告别findViewById</strong></p>
+<ul>
+<li><a href="https://github.com/Aspsine/IRecyclerView" target="_blank" rel="noopener">IRecyclerView</a>  </li>
+</ul>
+<p><strong>IRecyclerView支持下拉刷新，加载更多</strong></p>
+<ul>
+<li><a href="https://github.com/youth5201314/banner" target="_blank" rel="noopener">banner</a>  </li>
+</ul>
+<p><strong>banner，好用的图片轮播控件</strong></p>
+<ul>
+<li><a href="https://github.com/wasabeef/recyclerview-animators" target="_blank" rel="noopener">recyclerview-animators</a>   </li>
+</ul>
+<p><strong>recyclerview-animators，为item添加炫酷的动画效果</strong></p>
+<ul>
+<li><a href="https://github.com/chenBingX/SuperTextView" target="_blank" rel="noopener">SuperTextView</a>  </li>
+</ul>
+<p><strong>SuperTextView,让你的TextView不再单调</strong></p>
+<ul>
+<li><a href="https://github.com/DreaminginCodeZH/MaterialRatingBar" target="_blank" rel="noopener">RatingBar</a></li>
+</ul>
+<p><strong>RatingBar,一款好的评分控件</strong></p>
+<h3 id="四、SmartRecom功能介绍"><a href="#四、SmartRecom功能介绍" class="headerlink" title="四、SmartRecom功能介绍"></a>四、SmartRecom功能介绍</h3><h4 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h4><p><strong>SmartRecom是一款基于行为识别和个性化推荐的音乐和电影播放器。</strong></p>
+<p><strong>行为识别：</strong><br>通过对用户当前行为状态的监听，识别用户的当前状态，从而智能的为用户推荐音乐或电影。  </p>
+<p><strong>个性化推荐：</strong><br>通过用户对电影或音乐的浏览或评分行为，基于Slop One等个性化推荐算法为用户实时而精确地推荐合适的内容。</p>
+<h4 id="2-功能"><a href="#2-功能" class="headerlink" title="2.功能"></a>2.功能</h4><h5 id="音乐播放器"><a href="#音乐播放器" class="headerlink" title="音乐播放器"></a>音乐播放器</h5><p>为你提供各种好听的音乐。目前音乐接口来自百度音乐，如侵立删。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-f8f466bd369c0f16.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">   </p>
+<h5 id="电影播放器"><a href="#电影播放器" class="headerlink" title="电影播放器"></a>电影播放器</h5><p>为你提供各种在线播放的好看电影。目前电影都是欧美电影，年代较为久远，后期考虑替换，电影播放是跳转到web页面，后期会改进，通过第三方应用进行播放。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-b7e689f2109ba270.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h5 id="个性化推荐"><a href="#个性化推荐" class="headerlink" title="个性化推荐"></a>个性化推荐</h5><p>先使用行为识别监听当前状态，目前可以监听2种状态：跑步，躺下。 </p>
+<p>当处于跑步状态，使用个性化推荐产生一个音乐列表，推荐用户听音乐。</p>
+<p>当处于躺下状态，使用个性化推荐产生一个电影列表，推荐用户看电影。 </p>
+<p>该功能还在完善，很快就会实现。目前仅在登录状态后，检测用户的当前状态。</p>
+<h3 id="五、存在的问题"><a href="#五、存在的问题" class="headerlink" title="五、存在的问题"></a>五、存在的问题</h3><p>由于项目还在进行中，目前还有一些功能未实现，以及一些小的bug,后续会逐渐完善。  </p>
+<p>目前用户信息上传有些问题，个性化推荐（猜你喜欢）还未实现，音乐本地播放以及一些具体功能后续完善。</p>
+<h3 id="六、期待"><a href="#六、期待" class="headerlink" title="六、期待"></a>六、期待</h3><p>未来以上功能将会愈趋完善，敬请期待。</p>
+<p>由于很多功能还在摸索实现，可能会有Bug出现。如若这种情况，欢迎通过“关于”中“联系作者”中提供的几种方式进行反馈。</p>
+<h5 id="Github地址：https-github-com-LRH1993-SmartRecom-老铁们，喜欢就给个star。"><a href="#Github地址：https-github-com-LRH1993-SmartRecom-老铁们，喜欢就给个star。" class="headerlink" title="Github地址：https://github.com/LRH1993/SmartRecom 　　 老铁们，喜欢就给个star。"></a>Github地址：<a href="https://github.com/LRH1993/SmartRecom" target="_blank" rel="noopener">https://github.com/LRH1993/SmartRecom</a> 　　 老铁们，喜欢就给个star。</h5><h5 id="SmartRecom还在完善中，后期依旧会边做边学边分享，本文也将会持续更新，欢迎持续关注。"><a href="#SmartRecom还在完善中，后期依旧会边做边学边分享，本文也将会持续更新，欢迎持续关注。" class="headerlink" title="SmartRecom还在完善中，后期依旧会边做边学边分享，本文也将会持续更新，欢迎持续关注。"></a>SmartRecom还在完善中，后期依旧会边做边学边分享，本文也将会持续更新，欢迎持续关注。</h5>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/18/Android拍照、照片选择以及图片裁剪完全解析/" rel="next" title="Android拍照、照片选择以及图片裁剪完全解析">
+                <i class="fa fa-chevron-left"></i> Android拍照、照片选择以及图片裁剪完全解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/26/recyclerview_helper多功能封装，让你应用更加自如/" rel="prev" title="recyclerview_helper多功能封装，让你应用更加自如">
+                recyclerview_helper多功能封装，让你应用更加自如 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Github地址：SmartRecom"><span class="nav-number">1.</span> <span class="nav-text">Github地址：SmartRecom</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、屏幕截图"><span class="nav-number"></span> <span class="nav-text">一、屏幕截图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、技能学习"><span class="nav-number"></span> <span class="nav-text">二、技能学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、开源清单"><span class="nav-number"></span> <span class="nav-text">三、开源清单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、SmartRecom功能介绍"><span class="nav-number"></span> <span class="nav-text">四、SmartRecom功能介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简介"><span class="nav-number"></span> <span class="nav-text">1.简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-功能"><span class="nav-number"></span> <span class="nav-text">2.功能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#音乐播放器"><span class="nav-number">1.</span> <span class="nav-text">音乐播放器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#电影播放器"><span class="nav-number">2.</span> <span class="nav-text">电影播放器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#个性化推荐"><span class="nav-number">3.</span> <span class="nav-text">个性化推荐</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、存在的问题"><span class="nav-number"></span> <span class="nav-text">五、存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、期待"><span class="nav-number"></span> <span class="nav-text">六、期待</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Github地址：https-github-com-LRH1993-SmartRecom-老铁们，喜欢就给个star。"><span class="nav-number">1.</span> <span class="nav-text">Github地址：https://github.com/LRH1993/SmartRecom 　　 老铁们，喜欢就给个star。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SmartRecom还在完善中，后期依旧会边做边学边分享，本文也将会持续更新，欢迎持续关注。"><span class="nav-number">2.</span> <span class="nav-text">SmartRecom还在完善中，后期依旧会边做边学边分享，本文也将会持续更新，欢迎持续关注。</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

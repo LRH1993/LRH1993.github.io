@@ -1,0 +1,866 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Android设备作为一种移动设备，无论是内存还是CPU的性能都受到了很大的限制，这导致Android程序的性能问题异常突出，对于性能优化提出了更高的要求。本篇文章根据Android开发中一些有效的性能优化方法，贴出一些关于性能优化方面的技术文章，为Android开发中有关性能优化方面的学习提供一个参考。   一、Android性能优化的方面参考：《Android开发艺术探索》 针对Androi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Android性能优化，该从哪些方面入手？">
+<meta property="og:url" content="https://lrh1993.github.io/2017/03/18/关于Android性能优化，该从哪些方面入手？/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="Android设备作为一种移动设备，无论是内存还是CPU的性能都受到了很大的限制，这导致Android程序的性能问题异常突出，对于性能优化提出了更高的要求。本篇文章根据Android开发中一些有效的性能优化方法，贴出一些关于性能优化方面的技术文章，为Android开发中有关性能优化方面的学习提供一个参考。   一、Android性能优化的方面参考：《Android开发艺术探索》 针对Androi">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-e4857a2a17d569e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-7f91a67f91bf3317.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-81b81fb8ab4d92db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://segmentfault.com/img/remote/1460000006884313?w=631&h=235">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-2cb740a394402ae0.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-a1e005753b8e32a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-d51c4fec20e776cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-eab380aea4795930.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-7dda79e4c0ec6d78.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-24T05:36:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于Android性能优化，该从哪些方面入手？">
+<meta name="twitter:description" content="Android设备作为一种移动设备，无论是内存还是CPU的性能都受到了很大的限制，这导致Android程序的性能问题异常突出，对于性能优化提出了更高的要求。本篇文章根据Android开发中一些有效的性能优化方法，贴出一些关于性能优化方面的技术文章，为Android开发中有关性能优化方面的学习提供一个参考。   一、Android性能优化的方面参考：《Android开发艺术探索》 针对Androi">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-e4857a2a17d569e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/03/18/关于Android性能优化，该从哪些方面入手？/"/>
+
+
+
+
+
+  <title>关于Android性能优化，该从哪些方面入手？ | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/03/18/关于Android性能优化，该从哪些方面入手？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于Android性能优化，该从哪些方面入手？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-18T14:55:21+08:00">
+                2017-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">Android进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/03/18/关于Android性能优化，该从哪些方面入手？/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/03/18/关于Android性能优化，该从哪些方面入手？/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Android设备作为一种移动设备，无论是内存还是CPU的性能都受到了很大的限制，这导致Android程序的性能问题异常突出，对于性能优化提出了更高的要求。本篇文章根据Android开发中一些有效的性能优化方法，贴出一些关于性能优化方面的技术文章，为Android开发中有关性能优化方面的学习提供一个参考。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-e4857a2a17d569e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="一、Android性能优化的方面"><a href="#一、Android性能优化的方面" class="headerlink" title="一、Android性能优化的方面"></a>一、Android性能优化的方面</h3><p>参考：《Android开发艺术探索》</p>
+<p>针对Android的性能优化，主要有以下几个有效的优化方法：</p>
+<p>1.布局优化</p>
+<p>2.绘制优化</p>
+<p>3.内存泄漏优化</p>
+<p>4.响应速度优化</p>
+<p>5.ListView/RecycleView及Bitmap优化</p>
+<p>6.线程优化</p>
+<p>7.其他性能优化的建议</p>
+<p>下面我们具体来介绍关于以上这几个方面优化的具体思路及解决方案。</p>
+<h3 id="二、布局优化"><a href="#二、布局优化" class="headerlink" title="二、布局优化"></a>二、布局优化</h3><p> 关于布局优化的思想很简单，就是<strong>尽量减少布局文件的层级</strong>。这个道理很浅显，布局中的层级少了，就意味着Android绘制时的工作量少了，那么程序的性能自然就提高了。</p>
+<h5 id="如何进行布局优化？"><a href="#如何进行布局优化？" class="headerlink" title="如何进行布局优化？"></a>如何进行布局优化？</h5><p><strong>①删除布局中无用的控件和层次，其次有选择地使用性能比较低的ViewGroup。</strong></p>
+<p>关于有选择地使用性能比较低的ViewGroup,这就需要我们开发就实际灵活选择了。</p>
+<p>例如：如果布局中既可以使用LinearLayout也可以使用RelativeLayout，那么就采用LinearLayout，这是因为RelativeLayout的功能比较复杂，它的布局过程需要花费更多的CPU时间。FrameLayout和LinearLayout一样都是一种简单高效的ViewGroup，因此可以考虑使用它们，但是<strong>很多时候单纯通过一个LinearLayout或者FrameLayout无法实现产品效果，需要通过嵌套的方式来完成。这种情况下还是建议采用RelativeLayout,因为ViewGroup的嵌套就相当于增加了布局的层级，同样会降低程序的性能。</strong></p>
+<p><strong>②采用<include>标签,<merge>标签,ViewStub。</merge></include></strong></p>
+<p><include>标签主要用于布局重用。</include></p>
+<p><merge>标签一般和<include>配合使用，可以降低减少布局的层级。</include></merge></p>
+<p>ViewStub提供了按需加载的功能，当需要时才会将ViewStub中的布局加载到内存，提高了程序初始化效率。</p>
+<p>关于它们的使用方法，参考：<a href="http://www.sunnyang.com/418.html" target="_blank" rel="noopener">Android布局优化之include、merge、ViewStub的使用</a></p>
+<p><strong>③避免多度绘制</strong></p>
+<p>过度绘制（Overdraw）描述的是屏幕上的某个像素在同一帧的时间内被绘制了多次。在多层次重叠的 UI 结构里面，如果不可见的 UI 也在做绘制的操作，会导致某些像素区域被绘制了多次，同时也会浪费大量的 CPU 以及 GPU 资源。</p>
+<p>如下所示，有些部分在布局时，会被重复绘制。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-7f91a67f91bf3317.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>关于过度绘制产生的一般场景及解决方案，参考：<a href="http://jaeger.itscoder.com/android/2016/09/29/android-performance-overdraw.html" target="_blank" rel="noopener">Android 过度绘制优化</a></p>
+<h3 id="三、绘制优化"><a href="#三、绘制优化" class="headerlink" title="三、绘制优化"></a>三、绘制优化</h3><p>绘制优化是指<strong>View的onDraw方法要避免执行大量的操作，</strong>这主要体现在两个方面：</p>
+<p><strong>①onDraw中不要创建新的局部对象。</strong></p>
+<p>因为onDraw方法可能会被频繁调用，这样就会在一瞬间产生大量的临时对象，这不仅占用了过多的内存而且还会导致系统更加频繁gc，降低了程序的执行效率。</p>
+<p><strong>②onDraw方法中不要做耗时的任务，也不能执行成千上万次的循环操作，尽管每次循环都很轻量级，但是大量的循环仍然十分抢占CPU的时间片，这会造成View的绘制过程不流畅。</strong></p>
+<p>按照Google官方给出的性能优化典范中的标准，View的绘制频率保证60fps是最佳的，这就要求每帧绘制时间不超过16ms(16ms = 1000/60)，虽然程序很难保证16ms这个时间，但是尽量降低onDraw方法中的复杂度总是切实有效的。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-81b81fb8ab4d92db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="四、内存泄漏优化"><a href="#四、内存泄漏优化" class="headerlink" title="四、内存泄漏优化"></a>四、内存泄漏优化</h3><p>内存泄漏是开发过程中的一个需要重视的问题，但是由于内存泄露问题对开发人员的经验和开发意识有较高的要求，因此也是开发人员最容易犯的错误之一。</p>
+<p>内存泄露的优化分为两个方面：</p>
+<p><strong>①在开发过程中避免写出有内存泄漏的代码</strong></p>
+<p><strong>②通过一些分析工具比如MAT来找出潜在的内存泄露，然后解决。</strong></p>
+<p>对应于两种不同情况，一个是了解内存泄漏的可能场景以及如何规避，二是怎么查找内存泄漏。</p>
+<h4 id="1-那么我们就先了解什么是内存泄漏-这样我们才能知道如何避免。"><a href="#1-那么我们就先了解什么是内存泄漏-这样我们才能知道如何避免。" class="headerlink" title="1.那么我们就先了解什么是内存泄漏?这样我们才能知道如何避免。"></a>1.那么我们就先了解什么是内存泄漏?这样我们才能知道如何避免。</h4><p>大家都知道，java是有垃圾回收机制的，这使得java程序员比C++程序员轻松了许多，存储申请了，不用心心念念要加一句释放，java虚拟机会派出一些回收线程兢兢业业不定时地回收那些不再被需要的内存空间（注意回收的不是对象本身，而是对象占据的内存空间）。</p>
+<p><strong>Q1：什么叫不再被需要的内存空间？</strong></p>
+<p><strong>答：</strong>Java没有指针，全凭引用来和对象进行关联，通过引用来操作对象。如果一个对象没有与任何引用关联，那么这个对象也就不太可能被使用到了，回收器便是把这些“无任何引用的对象”作为目标，回收了它们占据的内存空间。</p>
+<p><strong>Q2：如何分辨为对象无引用？</strong></p>
+<p><strong>答：</strong>2种方法</p>
+<p><strong>引用计数法</strong>直接计数，简单高效，Python便是采用该方法。但是如果出现 两个对象相互引用，即使它们都无法被外界访问到，计数器不为0它们也始终不会被回收。为了解决该问题，java采用的是b方法。</p>
+<p><strong>可达性分析法</strong>这个方法设置了一系列的“GC Roots”对象作为索引起点，如果一个对象 与起点对象之间均无可达路径，那么这个不可达的对象就会成为回收对象。这种方法处理 两个对象相互引用的问题，如果两个对象均没有外部引用，会被判断为不可达对象进而被回收（如下图）。<br><img src="https://segmentfault.com/img/remote/1460000006884313?w=631&amp;h=235" alt=""><br><strong>Q3：有了回收机制，放心大胆用不会有内存泄漏？</strong></p>
+<p><strong>答：</strong>答案当然是No！</p>
+<p>虽然垃圾回收器会帮我们干掉大部分无用的内存空间，但是对于还保持着引用，但逻辑上已经不会再用到的对象，垃圾回收器不会回收它们。这些对象积累在内存中，直到程序结束，就是我们所说的“内存泄漏”。<br>当然了，用户对单次的内存泄漏并没有什么感知，但当泄漏积累到内存都被消耗完，就会导致卡顿，崩溃。</p>
+<p>下面这张图可以帮助我们更好地理解对象的状态，以及内存泄漏的情况<br><img src="http://upload-images.jianshu.io/upload_images/3985563-2cb740a394402ae0.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>左边未引用的对象是会被GC回收的，右边被引用的对象不会被GC回收，但是未使用的对象中除了未引用的对象，还包括已被引用的一部分对象，那么内存泄漏久发生这部分已被引用但未使用的对象。</p>
+<h4 id="2-Android一般在什么情况下会出现内存泄漏？"><a href="#2-Android一般在什么情况下会出现内存泄漏？" class="headerlink" title="2.Android一般在什么情况下会出现内存泄漏？"></a>2.Android一般在什么情况下会出现内存泄漏？</h4><p>①集合类泄漏<br>②单例/静态变量造成的内存泄漏<br>③匿名内部类/非静态内部类<br>④资源未关闭造成的内存泄漏</p>
+<p>大概可以分为以上几类，还有一些经常会听到的Hanlder,AsyncTask引起内存泄漏，都属于上述③中的情况。</p>
+<p>那么上述四种情况是怎么造成的内存泄漏，具体是什么原因，以及Android中一些知名的引起内存泄漏的原因，以及解决方法是怎么样的？</p>
+<p>关于这部分内容，看了一些较好的文章，向大家推荐一下：</p>
+<p><a href="http://www.jianshu.com/p/ac00e370f83d" target="_blank" rel="noopener">[译]Android内存泄漏的八种可能（上）</a><br><a href="http://www.jianshu.com/p/c5ac51d804fa" target="_blank" rel="noopener">[译]Android防止内存泄漏的八种方法（下）</a><br><a href="https://yq.aliyun.com/articles/3009" target="_blank" rel="noopener">Android 内存泄漏总结</a></p>
+<h3 id="3-Android怎么分析内存泄漏？"><a href="#3-Android怎么分析内存泄漏？" class="headerlink" title="3.Android怎么分析内存泄漏？"></a>3.Android怎么分析内存泄漏？</h3><p>上面介绍了内存泄漏的场景，对应的有一些解决方案。</p>
+<p>那么在内存泄漏已经发生的情况下，我们该如何解决呢？</p>
+<p>我们可以通过MAT(Memory Analyzer Tool)，或者 LeakCanary来检测Android中的内存泄漏。</p>
+<p>上面的文章：<a href="https://yq.aliyun.com/articles/3009" target="_blank" rel="noopener">Android 内存泄漏总结</a> 也介绍了如何使用MAT，或者 LeakCanary来检测Android中的内存泄漏。</p>
+<p>这篇文章<a href="http://blog.csdn.net/xiaanming/article/details/42396507" target="_blank" rel="noopener">Android 性能优化之使用MAT分析内存泄露问题</a>详细介绍了使用MAT来检测Android中的内存泄漏。</p>
+<h3 id="五、响应速度优化"><a href="#五、响应速度优化" class="headerlink" title="五、响应速度优化"></a>五、响应速度优化</h3><p>响应速度优化的核心思想就是<strong>避免在主线程中做耗时操作</strong>。</p>
+<p>如果有耗时操作，可以开启子线程执行，即采用异步的方式来执行耗时操作。</p>
+<p>如果在主线程中做太多事情，会导致Activity启动时出现黑屏现象，甚至ANR。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-a1e005753b8e32a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>Android规定，Activity如果5秒钟之内无法响应屏幕触摸事件或者键盘输入事件就会出现ANR，而BroadcastReceiver如果10秒钟之内还未执行完操作也会出现ANR。</strong></p>
+<p>为了避免ANR，可以开启子线程执行耗时操作，但是子线程不能更新UI，所以需要子线程与主线程进行通信来解决子线程执行耗时任务后，通知主线程更新UI的场景。关于这部分，需要掌握Handler消息机制，AsyncTask，IntentService等内容。</p>
+<p>可以看以下内容：<br><a href="http://www.jianshu.com/p/f10cff5b4c25" target="_blank" rel="noopener">Android消息机制的原理及源码解析</a><br><a href="http://www.jianshu.com/p/817a34a5f200" target="_blank" rel="noopener">Android中的线程状态之AsyncTask详解</a><br><a href="http://www.jianshu.com/p/8a3c44a9173a" target="_blank" rel="noopener">Android多线程全面解析：IntentService用法&amp;源码</a></p>
+<p>然而，在实际开发中，ANR仍然不可避免的发生了，而且很难从代码上发现，这时候就要用到ANR日志分析。当一个进程发生了ANR之后，系统会在/data/anr目录下创建一个文件traces.txt，通过分析这个文件就能定位出ANR的原因。</p>
+<h3 id="六、ListView-RecycleView及Bitmap优化"><a href="#六、ListView-RecycleView及Bitmap优化" class="headerlink" title="六、ListView/RecycleView及Bitmap优化"></a>六、ListView/RecycleView及Bitmap优化</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-d51c4fec20e776cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>ListView/RecycleView的优化思想主要从以下几个方面入手：</strong></p>
+<p>①使用ViewHolder模式来提高效率</p>
+<p>②异步加载：耗时的操作放在异步线程中</p>
+<p>③ListView/RecycleView的滑动时停止加载和分页加载</p>
+<p>具体优化建议及详情，参考：<a href="http://www.jianshu.com/p/f0408a0f0610" target="_blank" rel="noopener">ListView的优化</a></p>
+<p><strong>Bitmap优化</strong></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-eab380aea4795930.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>主要是对加载图片进行压缩，避免加载图片多大导致OOM出现。</p>
+<p>具体图片压缩方案，参考:<a href="http://www.jianshu.com/p/5f02db4a225d" target="_blank" rel="noopener">彻底理解Bitmap的高效加载策略</a></p>
+<h3 id="七、线程优化"><a href="#七、线程优化" class="headerlink" title="七、线程优化"></a>七、线程优化</h3><p>线程优化的思想就是<strong>采用线程池，避免程序中存在大量的Thread。</strong>线程池可以重用内部的线程，从而避免了线程的创建和销毁锁带来的性能开销，同时线程池还能有效地控制线程池的最大并法术，避免大量的线程因互相抢占系统资源从而导致阻塞现象的发生。因此在实际开发中，尽量采用线程池，而不是每次都要创建一个Thread对象。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-7dda79e4c0ec6d78.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>关于线程池详解及使用，参考：<a href="http://www.jianshu.com/p/47e903ab1bec" target="_blank" rel="noopener">Java线程池详解</a>。</p>
+<h3 id="八、其他性能优化建议"><a href="#八、其他性能优化建议" class="headerlink" title="八、其他性能优化建议"></a>八、其他性能优化建议</h3><p>①避免过度的创建对象</p>
+<p>②不要过度使用枚举，枚举占用的内存空间要比整型大</p>
+<p>③常量请使用static final来修饰</p>
+<p>④使用一些Android特有的数据结构，比如SparseArray和Pair等</p>
+<p>⑤适当采用软引用和弱引用</p>
+<p>⑥采用内存缓存和磁盘缓存</p>
+<p>⑦尽量采用静态内部类，这样可以避免潜在的由于内部类而导致的内存泄漏。</p>
+<p>以上是关于Android性能优化方面，我们一些入手点。从这些方面，我们可以在平时的开发中注意，避免类似错误，提高Android程序的性能，但是其中一些方面的要求则需要我们不断的学习，以及平时良好的意识与习惯。由于自己开发经验几乎为0，没办法根据实际经验来说明，只能写下这篇文章来提醒自己以后开发的时候需要注意和培养的地方。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/15/一次完整的HTTP请求与响应涉及了哪些知识？/" rel="next" title="一次完整的HTTP请求与响应涉及了哪些知识？">
+                <i class="fa fa-chevron-left"></i> 一次完整的HTTP请求与响应涉及了哪些知识？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/20/那些年，我们被问到的数据结构/" rel="prev" title="那些年，我们被问到的数据结构">
+                那些年，我们被问到的数据结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Android性能优化的方面"><span class="nav-number">1.</span> <span class="nav-text">一、Android性能优化的方面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、布局优化"><span class="nav-number">2.</span> <span class="nav-text">二、布局优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#如何进行布局优化？"><span class="nav-number">2.0.1.</span> <span class="nav-text">如何进行布局优化？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、绘制优化"><span class="nav-number">3.</span> <span class="nav-text">三、绘制优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、内存泄漏优化"><span class="nav-number">4.</span> <span class="nav-text">四、内存泄漏优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-那么我们就先了解什么是内存泄漏-这样我们才能知道如何避免。"><span class="nav-number">4.1.</span> <span class="nav-text">1.那么我们就先了解什么是内存泄漏?这样我们才能知道如何避免。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Android一般在什么情况下会出现内存泄漏？"><span class="nav-number">4.2.</span> <span class="nav-text">2.Android一般在什么情况下会出现内存泄漏？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Android怎么分析内存泄漏？"><span class="nav-number">5.</span> <span class="nav-text">3.Android怎么分析内存泄漏？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、响应速度优化"><span class="nav-number">6.</span> <span class="nav-text">五、响应速度优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、ListView-RecycleView及Bitmap优化"><span class="nav-number">7.</span> <span class="nav-text">六、ListView/RecycleView及Bitmap优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、线程优化"><span class="nav-number">8.</span> <span class="nav-text">七、线程优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、其他性能优化建议"><span class="nav-number">9.</span> <span class="nav-text">八、其他性能优化建议</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

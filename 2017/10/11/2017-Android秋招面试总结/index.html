@@ -1,0 +1,859 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一个多月没有更新博客了，一直在忙着找工作。现在已经尘埃落定，最终选择了网易。 这篇文章主要总结一下自己秋招的经历与准备。  一、经历 1.学习经历作为一个双非渣硕非CS专业的应届生，接触并学习Android开发也就是最近一年多的时间，不过好在没走太多的弯路。 从去年暑假开始看视频学习Android，刚开始感觉自己很笨，出个小问题就懵逼了，往往鼓捣一天都毫无头绪，不过后来随着对理论的学习就变得好很">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017 Android秋招面试总结">
+<meta property="og:url" content="https://lrh1993.github.io/2017/10/11/2017-Android秋招面试总结/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="一个多月没有更新博客了，一直在忙着找工作。现在已经尘埃落定，最终选择了网易。 这篇文章主要总结一下自己秋招的经历与准备。  一、经历 1.学习经历作为一个双非渣硕非CS专业的应届生，接触并学习Android开发也就是最近一年多的时间，不过好在没走太多的弯路。 从去年暑假开始看视频学习Android，刚开始感觉自己很笨，出个小问题就懵逼了，往往鼓捣一天都毫无头绪，不过后来随着对理论的学习就变得好很">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-8e7bd957dec4efb1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-9a7b2edbadac9041.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-a0c2013e4131bcea.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-10-25T11:45:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2017 Android秋招面试总结">
+<meta name="twitter:description" content="一个多月没有更新博客了，一直在忙着找工作。现在已经尘埃落定，最终选择了网易。 这篇文章主要总结一下自己秋招的经历与准备。  一、经历 1.学习经历作为一个双非渣硕非CS专业的应届生，接触并学习Android开发也就是最近一年多的时间，不过好在没走太多的弯路。 从去年暑假开始看视频学习Android，刚开始感觉自己很笨，出个小问题就懵逼了，往往鼓捣一天都毫无头绪，不过后来随着对理论的学习就变得好很">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-8e7bd957dec4efb1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/10/11/2017-Android秋招面试总结/"/>
+
+
+
+
+
+  <title>2017 Android秋招面试总结 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/10/11/2017-Android秋招面试总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2017 Android秋招面试总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-11T17:44:53+08:00">
+                2017-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/10/11/2017-Android秋招面试总结/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/10/11/2017-Android秋招面试总结/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>一个多月没有更新博客了，一直在忙着找工作。现在已经尘埃落定，最终选择了网易。 这篇文章主要总结一下自己秋招的经历与准备。</p>
+</blockquote>
+<h3 id="一、经历"><a href="#一、经历" class="headerlink" title="一、经历"></a>一、经历</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-8e7bd957dec4efb1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="1-学习经历"><a href="#1-学习经历" class="headerlink" title="1.学习经历"></a>1.学习经历</h4><p>作为一个双非渣硕非CS专业的应届生，接触并学习Android开发也就是最近一年多的时间，不过好在没走太多的弯路。</p>
+<p>从去年暑假开始看视频学习Android，刚开始感觉自己很笨，出个小问题就懵逼了，往往鼓捣一天都毫无头绪，不过后来随着对理论的学习就变得好很多了。到16年11月份，开始看一些Java和Android方面的书籍，如《深入理解Java虚拟机》、《Android开发艺术探索》等。看了几本书后，感觉基础掌握的并不牢靠，实践能力薄弱，所以到了17年1月份后开始写技术博客和做练手项目。不得不说写作技术博客对技术的提升很快，其中的益处切身体会更能理解。而自己做一些练手项目，既增强自己的实践能力，同时提高了自身的竞争力。因为并不是科班出身，所以实践的机会很少。自己做的一些项目，虽然low一些，不过挖掘几个技术点，同时加入点项目趣味性，还是可以在面试中帮你增色不少。</p>
+<p>以上大概就是自己从接触Android以来的学习过程，可能和多数人的历程一致，不过一步一个脚印，踏踏实实低走下来还是很有收获的。</p>
+<h4 id="2-实习经历"><a href="#2-实习经历" class="headerlink" title="2.实习经历"></a>2.实习经历</h4><p>今年3月份开始找暑期实习，历经两个月的时间，最终去今日头条实习。</p>
+<p>关于暑期实习面试的经验，可以看这篇文章：<a href="http://lruheng.com/2017/05/09/2017-Android%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E7%94%9F%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C%E8%B0%88/" target="_blank" rel="noopener">2017 Android暑期实习生面试经验谈</a></p>
+<p>在头条实习的这段时间，进步很大，了解到了很多东西。从产品的开发流程，到android的各个技术方面。了解了一款商业级产品开发的方方面面，这是自己平时做项目永远也无法接触到的，也是平台所带给的优势。不得不说，头条的技术氛围很不错。</p>
+<p>由于各方面原因，更倾向于到杭州生活，所以在8月中下旬不得不离开了头条，开启了秋招之路。另外多说几句，现在一些一二线大厂越来越注重暑期实习生的招聘，转正留用的概率也很大。同时暑期实习招聘相对于秋招来说，难度与竞争也要小很多，所以学弟学妹们还是尽量早作准备，争取在暑期实习招聘就能拿到意向公司的offer。即便没有拿到意向offer，也要多去尝试，刷点面试经验，同时一份不错的实习经历也为你的秋招增加更多的筹码。</p>
+<h4 id="3-秋招经历"><a href="#3-秋招经历" class="headerlink" title="3.秋招经历"></a>3.秋招经历</h4><p>8月底开始海投简历，到这个时候才知道秋招的残酷。BAT从七月就开始内推，8月底内推都结束了…… 海投简历，狂做笔试，奔波面试，基本整个九月就是这样过来的。粗略估计应该投了三四十家公司，9月15号之前基本一天两场甚至三场笔试。20-30号之间就开始了疯狂面试，一天一场或两场。有时候一天两场现场面试，打时间差各种奔波，身体和精神都很疲惫。</p>
+<p>幸好结果还不错，在十一之前结束了秋招。整个秋招的面试经历大致如下：</p>
+<ul>
+<li>滴滴、腾讯 笔试挂</li>
+<li>金山云   工作地点原因没参加二面</li>
+<li>京东、趋势科技     二面挂</li>
+<li>大疆、b站 要求上海现场面，没去参加终面   </li>
+<li>网易、美团、360、CVTE、中兴、苏宁、有赞、51信用卡、贝贝、东方财富 offer</li>
+</ul>
+<p>还有一些没去面试或者没做笔试。其中，阿里内推截止前投了一下，还投错部门了，草草地面了十几分钟就给回绝了，校招笔试也没过，很遗憾。由于想去杭州，所以基本杭州的一些大小公司都面了个遍…….</p>
+<h3 id="二、准备"><a href="#二、准备" class="headerlink" title="二、准备"></a>二、准备</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-9a7b2edbadac9041.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>关于面经，网上有很多，也都大同小异，核心知识点都差不多。自己在秋招的过程中也总结了一下，暂时还没完成，不过也快了，接下来几天会系统整理下。正在找工作的小伙伴可以参考一下，下面附上地址：</p>
+<p>GIthub地址:<a href="https://github.com/LRH1993/android_interview" target="_blank" rel="noopener">https://github.com/LRH1993/android_interview</a></p>
+<p>Gitbook地址:<a href="https://www.gitbook.com/book/lrh1993/android_interview_guide/details" target="_blank" rel="noopener">https://www.gitbook.com/book/lrh1993/android_interview_guide/details</a></p>
+<p>下面主要介绍下，针对秋招，自己所做的准备。主要涉及以下方面:</p>
+<p><strong>Java</strong></p>
+<ul>
+<li>Java基础</li>
+<li>Java并发</li>
+<li>Java虚拟机</li>
+</ul>
+<p><strong>Android</strong></p>
+<ul>
+<li>Android基础</li>
+<li>Android进阶</li>
+<li>开源框架</li>
+</ul>
+<p><strong>数据结构</strong></p>
+<ul>
+<li>线性表</li>
+<li>栈和队</li>
+<li>树</li>
+<li>图</li>
+<li>散列查找</li>
+<li>排序</li>
+<li>海量数据处理</li>
+</ul>
+<p><strong>算法</strong></p>
+<ul>
+<li>剑指offer</li>
+<li>LeetCode</li>
+</ul>
+<p><strong>设计模式</strong></p>
+<ul>
+<li>创建型模式</li>
+<li>结构型模式</li>
+<li>行为型模式</li>
+</ul>
+<p><strong>计算机网络</strong></p>
+<ul>
+<li>TCP/IP</li>
+<li>HTTP</li>
+<li>HTTPS</li>
+</ul>
+<p><strong>操作系统</strong></p>
+<ul>
+<li>概述</li>
+<li>进程与线程</li>
+<li>内存管理</li>
+</ul>
+<p><strong>数据库</strong></p>
+<ul>
+<li>SQL语句</li>
+</ul>
+<p>关于以上内容，上面给出的两个链接中都有整理。不过也不要盲目为面试做准备，要想要打好基础，还是要多看看相关的书籍和博客。</p>
+<p>关于书籍，在学习的过程中，主要看了这么几本：《疯狂Java讲义》、《深入理解Java虚拟机》、《Head First 设计模式》、《Android群英传》、《Android开发艺术探索》、《大话数据结构》等。</p>
+<p>关于博客，在学习的过程中，主要关注了几位大佬：<a href="http://blog.csdn.net/lmj623565791" target="_blank" rel="noopener">Hongyang</a>、<a href="http://gityuan.com/" target="_blank" rel="noopener">Gityuan</a>、<a href="https://blog.piasy.com/" target="_blank" rel="noopener">Piasy</a>、<a href="http://www.jianshu.com/u/90ab66c248e6" target="_blank" rel="noopener">占小狼</a>等。</p>
+<p>除此之外，还有一项重要内容，就是准备相关项目。对于项目的准备，还需要自行包装，突出亮点。对于新手而言，可参考这篇文章：<a href="http://www.jianshu.com/p/052d69d72c96" target="_blank" rel="noopener">Android新手如何学习开发一款app?</a></p>
+<h3 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-a0c2013e4131bcea.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>2017年大约半年的时间都在准备找工作与找工作的过程中，很特别的一段历程。</p>
+<p>以过来人的身份提个建议：早作准备，锁定暑期实习，尽量避免秋招，说多了都是泪……</p>
+<p>学习技术的脚步不能停，接下来把面试的相关东西整理一下，继续储备知识为工作而准备！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/30/Android图文混排实现方式详解/" rel="next" title="Android图文混排实现方式详解">
+                <i class="fa fa-chevron-left"></i> Android图文混排实现方式详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/17/一篇文章，全面总结Android面试知识点/" rel="prev" title="一篇文章，全面总结Android面试知识点">
+                一篇文章，全面总结Android面试知识点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、经历"><span class="nav-number">1.</span> <span class="nav-text">一、经历</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-学习经历"><span class="nav-number">1.1.</span> <span class="nav-text">1.学习经历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-实习经历"><span class="nav-number">1.2.</span> <span class="nav-text">2.实习经历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-秋招经历"><span class="nav-number">1.3.</span> <span class="nav-text">3.秋招经历</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、准备"><span class="nav-number">2.</span> <span class="nav-text">二、准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、总结"><span class="nav-number">3.</span> <span class="nav-text">三、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

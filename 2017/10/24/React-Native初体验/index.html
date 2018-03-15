@@ -1,0 +1,847 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="混合开发一直都比较想接触的技术，所以这几天就学习了下React Native的配置及JavaScript的基础，体验一把混合开发的魅力。  一、React Native介绍 Learn once，Write anywhere  以下内容来自：React Native - 入门介绍（起源、特点、与其它移动技术的比较） 1、起源（1）Native App 优点是功能强大、性能优越。但终究是受制于苹果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native初体验">
+<meta property="og:url" content="https://lrh1993.github.io/2017/10/24/React-Native初体验/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="混合开发一直都比较想接触的技术，所以这几天就学习了下React Native的配置及JavaScript的基础，体验一把混合开发的魅力。  一、React Native介绍 Learn once，Write anywhere  以下内容来自：React Native - 入门介绍（起源、特点、与其它移动技术的比较） 1、起源（1）Native App 优点是功能强大、性能优越。但终究是受制于苹果">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-4aafa62e95e059a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-10-25T11:50:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native初体验">
+<meta name="twitter:description" content="混合开发一直都比较想接触的技术，所以这几天就学习了下React Native的配置及JavaScript的基础，体验一把混合开发的魅力。  一、React Native介绍 Learn once，Write anywhere  以下内容来自：React Native - 入门介绍（起源、特点、与其它移动技术的比较） 1、起源（1）Native App 优点是功能强大、性能优越。但终究是受制于苹果">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-4aafa62e95e059a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/10/24/React-Native初体验/"/>
+
+
+
+
+
+  <title>React Native初体验 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/10/24/React-Native初体验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React Native初体验</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T20:54:53+08:00">
+                2017-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-Native/" itemprop="url" rel="index">
+                    <span itemprop="name">React Native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/10/24/React-Native初体验/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/10/24/React-Native初体验/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>混合开发一直都比较想接触的技术，所以这几天就学习了下React Native的配置及JavaScript的基础，体验一把混合开发的魅力。</p>
+</blockquote>
+<h2 id="一、React-Native介绍"><a href="#一、React-Native介绍" class="headerlink" title="一、React Native介绍"></a>一、React Native介绍</h2><blockquote>
+<p>Learn once，Write anywhere</p>
+</blockquote>
+<p>以下内容来自：<a href="http://www.hangge.com/blog/cache/detail_1458.html" target="_blank" rel="noopener">React Native - 入门介绍（起源、特点、与其它移动技术的比较）</a></p>
+<h3 id="1、起源"><a href="#1、起源" class="headerlink" title="1、起源"></a>1、起源</h3><p>（1）Native App 优点是功能强大、性能优越。但终究是受制于苹果，而且多版本维护十分痛苦。</p>
+<p>（2）为了不受苹果掌控，Facebook 曾花费大量的人力物力进行移动 HTML5 技术研发。虽然有些成果，但始终离 Native App 有差距，而且这个差距可能永远赶不上。</p>
+<p>（3）2012年9月，Facebook 方面承认“Betting on HTML5 was a mistake.”。便放弃移动 HTML5，全力转型 Native App 开发。</p>
+<p>（4）在转型 Native App 开发后，Facebook 内部其实还在研发一种新的移动技术，并开始使用这种技术开发内部 App。这个技术便是 React Native。</p>
+<p>（5）2015年3月，Facebook 正式公开发布 React Native，并将该技术开源。虽然当时开发平台仅支持 Mac OS，部署也仅支持 iOS 平台。</p>
+<p>（6）2015年9月15日，Facebook 发布了 React Native for Android，把 Web 和原生平台的 JavaScript 开发技术扩展到了 Google 的流行移动平台 Android 上。至此，React Native 实现了跨平台的特性。</p>
+<p><a href="http://www.hangge.com/blog/cache/detail_1458.html#" target="_blank" rel="noopener"><img src="http://upload-images.jianshu.io/upload_images/3985563-4aafa62e95e059a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="原文:React Native - 入门介绍（起源、特点、与其它移动技术的比较）"></a></p>
+<h3 id="2、React、React-js、React-Native三者的联系"><a href="#2、React、React-js、React-Native三者的联系" class="headerlink" title="2、React、React.js、React Native三者的联系"></a>2、React、React.js、React Native三者的联系</h3><ul>
+<li>React 是基础框架,提供了一套基础设计实现理念。</li>
+<li>React.js 是在 React 理念的指导下产生的专门用来开发网页的 web 前端框架。与 React 同时出现和发展，React 的相关概念都在 React.js 文档中。</li>
+<li>React Native 是用来开发移动端 app 的。只不过是用了 React.js 那套模式，而底层是对 Native Code 的封装及调用。</li>
+</ul>
+<h3 id="3、React-Native与其它移动技术的比较"><a href="#3、React-Native与其它移动技术的比较" class="headerlink" title="3、React Native与其它移动技术的比较"></a>3、React Native与其它移动技术的比较</h3><p>在 React Native 出现前，我们通常会选择这三种移动技术（Native App、HTML5、Hybrid）之一进行开发。</p>
+<ul>
+<li>Native App：开发原生应用自然性能最好，功能强大。但多平台版本的开发、维护要花费大量的人力物力。</li>
+<li>HTML5：虽然有 Web 的优势，即灵活的布局能力、免发版的敏捷迭代潜力、优秀的跨平台特性。在新闻资讯等一些强排版、弱交互的展示类 App 上大展拳脚。但由于 WebView 在移动设备上的性能制约，始终难成大器，这也是 Facebook 放弃其的原因。</li>
+<li><p>Hybrid：以 Cordova（PhoneGap）为代表的 Hybrid 方式集 Native App 和 Web 优点于一体，使二者相互补短。</p>
+<p>而 React Native 思想与上面三者都不一样。它的底层引擎是 JavaScript Core，但调用的是原生的组件而非 HTML5 组件。这样运行时可以做到与 Navive App 相媲美的性能体验，同时因为 JavaScript 代码可以使用后端强大的 Web 方式管理，既可以做到高效开发，也可以实现快速部署和问题热修复。</p>
+</li>
+</ul>
+<h3 id="4、React-Native的优点"><a href="#4、React-Native的优点" class="headerlink" title="4、React Native的优点"></a>4、React Native的优点</h3><p>（1）性能媲美原生应用</p>
+<p>由于 React Native 提供的组件是对原生 API 的暴露。虽然我们是用 js 写的代码，但实际上调用的是原生 API，原生的 UI 组件。体验上足以媲美原生应用。</p>
+<p>（2）开发效率高</p>
+<p>相比于原生开发，js 学习成本低、语法灵活。允许让 Web 开发者更多地基于现有经验开发 App。</p>
+<p>（3）组件化开发</p>
+<p>React 强调将应用划分成多个互不相关的组件，每个组件作为一个独立的视图。这种类似搭积木的开发方式使得代码结构清晰、通用性高、可移植性高。上一个项目的某些组件，可以很方便地拿来在下一个项目中使用。对于那些优秀的第三方组件，也能很方便地集成到我们项目中来。</p>
+<p>（4）节约开发成本</p>
+<p>百分之90多界面可以通过 React Native 开发，一份代码同时可以适配 Android 和 iOS。并通过一些手段自动匹配不同屏幕大小的手机，再也不需要自己去计算视图的大小和位置。</p>
+<p>（5）实时远程调试</p>
+<p>React Native 的调试比 Cordova 不知道好到哪里去了。开启了实时重载之后，代码一改，app 就自动更新成最新，对于 UI 的搭建简直是省了不少的编译时间。同时可以打开 XCode 实时的看到所有的 log 信息。</p>
+<p>（6）代码热部署</p>
+<p>我们知道 AppStore 审核流程超级久。而由于 React Native 是用的 js 来写的代码，实时编译的过程能让我们实现应用像网页一样做到热更新，随时发布。真正能够做到上架审核一次，永久 0 审核更新。</p>
+<p>（7）有效降低移动应用安装包体积</p>
+<p>对于普通复杂度的移动应用，使用 React Native 实现的安装包会比原生代码实现的安装包大。而当移动应用功能越复杂，React Native 安装包体积相比原生代码安装包就越小。</p>
+<p>比如当原生代码实现的安装包大于 15MB 时，使用 React Native 改写代码后，安装包就小于原生代码实现的安装包。</p>
+<h2 id="二、环境配置"><a href="#二、环境配置" class="headerlink" title="二、环境配置"></a>二、环境配置</h2><p>基于macOS进行配置。</p>
+<h3 id="1-安装软件"><a href="#1-安装软件" class="headerlink" title="1.安装软件"></a>1.安装软件</h3><p><strong>Homebrew</strong></p>
+<p>Mac系统的包管理器，用于安装NodeJS和一些其他必需的工具软件。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/<span class="keyword">install</span>/<span class="keyword">master</span>/<span class="keyword">install</span>)<span class="string">"</span></span><br></pre></td></tr></table></figure>
+<p><strong>Node</strong></p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install <span class="keyword">node</span><span class="title"></span></span><br></pre></td></tr></table></figure>
+<p>安装完node后建议设置npm镜像以加速后面的过程（或使用科学上网工具）。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> config set registry https:<span class="regexp">//</span>registry.<span class="built_in">npm</span>.taobao.org --<span class="built_in">global</span></span><br><span class="line"><span class="built_in">npm</span> config set disturl https:<span class="regexp">//</span><span class="built_in">npm</span>.taobao.org/dist --<span class="built_in">global</span></span><br></pre></td></tr></table></figure>
+<p><strong>React Native命令行工具</strong></p>
+<p>React Native的命令行工具用于执行创建、初始化、更新项目、运行打包服务（packager）等任务。</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> install -g react-<span class="keyword">native</span>-cli</span><br></pre></td></tr></table></figure>
+<p><strong>Watchman</strong></p>
+<p>由Facebook提供的监视文件系统变更的工具。安装此工具可以提高开发时的性能（packager可以快速捕捉文件的变化从而实现实时刷新）。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>watchman</span><br></pre></td></tr></table></figure>
+<p><strong>Flow</strong></p>
+<p>一个 JavaScript 的静态类型检查器，建议安装它，以方便找出代码中可能存在的类型错误 </p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>flow</span><br></pre></td></tr></table></figure>
+<p><strong>WebStorm</strong><br>一款非常优秀的Web开发工具，同样支持React Native开发。<br>下载地址：<a href="https://www.jetbrains.com/webstorm/" target="_blank" rel="noopener">https://www.jetbrains.com/webstorm/</a>  </p>
+<p><strong>Android及iOS开发必备</strong></p>
+<ul>
+<li>Android Studio</li>
+<li>Genymotion</li>
+<li>Xcode</li>
+</ul>
+<h3 id="2-测试安装"><a href="#2-测试安装" class="headerlink" title="2.测试安装"></a>2.测试安装</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">react-native init FirstApp</span><br><span class="line">cd FirstApp</span><br><span class="line">react-native <span class="keyword">run</span><span class="bash">-android</span></span><br><span class="line"><span class="bash">react-native run-ios</span></span><br></pre></td></tr></table></figure>
+<p>到此，就可以分别在Android和iOS平台上运行项目。自己在配置过程中，也出现了一些坑。如果配置过程中出现问题，建议google查一下相关解决方案。</p>
+<h2 id="三、预备知识"><a href="#三、预备知识" class="headerlink" title="三、预备知识"></a>三、预备知识</h2><ul>
+<li>JavaScript：<a href="https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000" target="_blank" rel="noopener">JavaScript教程</a></li>
+<li>ES6：<a href="http://es6.ruanyifeng.com/" target="_blank" rel="noopener">ECMAScript 6 入门</a></li>
+</ul>
+<p>准备好这些，终于可以开始学习React Native。目前看React Native还很神秘，接下来继续努力，揭开它神秘的面纱。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/17/一篇文章，全面总结Android面试知识点/" rel="next" title="一篇文章，全面总结Android面试知识点">
+                <i class="fa fa-chevron-left"></i> 一篇文章，全面总结Android面试知识点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/27/CSS定位属性详解/" rel="prev" title="CSS定位属性详解">
+                CSS定位属性详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、React-Native介绍"><span class="nav-number">1.</span> <span class="nav-text">一、React Native介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、起源"><span class="nav-number">1.1.</span> <span class="nav-text">1、起源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、React、React-js、React-Native三者的联系"><span class="nav-number">1.2.</span> <span class="nav-text">2、React、React.js、React Native三者的联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、React-Native与其它移动技术的比较"><span class="nav-number">1.3.</span> <span class="nav-text">3、React Native与其它移动技术的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、React-Native的优点"><span class="nav-number">1.4.</span> <span class="nav-text">4、React Native的优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、环境配置"><span class="nav-number">2.</span> <span class="nav-text">二、环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装软件"><span class="nav-number">2.1.</span> <span class="nav-text">1.安装软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-测试安装"><span class="nav-number">2.2.</span> <span class="nav-text">2.测试安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、预备知识"><span class="nav-number">3.</span> <span class="nav-text">三、预备知识</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

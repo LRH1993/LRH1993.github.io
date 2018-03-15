@@ -1,0 +1,792 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在JAVA并发编程中，我们使用锁来确保可变共享变量的安全性。要注意的是，不正确的使用锁很容易导致死锁。本篇文章转载自：JAVA并发-3种典型的死锁  一、死锁产生的条件一般来说，要出现死锁问题需要满足以下条件：  互斥条件：一个资源每次只能被一个线程使用。 请求与保持条件：一个线程因请求资源而阻塞时，对已获得的资源保持不放。 不剥夺条件：线程已获得的资源，在未使用完之前，不能强行剥夺。 循环等待">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发——三种典型的死锁">
+<meta property="og:url" content="https://lrh1993.github.io/2017/03/03/Java并发——三种典型的死锁/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="在JAVA并发编程中，我们使用锁来确保可变共享变量的安全性。要注意的是，不正确的使用锁很容易导致死锁。本篇文章转载自：JAVA并发-3种典型的死锁  一、死锁产生的条件一般来说，要出现死锁问题需要满足以下条件：  互斥条件：一个资源每次只能被一个线程使用。 请求与保持条件：一个线程因请求资源而阻塞时，对已获得的资源保持不放。 不剥夺条件：线程已获得的资源，在未使用完之前，不能强行剥夺。 循环等待">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-05-24T03:29:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java并发——三种典型的死锁">
+<meta name="twitter:description" content="在JAVA并发编程中，我们使用锁来确保可变共享变量的安全性。要注意的是，不正确的使用锁很容易导致死锁。本篇文章转载自：JAVA并发-3种典型的死锁  一、死锁产生的条件一般来说，要出现死锁问题需要满足以下条件：  互斥条件：一个资源每次只能被一个线程使用。 请求与保持条件：一个线程因请求资源而阻塞时，对已获得的资源保持不放。 不剥夺条件：线程已获得的资源，在未使用完之前，不能强行剥夺。 循环等待">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/03/03/Java并发——三种典型的死锁/"/>
+
+
+
+
+
+  <title>Java并发——三种典型的死锁 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/03/03/Java并发——三种典型的死锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java并发——三种典型的死锁</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-03T15:11:21+08:00">
+                2017-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/03/03/Java并发——三种典型的死锁/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/03/03/Java并发——三种典型的死锁/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>在JAVA并发编程中，我们使用锁来确保可变共享变量的安全性。要注意的是，不正确的使用锁很容易导致死锁。本篇文章转载自：<a href="http://yizhenn.iteye.com/blog/2302978" target="_blank" rel="noopener"><a href="http://yizhenn.iteye.com/blog/2302978" target="_blank" rel="noopener">JAVA并发-3种典型的死锁</a></a></p>
+</blockquote>
+<h3 id="一、死锁产生的条件"><a href="#一、死锁产生的条件" class="headerlink" title="一、死锁产生的条件"></a>一、死锁产生的条件</h3><p>一般来说，要出现死锁问题需要满足以下条件：</p>
+<ol>
+<li>互斥条件：一个资源每次只能被一个线程使用。</li>
+<li>请求与保持条件：一个线程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+<li>不剥夺条件：线程已获得的资源，在未使用完之前，不能强行剥夺。</li>
+<li>循环等待条件：若干线程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+<p>在JAVA编程中，有3种典型的死锁类型：<br>静态的锁顺序死锁，动态的锁顺序死锁，协作对象之间发生的死锁。</p>
+<h3 id="二、静态的锁顺序死锁"><a href="#二、静态的锁顺序死锁" class="headerlink" title="二、静态的锁顺序死锁"></a>二、静态的锁顺序死锁</h3><p>a和b两个方法都需要获得A锁和B锁。一个线程执行a方法且已经获得了A锁，在等待B锁；另一个线程执行了b方法且已经获得了B锁，在等待A锁。这种状态，就是发生了静态的锁顺序死锁。<br><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可能发生静态锁顺序死锁的代码  </span></span><br><span class="line">class StaticLockOrderDeadLock&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">Object</span> lockA=<span class="keyword">new</span> <span class="keyword">Object</span>();  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">Object</span> lockB=<span class="keyword">new</span> <span class="keyword">Object</span>();  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> a()&#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (lockA) &#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (lockB) &#123;  </span><br><span class="line">                System.out.<span class="built_in">println</span>(<span class="string">"function a"</span>);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> b()&#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (lockB) &#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (lockA) &#123;  </span><br><span class="line">                System.out.<span class="built_in">println</span>(<span class="string">"function b"</span>);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>解决静态的锁顺序死锁的方法就是：所有需要多个锁的线程，都要以相同的顺序来获得锁。 </strong><br><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正确的代码  </span></span><br><span class="line">class StaticLockOrderDeadLock&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">Object</span> lockA=<span class="keyword">new</span> <span class="keyword">Object</span>();  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">Object</span> lockB=<span class="keyword">new</span> <span class="keyword">Object</span>();  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> a()&#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (lockA) &#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (lockB) &#123;  </span><br><span class="line">                System.out.<span class="built_in">println</span>(<span class="string">"function a"</span>);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> b()&#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (lockA) &#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (lockB) &#123;  </span><br><span class="line">                System.out.<span class="built_in">println</span>(<span class="string">"function b"</span>);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="三、动态的锁顺序死锁："><a href="#三、动态的锁顺序死锁：" class="headerlink" title="三、动态的锁顺序死锁："></a>三、动态的锁顺序死锁：</h3><p>动态的锁顺序死锁是指两个线程调用同一个方法时，传入的参数颠倒造成的死锁。如下代码，一个线程调用了transferMoney方法并传入参数accountA,accountB；另一个线程调用了transferMoney方法并传入参数accountB,accountA。此时就可能发生在静态的锁顺序死锁中存在的问题，即：第一个线程获得了accountA锁并等待accountB锁，第二个线程获得了accountB锁并等待accountA锁。<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可能发生动态锁顺序死锁的代码  </span></span><br><span class="line"><span class="keyword">class</span> DynamicLockOrderDeadLock&#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> transefMoney(Account fromAccount,Account toAccount,<span class="keyword">Double</span> amount)&#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (fromAccount) &#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (toAccount) &#123;  </span><br><span class="line">                <span class="comment">//...  </span></span><br><span class="line">                fromAccount.<span class="keyword">minus</span>(amount);  </span><br><span class="line">                toAccount.add(amount);  </span><br><span class="line">                <span class="comment">//...  </span></span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>动态的锁顺序死锁解决方案如下：使用System.identifyHashCode来定义锁的顺序。确保所有的线程都以相同的顺序获得锁 </strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正确的代码  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DynamicLockOrderDeadLock</span></span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Object myLock=<span class="keyword">new</span> Object();  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transefMoney</span><span class="params">(<span class="keyword">final</span> Account fromAccount,<span class="keyword">final</span> Account toAccount,<span class="keyword">final</span> Double amount)</span></span>&#123;  </span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Helper</span></span>&#123;  </span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transfer</span><span class="params">()</span></span>&#123;  </span><br><span class="line">                <span class="comment">//...  </span></span><br><span class="line">                fromAccount.minus(amount);  </span><br><span class="line">                toAccount.add(amount);  </span><br><span class="line">                <span class="comment">//...  </span></span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">int</span>  fromHash=System.identityHashCode(fromAccount);  </span><br><span class="line">        <span class="keyword">int</span>  toHash=System.identityHashCode(toAccount);  </span><br><span class="line">          </span><br><span class="line">        <span class="keyword">if</span>(fromHash&lt;toHash)&#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (fromAccount) &#123;  </span><br><span class="line">                <span class="keyword">synchronized</span> (toAccount) &#123;  </span><br><span class="line">                    <span class="keyword">new</span> Helper().transfer();  </span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(fromHash&gt;toHash)&#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (toAccount) &#123;  </span><br><span class="line">                <span class="keyword">synchronized</span> (fromAccount) &#123;  </span><br><span class="line">                    <span class="keyword">new</span> Helper().transfer();  </span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;  </span><br><span class="line">            <span class="keyword">synchronized</span> (myLock) &#123;  </span><br><span class="line">                <span class="keyword">synchronized</span> (fromAccount) &#123;  </span><br><span class="line">                    <span class="keyword">synchronized</span> (toAccount) &#123;  </span><br><span class="line">                        <span class="keyword">new</span> Helper().transfer();  </span><br><span class="line">                    &#125;  </span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">          </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="四、协作对象之间发生的死锁："><a href="#四、协作对象之间发生的死锁：" class="headerlink" title="四、协作对象之间发生的死锁："></a>四、协作对象之间发生的死锁：</h3><p>有时，死锁并不会那么明显，比如两个相互协作的类之间的死锁，比如下面的代码：一个线程调用了Taxi对象的setLocation方法，另一个线程调用了Dispatcher对象的getImage方法。此时可能会发生，第一个线程持有Taxi对象锁并等待Dispatcher对象锁，另一个线程持有Dispatcher对象锁并等待Taxi对象锁。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可能发生死锁  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Taxi</span></span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> Point location,destination;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Dispatcher dispatcher;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Taxi</span><span class="params">(Dispatcher dispatcher)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">this</span>.dispatcher=dispatcher;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Point <span class="title">getLocation</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> location;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setLocation</span><span class="params">(Point location)</span></span>&#123;  </span><br><span class="line">        <span class="keyword">this</span>.location=location;  </span><br><span class="line">        <span class="keyword">if</span>(location.equals(destination))  </span><br><span class="line">            dispatcher.notifyAvailable(<span class="keyword">this</span>);<span class="comment">//外部调用方法，可能等待Dispatcher对象锁  </span></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dispatcher</span></span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;Taxi&gt; taxis;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;Taxi&gt; availableTaxis;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dispatcher</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        taxis=<span class="keyword">new</span> HashSet&lt;Taxi&gt;();  </span><br><span class="line">        availableTaxis=<span class="keyword">new</span> HashSet&lt;Taxi&gt;();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">notifyAvailable</span><span class="params">(Taxi taxi)</span></span>&#123;  </span><br><span class="line">        availableTaxis.add(taxi);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Image <span class="title">getImage</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        Image image=<span class="keyword">new</span> Image();  </span><br><span class="line">        <span class="keyword">for</span>(Taxi t:taxis)  </span><br><span class="line">            image.drawMarker(t.getLocation());<span class="comment">//外部调用方法，可能等待Taxi对象锁  </span></span><br><span class="line">        <span class="keyword">return</span> image;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码中，<strong>我们在持有锁的情况下调用了外部的方法，这是非常危险的（可能发生死锁）。为了避免这种危险的情况发生，</strong>我们使用开放调用。如果调用某个外部方法时不需要持有锁，我们称之为开放调用。</p>
+<p><strong>解决协作对象之间发生的死锁：需要使用开放调用，即避免在持有锁的情况下调用外部的方法。 </strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正确的代码  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Taxi</span></span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> Point location,destination;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Dispatcher dispatcher;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Taxi</span><span class="params">(Dispatcher dispatcher)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">this</span>.dispatcher=dispatcher;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Point <span class="title">getLocation</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> location;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLocation</span><span class="params">(Point location)</span></span>&#123;  </span><br><span class="line">        <span class="keyword">boolean</span> flag=<span class="keyword">false</span>;  </span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;  </span><br><span class="line">            <span class="keyword">this</span>.location=location;  </span><br><span class="line">            flag=location.equals(destination);            </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">if</span>(flag)  </span><br><span class="line">            dispatcher.notifyAvailable(<span class="keyword">this</span>);<span class="comment">//使用开放调用  </span></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dispatcher</span></span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;Taxi&gt; taxis;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Set&lt;Taxi&gt; availableTaxis;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dispatcher</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        taxis=<span class="keyword">new</span> HashSet&lt;Taxi&gt;();  </span><br><span class="line">        availableTaxis=<span class="keyword">new</span> HashSet&lt;Taxi&gt;();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">notifyAvailable</span><span class="params">(Taxi taxi)</span></span>&#123;  </span><br><span class="line">        availableTaxis.add(taxi);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Image <span class="title">getImage</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        Set&lt;Taxi&gt; copy;  </span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;  </span><br><span class="line">            copy=<span class="keyword">new</span> HashSet&lt;Taxi&gt;(taxis);  </span><br><span class="line">        &#125;  </span><br><span class="line">        Image image=<span class="keyword">new</span> Image();  </span><br><span class="line">        <span class="keyword">for</span>(Taxi t:copy)  </span><br><span class="line">            image.drawMarker(t.getLocation());<span class="comment">//使用开放调用  </span></span><br><span class="line">        <span class="keyword">return</span> image;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h4><p>综上，是常见的3种死锁的类型。即：静态的锁顺序死锁，动态的锁顺序死锁，协作对象之间的死锁。在写代码时，要确保线程在获取多个锁时采用一致的顺序。同时，要避免在持有锁的情况下调用外部方法。 </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/03/ViewPager+TabLayout+Fragment懒加载机制完全解析/" rel="next" title="ViewPager+TabLayout+Fragment懒加载机制完全解析">
+                <i class="fa fa-chevron-left"></i> ViewPager+TabLayout+Fragment懒加载机制完全解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/04/Java线程池详解/" rel="prev" title="Java线程池详解">
+                Java线程池详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、死锁产生的条件"><span class="nav-number">1.</span> <span class="nav-text">一、死锁产生的条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、静态的锁顺序死锁"><span class="nav-number">2.</span> <span class="nav-text">二、静态的锁顺序死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、动态的锁顺序死锁："><span class="nav-number">3.</span> <span class="nav-text">三、动态的锁顺序死锁：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、协作对象之间发生的死锁："><span class="nav-number">4.</span> <span class="nav-text">四、协作对象之间发生的死锁：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#五、总结"><span class="nav-number">4.1.</span> <span class="nav-text">五、总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

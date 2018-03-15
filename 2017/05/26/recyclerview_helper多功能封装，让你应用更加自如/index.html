@@ -1,0 +1,863 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="RecyclerView作为列表使用，在项目中的应用场景实在是太普遍了。针对项目应用，主要使用了RecyclerView的单或多类型Item，点击/长按事件，ItemAnimator动画效果以及上拉加载、下拉刷新。recyclerview_helper就是针对以上应用场景进行的封装与使用，避免在项目使用中重复的敲代码以及依赖多个库或者自定义实现等复杂方式。  Github地址：recyclerv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="recyclerview_helper多功能封装，让你应用更加自如">
+<meta property="og:url" content="https://lrh1993.github.io/2017/05/26/recyclerview_helper多功能封装，让你应用更加自如/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="RecyclerView作为列表使用，在项目中的应用场景实在是太普遍了。针对项目应用，主要使用了RecyclerView的单或多类型Item，点击/长按事件，ItemAnimator动画效果以及上拉加载、下拉刷新。recyclerview_helper就是针对以上应用场景进行的封装与使用，避免在项目使用中重复的敲代码以及依赖多个库或者自定义实现等复杂方式。  Github地址：recyclerv">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-f84a7b0f0d300690.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-b0a41886571a77da.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-66bd80ade059df09.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-16e767bc760f5467.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-e5825e68eef51b93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-21e7d86af38a8559.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-ab69df2b3f4aefb4.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-e48885ab683e2f07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-26T06:24:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="recyclerview_helper多功能封装，让你应用更加自如">
+<meta name="twitter:description" content="RecyclerView作为列表使用，在项目中的应用场景实在是太普遍了。针对项目应用，主要使用了RecyclerView的单或多类型Item，点击/长按事件，ItemAnimator动画效果以及上拉加载、下拉刷新。recyclerview_helper就是针对以上应用场景进行的封装与使用，避免在项目使用中重复的敲代码以及依赖多个库或者自定义实现等复杂方式。  Github地址：recyclerv">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-f84a7b0f0d300690.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/05/26/recyclerview_helper多功能封装，让你应用更加自如/"/>
+
+
+
+
+
+  <title>recyclerview_helper多功能封装，让你应用更加自如 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/05/26/recyclerview_helper多功能封装，让你应用更加自如/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">recyclerview_helper多功能封装，让你应用更加自如</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T14:23:57+08:00">
+                2017-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RecyclerView/" itemprop="url" rel="index">
+                    <span itemprop="name">RecyclerView</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/05/26/recyclerview_helper多功能封装，让你应用更加自如/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/05/26/recyclerview_helper多功能封装，让你应用更加自如/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>RecyclerView作为列表使用，在项目中的应用场景实在是太普遍了。针对项目应用，主要使用了RecyclerView的单或多类型Item，点击/长按事件，ItemAnimator动画效果以及上拉加载、下拉刷新。recyclerview_helper就是针对以上应用场景进行的封装与使用，避免在项目使用中重复的敲代码以及依赖多个库或者自定义实现等复杂方式。</p>
+</blockquote>
+<h4 id="Github地址：recyclerview-helper"><a href="#Github地址：recyclerview-helper" class="headerlink" title="Github地址：recyclerview_helper"></a>Github地址：<a href="https://github.com/LRH1993/recyclerview_helper" target="_blank" rel="noopener">recyclerview_helper</a></h4><h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p><img src="http://upload-images.jianshu.io/upload_images/3985563-f84a7b0f0d300690.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>如上所示，recyclerview_helper针对不同应用场景封装了不同的功能。</p>
+<p><strong> 具体功能如下： </strong></p>
+<p>1.封装了ViewHolder以及Adapter,避免每次都要重复写创建ViewHolder以及重写onCreateViewHolder，onBindViewHolder方法，支持单/多类型Item。</p>
+<p>2.封装了OnItemClickListener以及OnItemLongClickListener，不必每次写接口，定义回调。仅支持对Item的点击事件。</p>
+<p>3.具有各种炫酷的动画效果，功能装饰者模式封装Adapter添加初始化动画效果 ，以及自定义ItemAnimator实现各种炫酷的Item增删动画效果。</p>
+<p>4.支持添加头尾布局，以及支持下拉刷新和上拉加载更多功能。同时支持自定义下拉刷新布局及动画，以及上拉加载更多的布局，可实现各种炫酷效果，跟随你的想象放飞。</p>
+<h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><h4 id="1-添加依赖"><a href="#1-添加依赖" class="headerlink" title="1.添加依赖"></a>1.添加依赖</h4><p>①.在项目的 build.gradle 文件中添加<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">		repositories &#123;</span><br><span class="line">			...</span><br><span class="line">			maven &#123; url <span class="string">'https://jitpack.io'</span> &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>②.在 module 的 build.gradle 文件中添加依赖<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">            <span class="keyword">compile</span> <span class="string">'com.github.LRH1993:recyclerview_helper:V1.0.3'</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-单-多类型Item使用"><a href="#2-单-多类型Item使用" class="headerlink" title="2.单/多类型Item使用"></a>2.单/多类型Item使用</h4><p><img src="http://upload-images.jianshu.io/upload_images/3985563-b0a41886571a77da.gif?imageMogr2/auto-orient/strip" alt=""><br><strong>单类型</strong><br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CommonAdapter&lt;<span class="keyword">String</span>&gt; mAdapter = <span class="keyword">new</span> CommonAdapter&lt;<span class="keyword">String</span>&gt;(<span class="keyword">this</span>, R.layout.item_common, mDatas) &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> convert(BaseViewHolder holder, <span class="keyword">int</span> <span class="built_in">position</span>) &#123;</span><br><span class="line">                holder.setText(R.id.tv_content,mDatas.<span class="built_in">get</span>(<span class="built_in">position</span>));</span><br><span class="line">                <span class="keyword">int</span> number = <span class="keyword">new</span> Random().nextInt(<span class="number">3</span>);</span><br><span class="line">                holder.setImageResource(R.id.iv_content,mImageRes[number]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        mRecyclerView.setAdapter(mAdapter);</span><br></pre></td></tr></table></figure></p>
+<p>通过实现CommonAdapter，传入context,布局以及数据，然后实现convert方法，设置view的显示数据就完成了。很简洁方便。</p>
+<p><strong>多类型</strong><br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">MultiItemTypeSupport&lt;<span class="keyword">String</span>&gt; support = <span class="keyword">new</span> MultiItemTypeSupport&lt;<span class="keyword">String</span>&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">int</span> getLayoutId(<span class="keyword">int</span> itemType) &#123;</span><br><span class="line">                <span class="built_in">if</span> (itemType == TYPE_HEAD) &#123;</span><br><span class="line">                    <span class="built_in">return</span> R.layout.item_special;</span><br><span class="line">                &#125; <span class="built_in">else</span> &#123;</span><br><span class="line">                    <span class="built_in">return</span> R.layout.item_common;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">int</span> getItemViewType(<span class="keyword">int</span> <span class="built_in">position</span>, <span class="keyword">String</span> s) &#123;</span><br><span class="line">                <span class="built_in">if</span> (<span class="built_in">position</span>%<span class="number">3</span>==<span class="number">0</span>&amp;&amp; <span class="built_in">position</span>&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="built_in">return</span> TYPE_HEAD;</span><br><span class="line">                &#125; <span class="built_in">else</span> &#123;</span><br><span class="line">                    <span class="built_in">return</span> TYPE_COMMON;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">-----------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"> MultiItemCommonAdapter&lt;<span class="keyword">String</span>&gt; mAdapter = <span class="keyword">new</span> MultiItemCommonAdapter&lt;<span class="keyword">String</span>&gt;(<span class="keyword">this</span>, mDatas, support) &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> convert(BaseViewHolder holder, <span class="keyword">int</span> <span class="built_in">position</span>) &#123;</span><br><span class="line">                <span class="built_in">if</span> (<span class="built_in">position</span>%<span class="number">3</span>==<span class="number">0</span>&amp;&amp; <span class="built_in">position</span>&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                    holder.setImageResource(R.id.iv_head,R.drawable.multi_image);</span><br><span class="line">                &#125; <span class="built_in">else</span> &#123;</span><br><span class="line">                    holder.setText(R.id.tv_content,mDatas.<span class="built_in">get</span>(<span class="built_in">position</span>));</span><br><span class="line">                    <span class="keyword">int</span> number = <span class="keyword">new</span> Random().nextInt(<span class="number">3</span>)+<span class="number">3</span>;</span><br><span class="line">                    holder.setImageResource(R.id.iv_content,mImageRes[number]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        mRecyclerView.setAdapter(mAdapter);</span><br></pre></td></tr></table></figure></p>
+<p>和单类型的区别就是需要实现MultiItemTypeSupport，在MultiItemCommonAdapter对象中传入实现的该对象，该对象完成两个方法，功能是通过类型判别Item布局以及通过位置和数据判断返回类型。通过这个对象,避免我们在Adapter中进行类别判断的书写。</p>
+<p>该部分实现参考了鸿洋大神对RecyclerView的封装。</p>
+<h4 id="3-事件监听使用"><a href="#3-事件监听使用" class="headerlink" title="3.事件监听使用"></a>3.事件监听使用</h4><p><img src="http://upload-images.jianshu.io/upload_images/3985563-66bd80ade059df09.gif?imageMogr2/auto-orient/strip" alt=""><br>事件监听的使用就比较简单了，和正常使用一样。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">adapter.setOnItemClickListener(<span class="keyword">new</span> CommonAdapter.OnItemClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(View view, RecyclerView.ViewHolder holder, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"点击"</span>);</span><br><span class="line">                showMyDialog(<span class="string">"响应点击事件"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        adapter.setOnItemLongClickListener(<span class="keyword">new</span> CommonAdapter.OnItemLongClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onItemLongClick</span><span class="params">(View view, RecyclerView.ViewHolder holder, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">                showMyDialog(<span class="string">"响应长按事件"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-动画使用"><a href="#4-动画使用" class="headerlink" title="4.动画使用"></a>4.动画使用</h4><p><img src="http://upload-images.jianshu.io/upload_images/3985563-16e767bc760f5467.gif?imageMogr2/auto-orient/strip" alt=""><br>gif录制效果不太明显，实际手机上看着效果还是不错的。<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mRecyclerView.setItemAnimator(new LandingAnimator())<span class="comment">;</span></span><br><span class="line">        <span class="keyword">ScaleInAnimationAdapter </span><span class="keyword">scaleAdapter </span>= new <span class="keyword">ScaleInAnimationAdapter(adapter);</span></span><br><span class="line"><span class="keyword"> </span>       <span class="keyword">scaleAdapter.setFirstOnly(false);</span></span><br><span class="line"><span class="keyword"> </span>       <span class="keyword">scaleAdapter.setDuration(500);</span></span><br><span class="line"><span class="keyword"> </span>       mRecyclerView.setAdapter(<span class="keyword">scaleAdapter);</span></span><br></pre></td></tr></table></figure></p>
+<p>动画效果分两种：</p>
+<p>第一种：adapter初始化item的动画效果</p>
+<p>第二种:ItemAnimator定义的动画效果</p>
+<p>第一种动画效果使用了装饰者模式，需要再封装一层，然后通过setAdapter添加进去。</p>
+<p>第二种直接和平时使用一样。</p>
+<p>除此之外，ItemAnimator还有以下高级功能：</p>
+<p><strong>设置动画时长</strong><br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mRecyclerView</span><span class="selector-class">.getItemAnimator</span>()<span class="selector-class">.setAddDuration</span>(1000);</span><br><span class="line"><span class="selector-tag">mRecyclerView</span><span class="selector-class">.getItemAnimator</span>()<span class="selector-class">.setRemoveDuration</span>(1000);</span><br><span class="line"><span class="selector-tag">mRecyclerView</span><span class="selector-class">.getItemAnimator</span>()<span class="selector-class">.setMoveDuration</span>(1000);</span><br><span class="line"><span class="selector-tag">mRecyclerView</span><span class="selector-class">.getItemAnimator</span>()<span class="selector-class">.setChangeDuration</span>(1000);</span><br></pre></td></tr></table></figure></p>
+<p><strong>插值器</strong><br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SlideInLeftAnimator animator = <span class="keyword">new</span> <span class="type">SlideInLeftAnimator</span>();</span><br><span class="line">animator.setInterpolator(<span class="keyword">new</span> <span class="type">OvershootInterpolator</span>());</span><br><span class="line">mRecyclerView.setItemAnimator(animator);</span><br></pre></td></tr></table></figure></p>
+<p>也可以通过自定义AnimateViewHolder实现类，实现其他动画效果。</p>
+<p>Adapter也有一些高级功能：</p>
+<p><strong>动画时长</strong><br><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AlphaInAnimationAdapter</span> alphaAdapter = <span class="function"><span class="keyword">new</span> <span class="title">AlphaInAnimationAdapter</span>(adapter);</span></span><br><span class="line"><span class="function"><span class="title">alphaAdapter</span>.<span class="title">setDuration</span>(<span class="number">1000</span>);</span></span><br><span class="line"><span class="function"><span class="title">mRecyclerView</span>.<span class="title">setAdapter</span>(alphaAdapter);</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>插值器</strong><br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AlphaInAnimationAdapter alphaAdapter = <span class="keyword">new</span> <span class="type">AlphaInAnimationAdapter</span>(adapter);</span><br><span class="line">alphaAdapter.setInterpolator(<span class="keyword">new</span> <span class="type">OvershootInterpolator</span>());</span><br><span class="line">mRecyclerView.setAdapter(alphaAdapter);</span><br></pre></td></tr></table></figure></p>
+<p><strong>是否仅显示一次动画效果</strong><br><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AlphaInAnimationAdapter</span> alphaAdapter = <span class="function"><span class="keyword">new</span> <span class="title">AlphaInAnimationAdapter</span>(adapter);</span></span><br><span class="line"><span class="function"><span class="title">scaleAdapter</span>.<span class="title">setFirstOnly</span>(false);</span></span><br><span class="line"><span class="function"><span class="title">recyclerView</span>.<span class="title">setAdapter</span>(alphaAdapter);</span></span><br></pre></td></tr></table></figure></p>
+<p>设置成true，则动画效果只在第一次创建Item使用，设置成false，则每次上下滑动都带动画效果。</p>
+<p>复杂情况下，可以设置成true。</p>
+<p><strong>复合动画</strong><br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AlphaInAnimationAdapter alphaAdapter = <span class="keyword">new</span> <span class="type">AlphaInAnimationAdapter</span>(adapter);</span><br><span class="line">recyclerView.setAdapter(<span class="keyword">new</span> <span class="type">ScaleInAnimationAdapter</span>(alphaAdapter));</span><br></pre></td></tr></table></figure></p>
+<p>recyclerview_helper中已经自定义了各种动画效果，如果有好的实现动画，可以通过自定义实现。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-e5825e68eef51b93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>该部分实现参考了recyclerview-animators这个动画库。</p>
+<h4 id="5-添加头-尾布局"><a href="#5-添加头-尾布局" class="headerlink" title="5.添加头/尾布局"></a>5.添加头/尾布局</h4><p><img src="http://upload-images.jianshu.io/upload_images/3985563-21e7d86af38a8559.gif?imageMogr2/auto-orient/strip" alt=""><br>自定义头/尾布局，随意添加。<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">View headView = LayoutInflater.<span class="keyword">from</span>(MainActivity.<span class="keyword">this</span>).inflate(R.layout.item_head,<span class="literal">null</span>,<span class="literal">false</span>);</span><br><span class="line">       View footView = LayoutInflater.<span class="keyword">from</span>(MainActivity.<span class="keyword">this</span>).inflate(R.layout.item_foot,<span class="literal">null</span>,<span class="literal">false</span>);</span><br><span class="line">       mRecyclerView.addHeaderView(headView);</span><br><span class="line">       mRecyclerView.addFooterView(footView);</span><br></pre></td></tr></table></figure></p>
+<p>几行代码搞定。</p>
+<h4 id="6-下拉刷新-上拉加载"><a href="#6-下拉刷新-上拉加载" class="headerlink" title="6.下拉刷新/上拉加载"></a>6.下拉刷新/上拉加载</h4><p><img src="http://upload-images.jianshu.io/upload_images/3985563-ab69df2b3f4aefb4.gif?imageMogr2/auto-orient/strip" alt=""><br>布局设置<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.lvr.library.recyclerview.HRecyclerView</span><br><span class="line">        app:<span class="attribute">loadMoreEnabled</span>=<span class="string">"true"</span></span><br><span class="line">        app:<span class="attribute">loadMoreFooterLayout</span>=<span class="string">"@layout/layout_hrecyclerview_load_more_footer"</span></span><br><span class="line">        app:<span class="attribute">refreshEnabled</span>=<span class="string">"true"</span></span><br><span class="line">        app:<span class="attribute">refreshHeaderLayout</span>=<span class="string">"@layout/layout_hrecyclerview_refresh_header"</span></span><br><span class="line">        android:<span class="attribute">id</span>=<span class="string">"@+id/list"</span></span><br><span class="line">        android:<span class="attribute">layout_width</span>=<span class="string">"match_parent"</span></span><br><span class="line">        android:<span class="attribute">layout_height</span>=<span class="string">"match_parent"</span>/&gt;</span><br></pre></td></tr></table></figure></p>
+<p>其中头/尾布局需要自定义View实现。在例子中已经分别实现了一种<br><img src="http://upload-images.jianshu.io/upload_images/3985563-e48885ab683e2f07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>如果想实现不同的加载图片以及动画效果，可以对比实现。</p>
+<p>首先设置监听<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mRecyclerView.setOnRefreshListener(<span class="keyword">this</span>);</span><br><span class="line">mRecyclerView.setOnLoadMoreListener(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure></p>
+<p>实现回调方法<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onLoadMore</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(mLoadMoreFooterView.canLoadMore())&#123;</span><br><span class="line">           mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);</span><br><span class="line">           <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">               <span class="meta">@Override</span></span><br><span class="line">               <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                   <span class="comment">//假装加载耗时数据</span></span><br><span class="line">                   SystemClock.sleep(<span class="number">1000</span>);</span><br><span class="line">                   Message message = Message.obtain();</span><br><span class="line">                   message.what =count;</span><br><span class="line">                   count++;</span><br><span class="line">                   mHandler.sendMessage(message);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;).start();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onRefresh</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">           <span class="meta">@Override</span></span><br><span class="line">           <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">               <span class="comment">//假装加载耗时数据</span></span><br><span class="line">               SystemClock.sleep(<span class="number">1000</span>);</span><br><span class="line">               Message msg = Message.obtain();</span><br><span class="line">               msg.what=<span class="number">0</span>;</span><br><span class="line">               mHandler.sendMessage(msg);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;).start();</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>开启刷新/关闭刷新<br><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mRecyclerView.setRefreshing(true)<span class="comment">;</span></span><br></pre></td></tr></table></figure></p>
+<p>根据不同情况设置不同加载状态：<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正在加载</span></span><br><span class="line"> mLoadMoreFooterView.setStatus<span class="comment">(LoadMoreFooterView.Status.LOADING)</span>;</span><br><span class="line">  <span class="comment">//没有更多数据</span></span><br><span class="line">mLoadMoreFooterView.setStatus<span class="comment">(LoadMoreFooterView.Status.THE_END)</span>;</span><br><span class="line"><span class="comment">//加载完毕</span></span><br><span class="line">mLoadMoreFooterView.setStatus<span class="comment">(LoadMoreFooterView.Status.GONE)</span>;</span><br><span class="line"><span class="comment">//出现错误</span></span><br><span class="line">mLoadMoreFooterView.setStatus<span class="comment">(LoadMoreFooterView.Status.ERROR)</span>;</span><br></pre></td></tr></table></figure></p>
+<p>出现错误，还可以通过实现onRetry方法，实现再次加载。</p>
+<p>以上两部分效果参考了IRecyclerView实现。</p>
+<h2 id="三、原理"><a href="#三、原理" class="headerlink" title="三、原理"></a>三、原理</h2><p>上面介绍了使用，那么下面就介绍下实现原理，如果需要自定义实现，可以参考完成。</p>
+<h4 id="1-ViewHolder及Adapter封装"><a href="#1-ViewHolder及Adapter封装" class="headerlink" title="1.ViewHolder及Adapter封装"></a>1.ViewHolder及Adapter封装</h4><p>参考鸿洋大神的实现，针对ViewHolder的功能：实现View缓存，避免重复findViewById，进行封装。针对Adapter在实际项目中重复书写onCreateViewHolder，onBindViewHolder方法，进行封装处理。</p>
+<p><strong>ViewHolder</strong><br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> SparseArray&lt;View&gt; viewArray;</span><br><span class="line"><span class="keyword">private</span> View mItemView;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 构造ViewHolder</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parent 父类容器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> resId  布局资源文件id</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">BaseViewHolder</span><span class="params">(Context context, ViewGroup parent, @LayoutRes <span class="keyword">int</span> resId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(LayoutInflater.from(context).inflate(resId, parent, <span class="keyword">false</span>));</span><br><span class="line">    viewArray = <span class="keyword">new</span> SparseArray&lt;&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取ItemView</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> ItemView</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">public</span> <span class="function">View <span class="title">getItemView</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">this</span>.itemView;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取布局中的View</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> viewId view的Id</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;    View的类型</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> view</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> &lt;T <span class="keyword">extends</span> View&gt; <span class="function">T <span class="title">getView</span><span class="params">(@IdRes <span class="keyword">int</span> viewId)</span> </span>&#123;</span><br><span class="line">    View view = viewArray.get(viewId);</span><br><span class="line">    <span class="keyword">if</span> (view == <span class="keyword">null</span>) &#123;</span><br><span class="line">        view = itemView.findViewById(viewId);</span><br><span class="line">        viewArray.put(viewId, view);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (T) view;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将View存放在集合类中，进行缓存，getView方法可以在Adapter中直接调用，避免每次创建不同类型的ViewHolder,一个BaseViewHolder搞定一切情况。</p>
+<p><strong>Adapter</strong><br>基类CommonAdapter<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonAdapter</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">Adapter</span>&lt;<span class="title">BaseViewHolder</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> Context mContext;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> mLayoutId;</span><br><span class="line">    <span class="keyword">protected</span> List&lt;T&gt; mDatas;</span><br><span class="line">    <span class="keyword">protected</span> OnItemClickListener mOnItemClickListener;</span><br><span class="line">    <span class="keyword">protected</span> OnItemLongClickListener mOnItemLongClickListener;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> CommonAdapter(Context context, <span class="keyword">int</span> layoutId, List&lt;T&gt; datas)</span><br><span class="line">    &#123;</span><br><span class="line">        mContext = context;</span><br><span class="line">        mLayoutId = layoutId;</span><br><span class="line">        mDatas = datas;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function">BaseViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup parent, <span class="keyword">int</span> viewType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> BaseViewHolder viewHolder = <span class="keyword">new</span> BaseViewHolder(mContext,parent,mLayoutId);</span><br><span class="line">        <span class="keyword">return</span> viewHolder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(<span class="keyword">final</span> BaseViewHolder holder, <span class="keyword">final</span> <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        convert(holder, position);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="function"><span class="keyword">void</span> <span class="title">convert</span><span class="params">(BaseViewHolder holder, <span class="keyword">int</span> position)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getItemCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">return</span> mDatas.<span class="title">size</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">.........</span><br></pre></td></tr></table></figure></p>
+<p>封装实现onCreateViewHolder方法，并把convert方法抽象出去，实现数据绑定工作。使得结构简单。</p>
+<p>针对多类型情况，需要判断类型，设置不同布局，所以需要个帮助类：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>MultiItemTypeSupport&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    int getLayoutId(int itemType);</span><br><span class="line"></span><br><span class="line">    int getItemViewType(int position, T t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>剩下来基础CommonAdapter实现MultiItemCommonAdapter来应对多类型Item。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MultiItemCommonAdapter</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">CommonAdapter</span>&lt;<span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> MultiItemTypeSupport&lt;T&gt; mMultiItemTypeSupport;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MultiItemCommonAdapter</span><span class="params">(Context context, List&lt;T&gt; datas,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  MultiItemTypeSupport&lt;T&gt; multiItemTypeSupport)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, -<span class="number">1</span>, datas);</span><br><span class="line">        mMultiItemTypeSupport = multiItemTypeSupport;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemViewType</span><span class="params">(<span class="keyword">int</span> position)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mMultiItemTypeSupport.getItemViewType(position, mDatas.get(position));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup parent, <span class="keyword">int</span> viewType)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> layoutId = mMultiItemTypeSupport.getLayoutId(viewType);</span><br><span class="line">        BaseViewHolder holder = <span class="keyword">new</span> BaseViewHolder(mContext, parent, layoutId);</span><br><span class="line">        <span class="keyword">return</span> holder;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>整个实现很简单，但是效果不错。关于事件点击监听，很简单，就不介绍了。</p>
+<h4 id="2-动画效果实现"><a href="#2-动画效果实现" class="headerlink" title="2.动画效果实现"></a>2.动画效果实现</h4><p>先介绍个简单的，Adapter的动画效果：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override <span class="keyword">public</span> <span class="keyword">void</span> onBindViewHolder(RecyclerView.ViewHolder holder, <span class="keyword">int</span> <span class="built_in">position</span>) &#123;</span><br><span class="line">   mAdapter.onBindViewHolder(holder, <span class="built_in">position</span>);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">int</span> adapterPosition = holder.getAdapterPosition();</span><br><span class="line">   <span class="built_in">if</span> (!isFirstOnly || adapterPosition &gt; mLastPosition) &#123;</span><br><span class="line">     <span class="built_in">for</span> (Animator anim : getAnimators(holder.itemView)) &#123;</span><br><span class="line">       anim.setDuration(mDuration).start();</span><br><span class="line">       anim.setInterpolator(mInterpolator);</span><br><span class="line">     &#125;</span><br><span class="line">     mLastPosition = adapterPosition;</span><br><span class="line">   &#125; <span class="built_in">else</span> &#123;</span><br><span class="line">     ViewHelper.<span class="built_in">clear</span>(holder.itemView);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实就是实现一个包装类AnimationAdapter，在其中onBindViewHolder方法中添加了动画效果。</p>
+<p>下面继续介绍ItemAnimator的实现。关于这部分实现，实际代码比较长。就简要介绍下实现主要流程，具体实现可以看下这篇文章：<a href="http://www.jianshu.com/p/0292bf221966" target="_blank" rel="noopener">recyclerview-animators,让你的RecyclerView与众不同</a>。</p>
+<p>其实RecyclerView中已经为我们默认提供了Item动画效果，就是通过这个类：DefaultItemAnimator,而这个类又从哪来？<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">DefaultItemAnimator</span> <span class="keyword">extends</span> <span class="title">SimpleItemAnimator</span></span></span><br></pre></td></tr></table></figure></p>
+<p>搞清楚源头，那么我们也可以 比照着进行实现动画效果，所以通过继承SimpleItemAnimator实现自定义动画类。<br>主要针对对animateRemove, animateAdd, animateMove, animateChange 这4个方法的实现，增加数据增、删、动、改的动画效果。</p>
+<h4 id="3-头布局-尾布局实现"><a href="#3-头布局-尾布局实现" class="headerlink" title="3.头布局/尾布局实现"></a>3.头布局/尾布局实现</h4><p>其实头布局，尾布局的添加和上面实现Adapter动画效果的方式一致，都是通过装饰者模式。</p>
+<p>因为下面要实现上拉加载/下拉刷新，所以这两部分布局也像添加.头布局/尾布局一样实现。</p>
+<p>先定义一个WrapperAdapter。<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">int</span> getItemCount() &#123;</span><br><span class="line">       <span class="built_in">return</span> mAdapter.getItemCount() + <span class="number">4</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   @Override</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">int</span> getItemViewType(<span class="keyword">int</span> <span class="built_in">position</span>) &#123;</span><br><span class="line">       <span class="built_in">if</span> (<span class="built_in">position</span> == <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="built_in">return</span> REFRESH_HEADER;</span><br><span class="line">       &#125; <span class="built_in">else</span> <span class="built_in">if</span> (<span class="built_in">position</span> == <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="built_in">return</span> HEADER;</span><br><span class="line">       &#125; <span class="built_in">else</span> <span class="built_in">if</span> (<span class="number">1</span> &lt; <span class="built_in">position</span> &amp;&amp; <span class="built_in">position</span> &lt; mAdapter.getItemCount() + <span class="number">2</span>) &#123;</span><br><span class="line">           <span class="built_in">return</span> mAdapter.getItemViewType(<span class="built_in">position</span> - <span class="number">2</span>);</span><br><span class="line">       &#125; <span class="built_in">else</span> <span class="built_in">if</span> (<span class="built_in">position</span> == mAdapter.getItemCount() + <span class="number">2</span>) &#123;</span><br><span class="line">           <span class="built_in">return</span> FOOTER;</span><br><span class="line">       &#125; <span class="built_in">else</span> <span class="built_in">if</span> (<span class="built_in">position</span> == mAdapter.getItemCount() + <span class="number">3</span>) &#123;</span><br><span class="line">           <span class="built_in">return</span> LOAD_MORE_FOOTER;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Wrong type! Position = "</span> + <span class="built_in">position</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   @Override</span><br><span class="line">   <span class="keyword">public</span> RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, <span class="keyword">int</span> viewType) &#123;</span><br><span class="line">       <span class="built_in">if</span> (viewType == REFRESH_HEADER) &#123;</span><br><span class="line">           <span class="built_in">return</span> <span class="keyword">new</span> RefreshHeaderContainerViewHolder(mRefreshHeaderContainer);</span><br><span class="line">       &#125; <span class="built_in">else</span> <span class="built_in">if</span> (viewType == HEADER) &#123;</span><br><span class="line">           <span class="built_in">return</span> <span class="keyword">new</span> HeaderContainerViewHolder(mHeaderContainer);</span><br><span class="line">       &#125; <span class="built_in">else</span> <span class="built_in">if</span> (viewType == FOOTER) &#123;</span><br><span class="line">           <span class="built_in">return</span> <span class="keyword">new</span> FooterContainerViewHolder(mFooterContainer);</span><br><span class="line">       &#125; <span class="built_in">else</span> <span class="built_in">if</span> (viewType == LOAD_MORE_FOOTER) &#123;</span><br><span class="line">           <span class="built_in">return</span> <span class="keyword">new</span> LoadMoreFooterContainerViewHolder(mLoadMoreFooterContainer);</span><br><span class="line">       &#125; <span class="built_in">else</span> &#123;</span><br><span class="line">           <span class="built_in">return</span> mAdapter.onCreateViewHolder(parent, viewType);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   @Override</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> onBindViewHolder(RecyclerView.ViewHolder holder, <span class="keyword">int</span> <span class="built_in">position</span>) &#123;</span><br><span class="line">       <span class="built_in">if</span> (<span class="number">1</span> &lt; <span class="built_in">position</span> &amp;&amp; <span class="built_in">position</span> &lt; mAdapter.getItemCount() + <span class="number">2</span>) &#123;</span><br><span class="line">           mAdapter.onBindViewHolder(holder, <span class="built_in">position</span> - <span class="number">2</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>主要是针对上拉加载/下拉刷新，头布局/尾布局进行特殊处理。</p>
+<p>其次，由于上面四部分都要独占一行，在LinearLayoutManager下没问题，但是在StaggeredGridLayoutManager以及GridLayoutManager要特殊处理。</p>
+<p><strong>GridLayoutManager </strong><br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onAttachedToRecyclerView</span><span class="params">(<span class="keyword">final</span> RecyclerView recyclerView)</span> </span>&#123;</span><br><span class="line">        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();</span><br><span class="line">        <span class="keyword">if</span> (layoutManager <span class="keyword">instanceof</span> GridLayoutManager) &#123;</span><br><span class="line">            <span class="keyword">final</span> GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;</span><br><span class="line">            <span class="keyword">final</span> GridLayoutManager.SpanSizeLookup spanSizeLookup = gridLayoutManager.getSpanSizeLookup();</span><br><span class="line">            gridLayoutManager.setSpanSizeLookup(<span class="keyword">new</span> GridLayoutManager.SpanSizeLookup() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">getSpanSize</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">                    WrapperAdapter wrapperAdapter = (WrapperAdapter) recyclerView.getAdapter();</span><br><span class="line">                    <span class="keyword">if</span> (isFullSpanType(wrapperAdapter.getItemViewType(position))) &#123;</span><br><span class="line">                        <span class="function"><span class="keyword">return</span> gridLayoutManager.<span class="title">getSpanCount</span><span class="params">()</span></span>;</span><br><span class="line">                    &#125; <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(spanSizeLookup != <span class="keyword">null</span>)</span> </span>&#123;</span><br><span class="line">                        <span class="function"><span class="keyword">return</span> spanSizeLookup.<span class="title">getSpanSize</span><span class="params">(position - <span class="number">2</span>)</span></span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>StaggeredGridLayoutManager</strong><br><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@<span class="type">Override</span></span><br><span class="line">   public void onViewAttachedToWindow(<span class="type">RecyclerView</span>.<span class="type">ViewHolder</span> holder) &#123;</span><br><span class="line">       super.onViewAttachedToWindow(holder);</span><br><span class="line">       int position = holder.getAdapterPosition();</span><br><span class="line">       int <span class="class"><span class="keyword">type</span> = getItemViewType(<span class="title">position</span>);</span></span><br><span class="line">       <span class="keyword">if</span> (isFullSpanType(<span class="class"><span class="keyword">type</span>)) &#123;</span></span><br><span class="line"><span class="class">           <span class="type">ViewGroup</span>.<span class="type">LayoutParams</span> <span class="title">layoutParams</span> = <span class="title">holder</span>.<span class="title">itemView</span>.<span class="title">getLayoutParams</span>();</span></span><br><span class="line"><span class="class">           <span class="title">if</span> (<span class="title">layoutParams</span> <span class="title">instanceof</span> <span class="type">StaggeredGridLayoutManager</span>.<span class="type">LayoutParams</span>) &#123;</span></span><br><span class="line"><span class="class">               <span class="type">StaggeredGridLayoutManager</span>.<span class="type">LayoutParams</span> <span class="title">lp</span> = (<span class="type">StaggeredGridLayoutManager</span>.<span class="type">LayoutParams</span>) <span class="title">layoutParams</span>;</span></span><br><span class="line"><span class="class">               <span class="title">lp</span>.<span class="title">setFullSpan</span>(<span class="title">true</span>);</span></span><br><span class="line"><span class="class">           &#125;</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后可以放心的添加了，通过自定义RecyclerView，重写setAdapter()方法<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setAdapter</span><span class="params">(Adapter adapter)</span> </span>&#123;</span><br><span class="line">       mOriginAdapter =adapter;</span><br><span class="line">       ensureRefreshHeaderContainer();</span><br><span class="line">       ensureHeaderViewContainer();</span><br><span class="line">       ensureFooterViewContainer();</span><br><span class="line">       ensureLoadMoreFooterContainer();</span><br><span class="line">       <span class="keyword">super</span>.setAdapter(<span class="keyword">new</span> WrapperAdapter(adapter, mRefreshHeaderContainer, mHeaderViewContainer, mFooterViewContainer, mLoadMoreFooterContainer));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样就加入了头/尾布局以及上拉加载/下拉刷新布局。</p>
+<h4 id="4-上拉加载-下拉刷新"><a href="#4-上拉加载-下拉刷新" class="headerlink" title="4.上拉加载/下拉刷新"></a>4.上拉加载/下拉刷新</h4><p>首先是上拉加载，这个比较简单，通过监听OnScrollListener来实现<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onScrolled</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy)</span> </span>&#123;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onScrollStateChanged</span><span class="params">(RecyclerView recyclerView, <span class="keyword">int</span> newState)</span> </span>&#123;</span><br><span class="line">       RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();</span><br><span class="line">       <span class="keyword">int</span> visibleItemCount = layoutManager.getChildCount();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="keyword">boolean</span> triggerCondition = visibleItemCount &gt; <span class="number">0</span></span><br><span class="line">               &amp;&amp; newState == RecyclerView.SCROLL_STATE_IDLE</span><br><span class="line">               &amp;&amp; canTriggerLoadMore(recyclerView);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (triggerCondition) &#123;</span><br><span class="line">           onLoadMore(recyclerView);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">canTriggerLoadMore</span><span class="params">(RecyclerView recyclerView)</span> </span>&#123;</span><br><span class="line">       View lastChild = recyclerView.getChildAt(recyclerView.getChildCount() - <span class="number">1</span>);</span><br><span class="line">       <span class="keyword">int</span> position = recyclerView.getChildLayoutPosition(lastChild);</span><br><span class="line">       RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();</span><br><span class="line">       <span class="keyword">int</span> totalItemCount = layoutManager.getItemCount();</span><br><span class="line">       <span class="keyword">return</span> totalItemCount - <span class="number">1</span> == position;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>需要先判断是否触发加载条件，其中主要判断当前是否处于最后一条Item。满足触发条件，触发接口回调onLoadMore()方法。</p>
+<p>然后是下拉刷新实现，这个比较复杂，但是说起来也比较简单，是通过onTouchEvent的监听来实现。</p>
+<p>首先也是判断触发下拉条件<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">boolean</span> triggerCondition = isEnabled() &amp;&amp; mRefreshEnabled &amp;&amp; mRefreshHeaderView != <span class="keyword">null</span> &amp;&amp; isFingerDragging() &amp;&amp; canTriggerRefresh();</span><br></pre></td></tr></table></figure></p>
+<p>其中主要的是这个方法canTriggerRefresh<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">canTriggerRefresh</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mOriginAdapter == <span class="keyword">null</span> || mOriginAdapter.getItemCount() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        View firstChild = getChildAt(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> position = getChildLayoutPosition(firstChild);</span><br><span class="line">        <span class="keyword">if</span> (position == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (firstChild.getTop() == mRefreshHeaderContainer.getTop()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>判断当前是否滑动到第一条Item。</p>
+<p>满足触发条件，先是让下拉刷新的布局高度随下拉而改变：<br><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> move(<span class="built_in">int</span> dy) &#123;</span><br><span class="line">       <span class="keyword">if</span> (dy != <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="built_in">int</span> <span class="built_in">height</span> = mRefreshHeaderContainer.getMeasuredHeight() + dy;</span><br><span class="line">           setRefreshHeaderContainerHeight(<span class="built_in">height</span>);</span><br><span class="line">           mRefreshTrigger.onMove(<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="built_in">height</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>同时在滑动过程中，需要根据高度判断刷新应该处于的状态：下拉刷新，释放刷新，以及动画的实现，在这个过程中需要回调RefreshHeaderView(就是你自定义的下拉刷新View，必须实现RefreshTrigger接口，面向接口编程)。</p>
+<p>下面最重要的就是要监听抬起的一瞬间：ACTION_UP。</p>
+<p>这个时候分两种情况：一种还处于下拉刷新的状态（下拉长度太短），返回默认状态。二是处于释放刷新状态，需要开启刷新。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onFingerUpStartAnimating</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mStatus == STATUS_RELEASE_TO_REFRESH) &#123;</span><br><span class="line">        startScrollReleaseStatusToRefreshingStatus();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mStatus == STATUS_SWIPING_TO_REFRESH) &#123;</span><br><span class="line">        startScrollSwipingToRefreshStatusToDefaultStatus();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后就是开启动画，监听动画实现，更新状态，以及接口回调，虽然不难，但是逻辑还是比较复杂。</p>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>目前由于多类型+头尾以及上拉刷新/下拉加载，判断类型过多，在头布局会出现卡顿，所以在使用多类型的情况下，不建议加入头尾布局，可以考虑重写setAdapter方法，去掉不需要的布局。</p>
+<p>从效果，到使用，最后到原理，加深了对RecyclerView的理解，recyclerview_helper可以应对一般的使用场景，不过如有特殊应用场景，也可进行比对自定义实现。</p>
+<h4 id="Github地址：https-github-com-LRH1993-recyclerview-helper，给个star支持下。"><a href="#Github地址：https-github-com-LRH1993-recyclerview-helper，给个star支持下。" class="headerlink" title="Github地址：https://github.com/LRH1993/recyclerview_helper，给个star支持下。"></a>Github地址：<a href="https://github.com/LRH1993/recyclerview_helper" target="_blank" rel="noopener">https://github.com/LRH1993/recyclerview_helper</a>，给个star支持下。</h4>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/22/SmartRecom：一款干货满满，助你进阶的App项目/" rel="next" title="SmartRecom：一款干货满满，助你进阶的App项目">
+                <i class="fa fa-chevron-left"></i> SmartRecom：一款干货满满，助你进阶的App项目
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/01/Android插件化入门指南/" rel="prev" title="Android插件化入门指南">
+                Android插件化入门指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Github地址：recyclerview-helper"><span class="nav-number">1.</span> <span class="nav-text">Github地址：recyclerview_helper</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、简介"><span class="nav-number"></span> <span class="nav-text">一、简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、使用"><span class="nav-number"></span> <span class="nav-text">二、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-添加依赖"><span class="nav-number">1.</span> <span class="nav-text">1.添加依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-单-多类型Item使用"><span class="nav-number">2.</span> <span class="nav-text">2.单/多类型Item使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-事件监听使用"><span class="nav-number">3.</span> <span class="nav-text">3.事件监听使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动画使用"><span class="nav-number">4.</span> <span class="nav-text">4.动画使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-添加头-尾布局"><span class="nav-number">5.</span> <span class="nav-text">5.添加头/尾布局</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-下拉刷新-上拉加载"><span class="nav-number">6.</span> <span class="nav-text">6.下拉刷新/上拉加载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、原理"><span class="nav-number"></span> <span class="nav-text">三、原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-ViewHolder及Adapter封装"><span class="nav-number">1.</span> <span class="nav-text">1.ViewHolder及Adapter封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-动画效果实现"><span class="nav-number">2.</span> <span class="nav-text">2.动画效果实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-头布局-尾布局实现"><span class="nav-number">3.</span> <span class="nav-text">3.头布局/尾布局实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-上拉加载-下拉刷新"><span class="nav-number">4.</span> <span class="nav-text">4.上拉加载/下拉刷新</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、总结"><span class="nav-number"></span> <span class="nav-text">四、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Github地址：https-github-com-LRH1993-recyclerview-helper，给个star支持下。"><span class="nav-number">1.</span> <span class="nav-text">Github地址：https://github.com/LRH1993/recyclerview_helper，给个star支持下。</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

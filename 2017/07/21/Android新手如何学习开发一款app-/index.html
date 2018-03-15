@@ -1,0 +1,836 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="毫无疑问，开发一款自己的App对于初学者来说，无论从技术学习，还是找工作（或者装x），都是一大利器。那么如何才能快速上手，开发一款属于自己的app。本篇文章仅以自己的一些经验给更多的Android新手一些建议。   一、误区在讲如何开发一款app之前，先说下一定要避免的一些误区。  借鉴与copy 表面与原理 效果与深度    ###（1）借鉴是为了学习作为一名Android开发新手，在学习开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android新手如何学习开发一款app?">
+<meta property="og:url" content="https://lrh1993.github.io/2017/07/21/Android新手如何学习开发一款app-/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="毫无疑问，开发一款自己的App对于初学者来说，无论从技术学习，还是找工作（或者装x），都是一大利器。那么如何才能快速上手，开发一款属于自己的app。本篇文章仅以自己的一些经验给更多的Android新手一些建议。   一、误区在讲如何开发一款app之前，先说下一定要避免的一些误区。  借鉴与copy 表面与原理 效果与深度    ###（1）借鉴是为了学习作为一名Android开发新手，在学习开发">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-599a90acaeb64565.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-10c00b5e74981838.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-92ac503971a0a90f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-9fd54f74ee60ed5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-6a141a248f2f279a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-23d52fd7c7e3fad2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-07-22T04:07:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android新手如何学习开发一款app?">
+<meta name="twitter:description" content="毫无疑问，开发一款自己的App对于初学者来说，无论从技术学习，还是找工作（或者装x），都是一大利器。那么如何才能快速上手，开发一款属于自己的app。本篇文章仅以自己的一些经验给更多的Android新手一些建议。   一、误区在讲如何开发一款app之前，先说下一定要避免的一些误区。  借鉴与copy 表面与原理 效果与深度    ###（1）借鉴是为了学习作为一名Android开发新手，在学习开发">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-599a90acaeb64565.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/07/21/Android新手如何学习开发一款app-/"/>
+
+
+
+
+
+  <title>Android新手如何学习开发一款app? | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/07/21/Android新手如何学习开发一款app-/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android新手如何学习开发一款app?</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T18:48:57+08:00">
+                2017-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">Android进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/07/21/Android新手如何学习开发一款app-/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/21/Android新手如何学习开发一款app-/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>毫无疑问，开发一款自己的App对于初学者来说，无论从技术学习，还是找工作（或者装x），都是一大利器。那么如何才能快速上手，开发一款属于自己的app。本篇文章仅以自己的一些经验给更多的Android新手一些建议。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-599a90acaeb64565.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="一、误区"><a href="#一、误区" class="headerlink" title="一、误区"></a>一、误区</h2><p>在讲如何开发一款app之前，先说下一定要避免的一些误区。</p>
+<ul>
+<li>借鉴与copy</li>
+<li>表面与原理</li>
+<li>效果与深度  </li>
+</ul>
+<p>###（1）借鉴是为了学习<br>作为一名Android开发新手，在学习开发一款自己的app之前，参考一些大牛的项目，进行借鉴与参考是一个很好的捷径。</p>
+<p>然而有些新手上手就开始撸代码，看着一脸懵逼的代码，不明所以，想着不管三七二十一，敲着敲着就明白了。结果，最后一出bug就懵逼了，丝毫不理解项目的结构与框架，更不提其中的技术难点。</p>
+<p>所以不要盲目地copy，磨刀不误砍柴工，要像看源码一样学习项目。先理清项目中的结构，使用的框架，每个类的功能，以及使用到的技术点，庖丁解牛，逐个拆分学习，化为一个个的技术问题，这样才能最终转化为自己的知识。</p>
+<h3 id="（2）从表面深入原理"><a href="#（2）从表面深入原理" class="headerlink" title="（2）从表面深入原理"></a>（2）从表面深入原理</h3><p>针对具体的技术实现，不要仅仅以实现为目的，更不要仅仅因为实现了一些炫酷的UI效果而沾沾自喜。</p>
+<p>对于一些技术，要知其然，更要知其所以然。比如：进程间通信的实现方式AIDL，可能照着一些模板就可以实现，达到目的。再比如说：RecyclerView或ListView，按照一定的方法就可以快速实现列表布局。</p>
+<p>然而这些实现不仅在一个项目或一处使用，而是频繁高发的实现，将来也更是工作或面试中会遇到的。所以我们要透过表面学习原理，在开发一款app的同时，通过这种方式激励自己加深对技术的理解与实际应用。</p>
+<p>比如，针对AIDL理解binder机制的实现，更进一步理解android中的进程间通信方式。针对RecyclerView或ListView，理解复用机制以及如何定制化实现一些特殊的效果，加深我们自己的技术深度。</p>
+<h3 id="（3）不盲目追求效果"><a href="#（3）不盲目追求效果" class="headerlink" title="（3）不盲目追求效果"></a>（3）不盲目追求效果</h3><p>Android开发的乐趣在于可以自己实现app的开发，用技术创造体验。</p>
+<p>然而正是这种乐趣可能会导致一些新手盲目注重UI实现效果，而忽略自身的技术学习。有时候技术学习与效果并不冲突，然而在自己独立开发app，学习技术的过程中，可以适当较少对UI效果的追求，专注于对技术的追求与学习。</p>
+<p>当然完美主义者（强迫症）会不知觉地倾斜，但也请保持平衡。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-10c00b5e74981838.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h2 id="二、准备工作"><a href="#二、准备工作" class="headerlink" title="二、准备工作"></a>二、准备工作</h2><p>在进行开发之前，我们要先进行足够的准备工作，这样才能事半功倍。</p>
+<p>通常而言，新手在开发第一款app都是来自于借鉴，站在巨人的肩膀上进行学习，那么如何选择一款自己想做、技术难度适当、干货较多的app？</p>
+<h3 id="选择参照app"><a href="#选择参照app" class="headerlink" title="选择参照app"></a>选择参照app</h3><ul>
+<li>先选择自己想做的类型，比如：播放器，新闻类等，一些适合新手开发的app。然后在Github中搜索（一定要学会使用Github）。</li>
+<li>了解当前的流行技术框架，选择自己想学的一些框架，筛选出使用这些框架的app。</li>
+<li>从满足以上需求的app中找出一些star较多的项目，因为群众的眼睛是雪亮的，这代表该项目是有可取之处的。</li>
+<li>先大致了解下项目结构，不要盲目选一些效果炫酷的实现。要根据自己的技术能力选择，初学者不要选择太过复杂的，要循序渐进，才能事半功倍。  </li>
+</ul>
+<h3 id="开发前奏"><a href="#开发前奏" class="headerlink" title="开发前奏"></a>开发前奏</h3><p>选择好了一款或多款参照app后，那么就要开始全面了解这款app。</p>
+<ul>
+<li><p>项目结构：了解整个项目的结构，各个功能模块，以及使用的框架。一般项目结构都会按照如下结构展开。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-92ac503971a0a90f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+</li>
+<li><p>框架使用：了解整个项目使用的框架，然后学习该框架的使用。先看相关文章，了解基础使用，然后了解原理，最后基于自己的项目进行封装，这样会方便后续快速功能实现。</p>
+</li>
+</ul>
+<h2 id="三、开发app"><a href="#三、开发app" class="headerlink" title="三、开发app"></a>三、开发app</h2><p>关于具体开发，仅介绍一些通用的东西，供大家参考。</p>
+<ul>
+<li>项目构建 ：<a href="http://www.jianshu.com/p/d9e4ddd1c530" target="_blank" rel="noopener">一个优秀的Android应用从建项目开始</a>，创建项目的一些规范。</li>
+<li>工具类：<a href="https://github.com/Blankj/AndroidUtilCode" target="_blank" rel="noopener">AndroidUtilCode</a>，所有你想用的工具类，都可以从中抽取。</li>
+<li>基类：构建项目中基类，如Activity,Fragment等，可以参考网上的一些实现，但是大而全不一定好，适合自己的才是最好的。</li>
+</ul>
+<h2 id="四、个人经验"><a href="#四、个人经验" class="headerlink" title="四、个人经验"></a>四、个人经验</h2><h3 id="（1）动机"><a href="#（1）动机" class="headerlink" title="（1）动机"></a>（1）动机</h3><p>作为一个Android新手，我也是在今年2月份才开始想学习做一款app，增加自己各方面的能力。</p>
+<p>在刚开始，想学习一些流行框架的使用，如Retrofit，RxJava，Glide,EventBus以及MVP模式。</p>
+<p>在构思整个项目的时候，想的大而全，想实现太多的功能，而然做到最后只实现了新闻浏览以及图片浏览的功能，虽然项目不完整,但是仍然学到了不少东西。</p>
+<h3 id="（2）过程"><a href="#（2）过程" class="headerlink" title="（2）过程"></a>（2）过程</h3><p>因为实现的功能比较简单，整个项目的周期大概20多天左右。其实开发周期也就10多天，在前10天左右一直在学习了解各个框架的使用及原理。</p>
+<p>Read the fucking source code，这个过程虽然很枯燥，不过也是一个积累与沉淀的过程。</p>
+<p>从我的博客就可以看出我在准备这个项目时的学习历程。博客写作真的是学习的一个很好方式，可以将很多东西变成自己的，不再留于表面。</p>
+<p><strong>RxJava学习过程</strong><br><a href="http://www.jianshu.com/p/d149043d103a" target="_blank" rel="noopener">手把手教你使用 RxJava 2.0（一）</a><br><a href="http://www.jianshu.com/p/310726a75045" target="_blank" rel="noopener">手把手教你使用 RxJava 2.0（二）</a><br><a href="http://www.jianshu.com/p/1f4867ce3c01" target="_blank" rel="noopener">手把手教你使用 RxJava 2.0（三）</a>  </p>
+<p><strong>Retrofit学习过程</strong><br><a href="http://www.jianshu.com/p/7a4b3766f86d" target="_blank" rel="noopener">Retrofit配置详解及封装，让你的网络请求更简单</a><br><a href="http://www.jianshu.com/p/9c3f0af1180d" target="_blank" rel="noopener">Retrofit+RxJava网络请求异常处理</a>  </p>
+<p><strong>EventBus学习过程</strong><br><a href="http://www.jianshu.com/p/251a1e1b793a" target="_blank" rel="noopener">关于EventBus，从使用到解析（上）</a><br><a href="http://www.jianshu.com/p/4f34176c2ea7" target="_blank" rel="noopener">关于EventBus，从使用到解析（下）</a>  </p>
+<p><strong>MVP模式学习过程</strong><br><a href="http://www.jianshu.com/p/8fb4c0ae006e" target="_blank" rel="noopener">Android MVP 的简单介绍与使用</a> </p>
+<p><strong>具体技术解决过程</strong><br><a href="http://www.jianshu.com/p/86ca7c873cb8" target="_blank" rel="noopener">Android之仿哔哩哔哩客户端首页+抽屉式导航</a><br><a href="http://www.jianshu.com/p/40561384c7ca" target="_blank" rel="noopener">类似支付宝首页——RecycleView多布局结构实现</a><br><a href="http://www.jianshu.com/p/02a9b697fdc0" target="_blank" rel="noopener">类似支付宝应用管理界面——RecycleView+ItemTouchHelper实现拖拽滑动</a><br><a href="http://www.jianshu.com/p/eb81f3692229" target="_blank" rel="noopener">ViewPager+TabLayout+Fragment懒加载机制完全解析</a>  </p>
+<p>边做边写，一路下来，收获还是颇丰，小伙伴们可以在暑假试一试，很有效。</p>
+<h3 id="（3）结果"><a href="#（3）结果" class="headerlink" title="（3）结果"></a>（3）结果</h3><p>最终完成的项目在现在看来很low了，不过确实是一个很好的开端。下面展示下具体实现的效果，纪念下我的第一款app。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-9fd54f74ee60ed5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-6a141a248f2f279a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-23d52fd7c7e3fad2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>Github地址：<a href="https://github.com/LRH1993/LiveCircle" target="_blank" rel="noopener">https://github.com/LRH1993/LiveCircle</a></strong>  </p>
+<p>感兴趣的看下，觉得以上介绍不错的可以给个star支持下。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/12/Eyepetizer-in-Kotlin一款简约的小视频app，带你走进kotlin/" rel="next" title="Eyepetizer-in-Kotlin:一款简约的小视频app，带你走进kotlin">
+                <i class="fa fa-chevron-left"></i> Eyepetizer-in-Kotlin:一款简约的小视频app，带你走进kotlin
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/29/Android权限处理的那些事/" rel="prev" title="Android权限处理的那些事">
+                Android权限处理的那些事 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、误区"><span class="nav-number">1.</span> <span class="nav-text">一、误区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#（2）从表面深入原理"><span class="nav-number">1.1.</span> <span class="nav-text">（2）从表面深入原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（3）不盲目追求效果"><span class="nav-number">1.2.</span> <span class="nav-text">（3）不盲目追求效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、准备工作"><span class="nav-number">2.</span> <span class="nav-text">二、准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#选择参照app"><span class="nav-number">2.1.</span> <span class="nav-text">选择参照app</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发前奏"><span class="nav-number">2.2.</span> <span class="nav-text">开发前奏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、开发app"><span class="nav-number">3.</span> <span class="nav-text">三、开发app</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、个人经验"><span class="nav-number">4.</span> <span class="nav-text">四、个人经验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#（1）动机"><span class="nav-number">4.1.</span> <span class="nav-text">（1）动机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（2）过程"><span class="nav-number">4.2.</span> <span class="nav-text">（2）过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（3）结果"><span class="nav-number">4.3.</span> <span class="nav-text">（3）结果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

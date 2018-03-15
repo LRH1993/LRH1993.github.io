@@ -1,0 +1,818 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Android中头像选择，图片上传等功能几乎是每一个APP必备的功能，那么关于怎么使用相机，如何进行照片选择，以及选择后的图片裁剪，这一系列的问题都需要逐一解决。这也是本篇文章的主要内容。  一、应用场景 微信朋友圈上传图片，头像上传等功能，经常就会用到以上功能。 二、业务逻辑主要分为两种业务逻辑：拍照，选择图片。 拍照逻辑：1.A 界面，点击按钮调用相机拍照；2.拍照界面拍照后，点击确认得到拍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android拍照、照片选择以及图片裁剪完全解析">
+<meta property="og:url" content="https://lrh1993.github.io/2017/05/18/Android拍照、照片选择以及图片裁剪完全解析/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="Android中头像选择，图片上传等功能几乎是每一个APP必备的功能，那么关于怎么使用相机，如何进行照片选择，以及选择后的图片裁剪，这一系列的问题都需要逐一解决。这也是本篇文章的主要内容。  一、应用场景 微信朋友圈上传图片，头像上传等功能，经常就会用到以上功能。 二、业务逻辑主要分为两种业务逻辑：拍照，选择图片。 拍照逻辑：1.A 界面，点击按钮调用相机拍照；2.拍照界面拍照后，点击确认得到拍">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-a8e3f2e3bfc2e2e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-5d3d3d50a46211e1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-f3d9b9e49b32906c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-b82a260a49b89082.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-e5c1fafd70cd9bc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-87993696532bc7e3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-15b45f358a209130.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-24T05:26:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android拍照、照片选择以及图片裁剪完全解析">
+<meta name="twitter:description" content="Android中头像选择，图片上传等功能几乎是每一个APP必备的功能，那么关于怎么使用相机，如何进行照片选择，以及选择后的图片裁剪，这一系列的问题都需要逐一解决。这也是本篇文章的主要内容。  一、应用场景 微信朋友圈上传图片，头像上传等功能，经常就会用到以上功能。 二、业务逻辑主要分为两种业务逻辑：拍照，选择图片。 拍照逻辑：1.A 界面，点击按钮调用相机拍照；2.拍照界面拍照后，点击确认得到拍">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-a8e3f2e3bfc2e2e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/05/18/Android拍照、照片选择以及图片裁剪完全解析/"/>
+
+
+
+
+
+  <title>Android拍照、照片选择以及图片裁剪完全解析 | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/05/18/Android拍照、照片选择以及图片裁剪完全解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android拍照、照片选择以及图片裁剪完全解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-18T15:48:21+08:00">
+                2017-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">Android进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/05/18/Android拍照、照片选择以及图片裁剪完全解析/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/05/18/Android拍照、照片选择以及图片裁剪完全解析/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Android中头像选择，图片上传等功能几乎是每一个APP必备的功能，那么关于怎么使用相机，如何进行照片选择，以及选择后的图片裁剪，这一系列的问题都需要逐一解决。这也是本篇文章的主要内容。</p>
+</blockquote>
+<h3 id="一、应用场景"><a href="#一、应用场景" class="headerlink" title="一、应用场景"></a>一、应用场景</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-a8e3f2e3bfc2e2e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-5d3d3d50a46211e1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>微信朋友圈上传图片，头像上传等功能，经常就会用到以上功能。</p>
+<h3 id="二、业务逻辑"><a href="#二、业务逻辑" class="headerlink" title="二、业务逻辑"></a>二、业务逻辑</h3><p>主要分为两种业务逻辑：<strong>拍照，选择图片。</strong></p>
+<h4 id="拍照逻辑："><a href="#拍照逻辑：" class="headerlink" title="拍照逻辑："></a>拍照逻辑：</h4><p>1.A 界面，点击按钮调用相机拍照；<br>2.拍照界面拍照后，点击确认得到拍完照片，跳转到 B 界面进行预览；<br>3.B 界面进行图片裁剪，裁剪后确认，返回A界面进行图片回显；</p>
+<h4 id="选择图片逻辑："><a href="#选择图片逻辑：" class="headerlink" title="选择图片逻辑："></a>选择图片逻辑：</h4><p>1.A界面，点击按钮调用相册选择图片；<br>2.相册界面选择图片后，跳转到B界面进行预览；<br>3.B 界面进行图片裁剪，裁剪后确认，返回A界面进行图片回显；<br><img src="http://upload-images.jianshu.io/upload_images/3985563-f3d9b9e49b32906c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>从上面可以清楚地看出，两种方式的主要区别在第一步上面，一种是选择调用相机，另一种选择是调用相册。</p>
+<p>下面我们来介绍具体代码逻辑。</p>
+<h3 id="三、拍照具体实现"><a href="#三、拍照具体实现" class="headerlink" title="三、拍照具体实现"></a>三、拍照具体实现</h3><p>以如下使用场景为例：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-b82a260a49b89082.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width="250" height="450" align="center"><br>头像上传的使用。</p>
+<h3 id="1-调用相机"><a href="#1-调用相机" class="headerlink" title="1.调用相机"></a>1.调用相机</h3><p>Android 程序上实现拍照功能的方式分为两种：第一种是利用相机的 API 来自定义相机，第二种是利用 Intent 调用系统指定的相机拍照。下面讲的内容都是针对第二种实现方式的应用。</p>
+<h4 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE)<span class="comment">;</span></span><br><span class="line">Uri fileUri = Uri.fromFile(mPhotoFile)<span class="comment">;</span></span><br><span class="line">captureIntent.putExtra(MediaStore.<span class="keyword">EXTRA_OUTPUT, </span>fileUri)<span class="comment">;</span></span><br><span class="line">startActivityForResult(captureIntent, CAPTURE_PHOTO_REQUEST_CODE)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>很简单，通过上述四行代码就实现了调用系统相机。</p>
+<p>加入MediaStore.EXTRA_OUTPUT，使得拍照后的图片输出到对应路径下。</p>
+<p>然而由于Android手机的碎片化，我们之前调用系统指定的相机app来拍照，有些手机可能会没有这个app，所以在使用之前要检查是否有系统相机。<br><figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断系统中是否存在可以启动的相机应用</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 存在返回true，不存在返回false</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> hasCamera() &#123;</span><br><span class="line">        PackageManager packageManager = mActivity.getPackageManager();</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span><br><span class="line">        <span class="keyword">List</span>&lt;ResolveInfo&gt; <span class="keyword">list</span> = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">list</span>.size() &gt; <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-照片预览及图片裁剪"><a href="#2-照片预览及图片裁剪" class="headerlink" title="2.照片预览及图片裁剪"></a>2.照片预览及图片裁剪</h4><p>由于之前使用startActivityForResult方式调用系统相机，那么在拍照完成后，会返回到上述页面，这时候需要重写onActivityResult方法，根据之前传入的mPhotoFile路径，就获取了图片所在地，因为拍照后的图片就存在该路径下。</p>
+<p>然后我们只需要在开启一个照片预览Activity，进行后续裁剪就可以了。</p>
+<p>因为这里我们调用系统裁剪，所以就不设置预览Activity，直接跳转到裁剪页面就可以了。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//拍照完成后 获取目标文件 跳转到裁剪页面</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (requestCode == CapturePhotoHelper.CAPTURE_PHOTO_REQUEST_CODE) &#123;</span><br><span class="line">          <span class="comment">//获取拍照后图片路径</span></span><br><span class="line">          File photoFile = mCapturePhotoHelper.getPhoto();</span><br><span class="line">          <span class="keyword">if</span> (photoFile != <span class="keyword">null</span>) &#123;</span><br><span class="line">              <span class="keyword">if</span> (resultCode == RESULT_OK) &#123;</span><br><span class="line">                  Uri uri = Uri.fromFile(photoFile);</span><br><span class="line">                  Intent intent = <span class="keyword">new</span> Intent(<span class="string">"com.android.camera.action.CROP"</span>);</span><br><span class="line">                  intent.setDataAndType(uri, <span class="string">"image/*"</span>);</span><br><span class="line">                  <span class="comment">//intent.putExtra("crop", "true");</span></span><br><span class="line">                  intent.putExtra(<span class="string">"aspectX"</span>, <span class="number">1</span>);</span><br><span class="line">                  intent.putExtra(<span class="string">"aspectY"</span>, <span class="number">1</span>);</span><br><span class="line">                  intent.putExtra(<span class="string">"outputX"</span>, <span class="number">300</span>);</span><br><span class="line">                  intent.putExtra(<span class="string">"outputY"</span>, <span class="number">300</span>);</span><br><span class="line">                  intent.putExtra(<span class="string">"scale"</span>, <span class="keyword">true</span>);</span><br><span class="line">                  intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);</span><br><span class="line">                  intent.putExtra(<span class="string">"return-data"</span>, <span class="keyword">false</span>);</span><br><span class="line">                  intent.putExtra(<span class="string">"outputFormat"</span>, Bitmap.CompressFormat.JPEG.toString());</span><br><span class="line">                  intent.putExtra(<span class="string">"noFaceDetection"</span>, <span class="keyword">true</span>); <span class="comment">// no face detection</span></span><br><span class="line">                  intent = Intent.createChooser(intent, <span class="string">"裁剪图片"</span>);</span><br><span class="line">                  startActivityForResult(intent, REQUEST_PICKER_AND_CROP);</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  <span class="keyword">if</span> (photoFile.exists()) &#123;</span><br><span class="line">                      photoFile.delete();</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中要注意几个 extra 字段：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-e5c1fafd70cd9bc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>注意：</strong>return-data: 设为 true 的时候，在 onActivityResult() 中可以直接通过 data.getParcelableExtra(“data”) 得到裁剪后的 Bitmap 对象。但是当 Bitmap 过大时，就不能使用这种方法了，容易出现OOM现象，需要通过获取文件，然后先缩放，再加载。</p>
+<p>如下图所示：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-87993696532bc7e3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="3-回显图片"><a href="#3-回显图片" class="headerlink" title="3.回显图片"></a>3.回显图片</h3><p>如上如所示，修剪图片完成后，点击确定，然后就可以编写回显逻辑。</p>
+<p>同样在onActivityReuslt方法中<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span><span class="params">(<span class="attr">requestCode</span> ==REQUEST_PICKER_AND_CROP)</span>&#123;</span><br><span class="line">            File photoFile = mCapturePhotoHelper.getPhoto<span class="params">()</span>;</span><br><span class="line">            <span class="string">//</span>存放到相册</span><br><span class="line">            BitmapUtils.displayToGallery<span class="params">(this, photoFile)</span>;</span><br><span class="line">            <span class="string">//</span>更新UI 显示图像</span><br><span class="line">            InformationBean informationBean = mList.get<span class="params">(0)</span>;</span><br><span class="line">            informationBean.<span class="keyword">set</span>Content<span class="params">(photoFile.getAbsoluteFile()</span><span class="string">.toString</span><span class="params">()</span>);</span><br><span class="line">            informationBean.<span class="keyword">set</span>Set<span class="params">(true)</span>;</span><br><span class="line">            mAdapter.notifyItemChanged<span class="params">(0)</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述采用了RecyclerView,具体更新头像逻辑在Adapter中。</p>
+<p>不过同样由于Android碎片化问题，图片会产生各种各样的问题，比如：<strong>拍出来的照片“歪了”，拍完照怎么闪退了，图片无法显示</strong>。</p>
+<p>以上这些问题都比较坑，不过不要紧，已经有前人为我们趟出一条血路，全部都处理好了，详细代码及具体实现参考：<a href="http://www.jianshu.com/p/f269bcda335f" target="_blank" rel="noopener">你需要知道的Android拍照适配方案</a>。</p>
+<p>这里我们只负责应用就好了：<br><figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> content = bean.getContent();</span><br><span class="line">final <span class="type">File</span> file = <span class="function"><span class="keyword">new</span> <span class="title">File</span>(content);</span></span><br><span class="line"><span class="function">((<span class="type">SpecialViewHolder</span>) <span class="title">holder</span>).<span class="title">mImageView</span>.<span class="title">getViewTreeObserver</span>().<span class="title">addOnGlobalLayoutListener</span>(new <span class="type">ViewTreeObserver</span>.<span class="type">OnGlobalLayoutListener</span>() &#123;</span></span><br><span class="line"><span class="function">    @<span class="title">Override</span></span></span><br><span class="line"><span class="function">    <span class="title">public</span> <span class="title">void</span> <span class="title">onGlobalLayout</span>() &#123;</span></span><br><span class="line"><span class="function">        ((<span class="type">SpecialViewHolder</span>) <span class="title">holder</span>).<span class="title">mImageView</span>.<span class="title">getViewTreeObserver</span>().<span class="title">removeOnGlobalLayoutListener</span>(this);</span></span><br><span class="line"><span class="function">        <span class="title">mWidth</span> = ((<span class="type">SpecialViewHolder</span>) <span class="title">holder</span>).<span class="title">mImageView</span>.<span class="title">getMeasuredWidth</span>();</span></span><br><span class="line"><span class="function">        <span class="title">mHeight</span> = ((<span class="type">SpecialViewHolder</span>) <span class="title">holder</span>).<span class="title">mImageView</span>.<span class="title">getMeasuredHeight</span>();</span></span><br><span class="line"><span class="function">        <span class="title">Bitmap</span> <span class="title">bitmap</span> = <span class="title">BitmapUtils</span>.<span class="title">decodeBitmapFromFile</span>(file, mWidth, mHeight);</span></span><br><span class="line"><span class="function">        <span class="title">if</span> (bitmap != null) &#123;</span></span><br><span class="line"><span class="function">            <span class="comment">//检查是否有被旋转，并进行纠正</span></span></span><br><span class="line"><span class="function">            <span class="title">System</span>.<span class="title">out</span>.<span class="title">println</span>("文件所占空间："+"file.getTotalSpace()");</span></span><br><span class="line"><span class="function">            <span class="title">int</span> <span class="title">degree</span> = <span class="title">BitmapUtils</span>.<span class="title">getBitmapDegree</span>(file.getAbsolutePath());</span></span><br><span class="line"><span class="function">            <span class="title">if</span> (degree != <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="function">                <span class="title">bitmap</span> = <span class="title">BitmapUtils</span>.<span class="title">rotateBitmapByDegree</span>(bitmap, degree);</span></span><br><span class="line"><span class="function">            &#125;</span></span><br><span class="line"><span class="function">            ((<span class="type">SpecialViewHolder</span>) <span class="title">holder</span>).<span class="title">mImageView</span>.<span class="title">setImageBitmap</span>(bitmap);</span></span><br><span class="line"><span class="function">        &#125;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    &#125;</span></span><br><span class="line"><span class="function">&#125;);</span></span><br></pre></td></tr></table></figure></p>
+<p>先获取控件的宽高，进行压缩，避免<strong>图片无法显示的问题。</strong></p>
+<p>然后检查有没有被旋转，如果旋转，那么通过矩阵矫正，避免<strong>照片”歪了”的问题。</strong></p>
+<p>至于<strong>拍完照片后闪退</strong>，可以通过重写onSaveInstanceState 和 onRestoreInstanceState 来实现。</p>
+<p>回显结果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-15b45f358a209130.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="四、选择图片具体实现"><a href="#四、选择图片具体实现" class="headerlink" title="四、选择图片具体实现"></a>四、选择图片具体实现</h3><p>由于和上述方式只是第一步有区别，我们就具体看看第一步的实现。<br><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Intent</span> <span class="keyword">intent</span> = new <span class="keyword">Intent</span>(<span class="keyword">Intent</span>.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);</span><br><span class="line">       <span class="keyword">intent</span>.putExtra(MediaStore.EXTRA_OUTPUT,uri);</span><br><span class="line">       startActivityForResult(<span class="keyword">intent</span>, REQUEST_PICK_IMAGE);</span><br></pre></td></tr></table></figure></p>
+<p>直接开启系统图片选择应用即可，不用额外设置MediaStore.EXTRA_OUTPUT，因为图片已经保存在数据库内了，可直接获取，如下所示。</p>
+<p>然后在onActivityResult中，获取图片存储路径，跳转到裁剪页面。<br><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="attr">requestCode</span> == REQUEST_PICK_IMAGE) &#123;</span><br><span class="line">            //获取选择图片后图片路径</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="attr">resultCode</span> == RESULT_OK) &#123;</span><br><span class="line">                Uri <span class="attr">uri</span> =  data.getData();</span><br><span class="line">                Intent <span class="attr">intent</span> = new Intent(<span class="string">"com.android.camera.action.CROP"</span>);</span><br><span class="line">                intent.setDataAndType(uri, <span class="string">"image/*"</span>);</span><br><span class="line">                intent.putExtra(<span class="string">"aspectX"</span>, <span class="number">1</span>);</span><br><span class="line">                intent.putExtra(<span class="string">"aspectY"</span>, <span class="number">1</span>);</span><br><span class="line">                intent.putExtra(<span class="string">"outputX"</span>, <span class="number">200</span>);</span><br><span class="line">                intent.putExtra(<span class="string">"outputY"</span>, <span class="number">200</span>);</span><br><span class="line">                intent.putExtra(<span class="string">"scale"</span>, <span class="literal">true</span>);</span><br><span class="line">                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));</span><br><span class="line">                intent.putExtra(<span class="string">"return-data"</span>, <span class="literal">false</span>);</span><br><span class="line">                intent.putExtra(<span class="string">"outputFormat"</span>, Bitmap.CompressFormat.JPEG.<span class="built_in">toString</span>());</span><br><span class="line">                intent.putExtra(<span class="string">"noFaceDetection"</span>, <span class="literal">true</span>); // no face detection</span><br><span class="line">                <span class="attr">intent</span> = Intent.createChooser(intent, <span class="string">"裁剪图片"</span>);</span><br><span class="line">                startActivityForResult(intent, REQUEST_PICKER_AND_CROP_2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>后面回显步骤和上述一致。</p>
+<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>上述介绍了拍照，照片选择以及图片剪裁的使用，由于使用的是系统自带的应用，所以可能出现一些意想不到的适配问题，还有待解决。另外，由于是系统自带，功能比较单一，且无法使用个性化，如有这方面的需求，可以使用一些流行的第三方库，Github上有很多优秀的实现。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/16/FlexboxLayout——实现灵活多变的瀑布流/" rel="next" title="FlexboxLayout——实现灵活多变的瀑布流">
+                <i class="fa fa-chevron-left"></i> FlexboxLayout——实现灵活多变的瀑布流
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/22/SmartRecom：一款干货满满，助你进阶的App项目/" rel="prev" title="SmartRecom：一款干货满满，助你进阶的App项目">
+                SmartRecom：一款干货满满，助你进阶的App项目 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、应用场景"><span class="nav-number">1.</span> <span class="nav-text">一、应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、业务逻辑"><span class="nav-number">2.</span> <span class="nav-text">二、业务逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拍照逻辑："><span class="nav-number">2.1.</span> <span class="nav-text">拍照逻辑：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择图片逻辑："><span class="nav-number">2.2.</span> <span class="nav-text">选择图片逻辑：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、拍照具体实现"><span class="nav-number">3.</span> <span class="nav-text">三、拍照具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-调用相机"><span class="nav-number">4.</span> <span class="nav-text">1.调用相机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单使用"><span class="nav-number">4.1.</span> <span class="nav-text">简单使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-照片预览及图片裁剪"><span class="nav-number">4.2.</span> <span class="nav-text">2.照片预览及图片裁剪</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-回显图片"><span class="nav-number">5.</span> <span class="nav-text">3.回显图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、选择图片具体实现"><span class="nav-number">6.</span> <span class="nav-text">四、选择图片具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、总结"><span class="nav-number">7.</span> <span class="nav-text">五、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

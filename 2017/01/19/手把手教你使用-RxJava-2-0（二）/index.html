@@ -1,0 +1,816 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="技术,Android,Java" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ruheng" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇文章主要介绍线程调度器，通过对线程调度器的了解，方便我们更好的处理异步操作，在合适的场景选择合适的线程。同时，结合上篇文章，我们就初步掌握了 RxJava 2.x的基本操作并可以应用在我们的项目中。在本篇文章的后半部分，会具体展示RxJava 2.x的使用。  Scheduler简介在不指定线程的情况下， RxJava 遵循的是线程不变的原则，即：在哪个线程调用 subscribe()，就在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手把手教你使用-RxJava-2-0（二）">
+<meta property="og:url" content="https://lrh1993.github.io/2017/01/19/手把手教你使用-RxJava-2-0（二）/index.html">
+<meta property="og:site_name" content="ruheng">
+<meta property="og:description" content="本篇文章主要介绍线程调度器，通过对线程调度器的了解，方便我们更好的处理异步操作，在合适的场景选择合适的线程。同时，结合上篇文章，我们就初步掌握了 RxJava 2.x的基本操作并可以应用在我们的项目中。在本篇文章的后半部分，会具体展示RxJava 2.x的使用。  Scheduler简介在不指定线程的情况下， RxJava 遵循的是线程不变的原则，即：在哪个线程调用 subscribe()，就在">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-e867becfb3be35de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-02T01:57:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="手把手教你使用-RxJava-2-0（二）">
+<meta name="twitter:description" content="本篇文章主要介绍线程调度器，通过对线程调度器的了解，方便我们更好的处理异步操作，在合适的场景选择合适的线程。同时，结合上篇文章，我们就初步掌握了 RxJava 2.x的基本操作并可以应用在我们的项目中。在本篇文章的后半部分，会具体展示RxJava 2.x的使用。  Scheduler简介在不指定线程的情况下， RxJava 遵循的是线程不变的原则，即：在哪个线程调用 subscribe()，就在">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-e867becfb3be35de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lrh1993.github.io/2017/01/19/手把手教你使用-RxJava-2-0（二）/"/>
+
+
+
+
+
+  <title>手把手教你使用-RxJava-2-0（二） | ruheng</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ruheng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">成长路上的小菜鸟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lrh1993.github.io/2017/01/19/手把手教你使用-RxJava-2-0（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ruheng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ruheng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">手把手教你使用-RxJava-2-0（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-19T14:36:57+08:00">
+                2017-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RxJava/" itemprop="url" rel="index">
+                    <span itemprop="name">RxJava</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/01/19/手把手教你使用-RxJava-2-0（二）/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/01/19/手把手教你使用-RxJava-2-0（二）/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇文章主要介绍线程调度器，通过对线程调度器的了解，方便我们更好的处理异步操作，在合适的场景选择合适的线程。同时，结合上篇文章，我们就初步掌握了 RxJava 2.x的基本操作并可以应用在我们的项目中。在本篇文章的后半部分，会具体展示RxJava 2.x的使用。</p>
+</blockquote>
+<h3 id="Scheduler简介"><a href="#Scheduler简介" class="headerlink" title="Scheduler简介"></a>Scheduler简介</h3><p>在不指定线程的情况下， RxJava 遵循的是线程不变的原则，即：在哪个线程调用 subscribe()，就在哪个线程生产事件；在哪个线程生产事件，就在哪个线程消费事件。如果需要切换线程，就需要用到 Scheduler （调度器）。<br>在RxJava 中，Scheduler，相当于线程控制器，RxJava 通过它来指定每一段代码应该运行在什么样的线程。RxJava 已经内置了几个 Scheduler ，它们已经适合大多数的使用场景。</p>
+<h3 id="Scheduler-的-API"><a href="#Scheduler-的-API" class="headerlink" title="Scheduler 的 API"></a>Scheduler 的 API</h3><p><strong>● Schedulers.immediate():</strong> 直接在当前线程运行，相当于不指定线程。这是默认的 Scheduler。</p>
+<p><strong>●Schedulers.newThread():</strong> 总是启用新线程，并在新线程执行操作。</p>
+<p><strong>●Schedulers.io():</strong> I/O 操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。行为模式和 newThread() 差不多，区别在于 io() 的内部实现是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下 io() 比 newThread() 更有效率。不要把计算工作放在 io() 中，可以避免创建不必要的线程。</p>
+<p><strong>●Schedulers.computation(): </strong>计算所使用的 Scheduler。这个计算指的是 CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，例如图形的计算。这个 Scheduler 使用的固定的线程池，大小为 CPU 核数。不要把 I/O 操作放在 computation() 中，否则 I/O 操作的等待时间会浪费 CPU。</p>
+<p>● Android 还有一个专用的<strong> AndroidSchedulers.mainThread()</strong>，它指定的操作将在 Android 主线程运行。</p>
+<p>有了这几个 Scheduler ，就可以使用 subscribeOn() 和 observeOn() 两个方法来对线程进行控制了。<strong>subscribeOn(): 指定Observable(被观察者)所在的线程，或者叫做事件产生的线程。 observeOn(): 指定 Observer(观察者)所运行在的线程，或者叫做事件消费的线程。</strong><br>下面用代码展示下线程调度的使用：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Observable.create(<span class="literal">new</span> ObservableOnSubscribe&lt;<span class="built_in">Integer</span>&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="literal">void</span> subscribe(ObservableEmitter&lt;<span class="built_in">Integer</span>&gt; e) throws Exception &#123;</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="string">"所在的线程："</span>,<span class="keyword">Thread</span>.currentThread().getName());</span><br><span class="line">                <span class="keyword">Log</span>.d(<span class="string">"发送的数据:"</span>, <span class="number">1</span>+<span class="string">""</span>);</span><br><span class="line">                e.onNext(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).subscribeOn(Schedulers.io()) </span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread()) /</span><br><span class="line">                .subscribe(<span class="literal">new</span> Consumer&lt;<span class="built_in">Integer</span>&gt;() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    <span class="keyword">public</span> <span class="literal">void</span> accept(<span class="built_in">Integer</span> <span class="built_in">integer</span>) throws Exception &#123;</span><br><span class="line">                        <span class="keyword">Log</span>.d(<span class="string">"所在的线程："</span>,<span class="keyword">Thread</span>.currentThread().getName());</span><br><span class="line">                        <span class="keyword">Log</span>.d(<span class="string">"接收到的数据:"</span>, <span class="string">"integer:"</span> + <span class="built_in">integer</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>01-19 10:06:38.275 27734-27783/? D/所在的线程：: RxCachedThreadScheduler-1<br>01-19 10:06:38.275 27734-27783/? D/发送的数据:: 1<br>01-19 10:06:38.285 27734-27734/? D/所在的线程：: main<br>01-19 10:06:38.285 27734-27734/? D/接收到的数据:: integer:1</p>
+</blockquote>
+<p>可以看到,Observable(被观察者)发送事件的线程的确改变了, 是在一个叫  RxCachedThreadScheduler-1的线程中发送的事件, 而Observer(观察者)仍然在主线程中接收事件。由此我们实现了线程调度的操作，可以在此基础上尽情的进行异步操作。</p>
+<p>下面来介绍一个具体的使用场景。</p>
+<h3 id="RxJava-2-x-网络请求使用"><a href="#RxJava-2-x-网络请求使用" class="headerlink" title="RxJava 2.x 网络请求使用"></a>RxJava 2.x 网络请求使用</h3><p>Android中有多种网络请求库, Retrofit便是其中的佼佼者，它的优势之一便是它支持RxJava的方式来调用。我们便以Retrofit进行网络请求，RxJava进行异步处理，两者结合来讲解RxJava在网络请求中的具体使用。</p>
+<p>本例中 我们使用聚合数据中的全国天气数据，获得城市信息。<br>接口url：<a href="http://v.juhe.cn/weather/citys?key=..." target="_blank" rel="noopener">http://v.juhe.cn/weather/citys?key=...</a>.  其中key是你申请时聚合数据给你的密钥。<br>具体请求的返回数据形式如下：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-e867becfb3be35de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>下面以上述数据简单讲解一下Retrofit的基本用法。</p>
+<p>要使用Retrofit,先在Gradle中添加配置:<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Retrofit</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">'com.squareup.retrofit2:retrofit:2.1.0'</span></span><br><span class="line"><span class="comment">//Gson converter</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">'com.squareup.retrofit2:converter-gson:2.1.0'</span></span><br><span class="line"><span class="comment">//Okhttp</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">'com.squareup.okhttp3:okhttp:3.5.0'</span></span><br><span class="line"><span class="comment">//RxJava　adapter</span></span><br><span class="line">    <span class="keyword">compile</span> <span class="string">'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'</span></span><br></pre></td></tr></table></figure></p>
+<p>定义Api接口:<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">public</span> <span class="selector-tag">interface</span> <span class="selector-tag">Api</span> &#123;</span><br><span class="line">    <span class="variable">@GET</span>(<span class="string">"citys"</span>)</span><br><span class="line">    Observable&lt;AllCity&gt; getAllCity(<span class="variable">@Query</span>(<span class="string">"key"</span>) String key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>创建一个Retrofit客户端:<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private static Retrofit create() &#123;</span><br><span class="line">        OkHttpClient.<span class="keyword">Builder </span><span class="keyword">builder </span>= new OkHttpClient().newBuilder()<span class="comment">;</span></span><br><span class="line">        <span class="keyword">builder.readTimeout(10, </span>TimeUnit.SECONDS)<span class="comment">;</span></span><br><span class="line">        <span class="keyword">builder.connectTimeout(9, </span>TimeUnit.SECONDS)<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">        return new Retrofit.<span class="keyword">Builder().baseUrl(baseUrl)</span></span><br><span class="line"><span class="keyword"> </span>               .client(<span class="keyword">builder.build())</span></span><br><span class="line"><span class="keyword"> </span>               .<span class="keyword">addConverterFactory(GsonConverterFactory.create())</span></span><br><span class="line"><span class="keyword"> </span>               .<span class="keyword">addCallAdapterFactory(RxJava2CallAdapterFactory.create())</span></span><br><span class="line"><span class="keyword"> </span>               .<span class="keyword">build();</span></span><br><span class="line"><span class="keyword"> </span>   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下来就可以进行网络请求：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Retrofit retrofit = create();</span><br><span class="line">        Api api = retrofit.create(Api.class);</span><br><span class="line">        Observable&lt;AllCity&gt; observable = api.getAllCity(appkey);</span><br><span class="line">        observable.subscribeOn(Schedulers.io())</span><br><span class="line">                .flatMap(<span class="keyword">new</span> Function&lt;AllCity, ObservableSource&lt;City&gt;&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> ObservableSource&lt;City&gt; apply(AllCity city) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">                        ArrayList&lt;City&gt; result = city.getResult();</span><br><span class="line">                        <span class="function"><span class="keyword">return</span> Observable.<span class="title">fromIterable</span><span class="params">(result)</span></span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .filter(<span class="keyword">new</span> Predicate&lt;City&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">test</span><span class="params">(City city)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                        String id = city.getId();</span><br><span class="line">                        <span class="keyword">if</span>(Integer.parseInt(id)&lt;<span class="number">5</span>)&#123;</span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">                .subscribe(<span class="keyword">new</span> Consumer&lt;City&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(City city)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                        System.out.println(city);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>01-19 13:28:56.952 13218-13218/com.lvr.rxjavalearning I/System.out: City{id=’1’, province=’北京’, city=’北京’, district=’北京’}<br>01-19 13:28:56.952 13218-13218/com.lvr.rxjavalearning I/System.out: City{id=’2’, province=’北京’, city=’北京’, district=’海淀’}<br>01-19 13:28:56.952 13218-13218/com.lvr.rxjavalearning I/System.out: City{id=’3’, province=’北京’, city=’北京’, district=’朝阳’}<br>01-19 13:28:56.952 13218-13218/com.lvr.rxjavalearning I/System.out: City{id=’4’, province=’北京’, city=’北京’, district=’顺义’}</p>
+</blockquote>
+<p>调用Api接口方法，返回一个Observable(被观察者)对象，然后当subscribe()订阅后，就可以在IO线程中执行网络 请求操作，然后进行转换过滤，最终Observer(观察者)对象在UI线程中获得城市id在1-4之间的城市信息。<br>其中请求返回的数据是json形式，AllCity类包含所有的返回数据，具体代码如下：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AllCity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> error_code;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> reason;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> resultcode;</span><br><span class="line">   <span class="keyword">private</span> ArrayList&lt;City&gt; result;</span><br><span class="line"><span class="comment">//省略getter,setter方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ArrayList集合中封装了所有城市的信息，City类包含城市详细信息，具体代码如下：<br> <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">City</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * id : 1</span></span><br><span class="line"><span class="comment">     * province : 北京</span></span><br><span class="line"><span class="comment">     * city : 北京</span></span><br><span class="line"><span class="comment">     * district : 北京</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> province;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> city;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> district;</span><br><span class="line">    <span class="comment">//省略getter,setter,toString方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>本例中，我们假设Observer(观察者)需要id号在1-4之间的城市信息，我们就可以先使用flatMap()操作符先将封装所有信息的AllCity中提取出城市信息集合，然后转换成一个新的Observable(被观察者)进行传递，然后使用filter()进行过滤，过滤出符合要求的城市信息，最终传递给Observer(观察者)，让其在UI线程接收数据，然后更新UI。整个过程完成了网络请求，同时进行异步操作，防止阻塞UI线程。<br>以上仅仅以实例介绍RxJava的基础使用，RxJava的功能远不止于此。不过掌握了以上的技能，我们已经可以在我们的项目中应用RxJava进行异步操作了。关于一些RxJava中的细节及其他相关技术还需要慢慢积累。</p>
+<p>下面我们另一个重要的概念Disposable。当Observer(观察者)与Observable(被观察者)通过subscribe()建立连接后，事件可以进行传递。当发生一些其他情况，不得不断开两者之间的连接时，该怎么操作?这个时候就该Disposable上场了。</p>
+<h3 id="Disposable简介及使用"><a href="#Disposable简介及使用" class="headerlink" title="Disposable简介及使用"></a>Disposable简介及使用</h3><h4 id="Disposable简介"><a href="#Disposable简介" class="headerlink" title="Disposable简介"></a>Disposable简介</h4><p>Disposable, 这个单词的字面意思是一次性用品,用完即可丢弃的。在RxJava中,用它来切断Observer(观察者)与Observable(被观察者)之间的连接，当调用它的dispose()方法时, 它就会将Observer(观察者)与Observable(被观察者)之间的连接切断, 从而导致Observer(观察者)收不到事件。<br>下面我们就该考虑如何来获得Disposable对象？<br>Disposable的作用是切断连接，确切地讲是将Observer(观察者)切断，不再接收来自被观察者的事件，而被观察者的事件却仍在继续执行。<br>因此Disposable的对象通过观察者获得，具体分为两种方式。</p>
+<h4 id="Disposable对象的获得"><a href="#Disposable对象的获得" class="headerlink" title="Disposable对象的获得"></a>Disposable对象的获得</h4><p>1.Observer接口<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Observer&lt;String&gt; observer = <span class="keyword">new</span> Observer&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onSubscribe</span><span class="params">(Disposable d)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onNext</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>通过创建Observer接口,当订阅后，建立与Observable的联系，onSubscribe(Disposable d)中便可以获得Disposable对象。<br>2.Consumer等其他函数式接口<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Disposable disposable = Observable.just(<span class="string">"你好"</span>).subscribe(<span class="keyword">new</span> Consumer&lt;String&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(String s)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>当subscribe()后直接返回一个Disposable 对象<br>获得了Disposable对象后，我们便可以调用dispose()方法，在恰当的时机，断开连接，停止接收Observable(被观察者)发送的事件。</p>
+<p><strong>注意：</strong>当切断被观察者与观察者之间的联系，Observable(被观察者)的事件却仍在继续执行。</p>
+<p>另外，补充一下onNext()、onComplete()和onError()事件的发送规则。<br>具体规则：</p>
+<p>Observable(被观察者)可以发送无限个onNext, Observer(观察者)也可以接收无限个onNext.</p>
+<p>当Observable(被观察者)发送了一个onComplete后, Observable(被观察者)中onComplete之后的事件将会继续发送, 而Observer(观察者)收到onComplete事件之后将不再继续接收事件.</p>
+<p>当Observable(被观察者)发送了一个onError后, Observable(被观察者)中onError之后的事件将继续发送, 而Observer(观察者)收到onError事件之后将不再继续接收事件.</p>
+<p>Observable(被观察者)可以不发送onComplete或onError.</p>
+<p>最为关键的是onComplete和onError必须唯一并且互斥, 即不能发多个onComplete, 也不能发多个onError, 也不能先发一个onComplete, 然后再发一个onError, 反之亦然</p>
+<p><strong>注:</strong> 关于onComplete和onError唯一并且互斥这一点, 是需要自行在代码中进行控制, 如果你的代码逻辑中违背了这个规则, 并不一定会导致程序崩溃. 比如发送多个onComplete是可以正常运行的, 依然是收到第一个onComplete就不再接收了, 但若是发送多个onError, 则收到第二个onError事件会导致程序会崩溃。</p>
+<p>以上就是本篇文章的全部内容，结合上一篇文章，已经可以灵活使用RxJava了。在下篇文章中，将会介绍RxJava中新增加的内容：Flowable及backpressure。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/19/由浅入深理解java集合(二)——集合-Set/" rel="next" title="由浅入深理解java集合(二)——集合-Set">
+                <i class="fa fa-chevron-left"></i> 由浅入深理解java集合(二)——集合-Set
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/20/手把手教你使用-RxJava-2-0（三）/" rel="prev" title="手把手教你使用-RxJava-2-0（三）">
+                手把手教你使用-RxJava-2-0（三） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="SOHUCS"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.png"
+               alt="Ruheng" />
+          <p class="site-author-name" itemprop="name">Ruheng</p>
+           
+              <p class="site-description motion-element" itemprop="description">生活不止有苟且，还有code和bug</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LRH1993" target="_blank" title="GitHub">
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/0fa6f5d09040" target="_blank" title="简书">
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/58ca03b7128fe1006c7bf8ef" target="_blank" title="掘金">
+                  
+                  掘金
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/lrh0211" target="_blank" title="CSDN">
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scheduler简介"><span class="nav-number">1.</span> <span class="nav-text">Scheduler简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scheduler-的-API"><span class="nav-number">2.</span> <span class="nav-text">Scheduler 的 API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RxJava-2-x-网络请求使用"><span class="nav-number">3.</span> <span class="nav-text">RxJava 2.x 网络请求使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Disposable简介及使用"><span class="nav-number">4.</span> <span class="nav-text">Disposable简介及使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Disposable简介"><span class="nav-number">4.1.</span> <span class="nav-text">Disposable简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Disposable对象的获得"><span class="nav-number">4.2.</span> <span class="nav-text">Disposable对象的获得</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ruheng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyt1MKbgw';
+      var conf = '6afe5b776c36b70c69bc59bdd45e89ab';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
