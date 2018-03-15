@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -357,7 +375,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,774
+                  1,763
                 </span>
               
 
@@ -436,20 +454,20 @@
 <h2 id="二、环境配置"><a href="#二、环境配置" class="headerlink" title="二、环境配置"></a>二、环境配置</h2><p>基于macOS进行配置。</p>
 <h3 id="1-安装软件"><a href="#1-安装软件" class="headerlink" title="1.安装软件"></a>1.安装软件</h3><p><strong>Homebrew</strong></p>
 <p>Mac系统的包管理器，用于安装NodeJS和一些其他必需的工具软件。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/<span class="keyword">install</span>/<span class="keyword">master</span>/<span class="keyword">install</span>)<span class="string">"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/<span class="keyword">install</span>/<span class="keyword">master</span>/<span class="keyword">install</span>)<span class="string">"</span></span><br></pre></td></tr></table></figure>
 <p><strong>Node</strong></p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install <span class="keyword">node</span><span class="title"></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">brew install <span class="keyword">node</span><span class="title"></span></span><br></pre></td></tr></table></figure>
 <p>安装完node后建议设置npm镜像以加速后面的过程（或使用科学上网工具）。</p>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> config set registry https:<span class="regexp">//</span>registry.<span class="built_in">npm</span>.taobao.org --<span class="built_in">global</span></span><br><span class="line"><span class="built_in">npm</span> config set disturl https:<span class="regexp">//</span><span class="built_in">npm</span>.taobao.org/dist --<span class="built_in">global</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">npm</span> config set registry https:<span class="regexp">//</span>registry.<span class="built_in">npm</span>.taobao.org --<span class="built_in">global</span></span><br><span class="line"><span class="built_in">npm</span> config set disturl https:<span class="regexp">//</span><span class="built_in">npm</span>.taobao.org/dist --<span class="built_in">global</span></span><br></pre></td></tr></table></figure>
 <p><strong>React Native命令行工具</strong></p>
 <p>React Native的命令行工具用于执行创建、初始化、更新项目、运行打包服务（packager）等任务。</p>
-<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> install -g react-<span class="keyword">native</span>-cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">npm</span> install -g react-<span class="keyword">native</span>-cli</span><br></pre></td></tr></table></figure>
 <p><strong>Watchman</strong></p>
 <p>由Facebook提供的监视文件系统变更的工具。安装此工具可以提高开发时的性能（packager可以快速捕捉文件的变化从而实现实时刷新）。</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>watchman</span><br></pre></td></tr></table></figure>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>watchman</span><br></pre></td></tr></table></figure>
 <p><strong>Flow</strong></p>
 <p>一个 JavaScript 的静态类型检查器，建议安装它，以方便找出代码中可能存在的类型错误 </p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>flow</span><br></pre></td></tr></table></figure>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>flow</span><br></pre></td></tr></table></figure>
 <p><strong>WebStorm</strong><br>一款非常优秀的Web开发工具，同样支持React Native开发。<br>下载地址：<a href="https://www.jetbrains.com/webstorm/" target="_blank" rel="noopener">https://www.jetbrains.com/webstorm/</a>  </p>
 <p><strong>Android及iOS开发必备</strong></p>
 <ul>
@@ -457,7 +475,7 @@
 <li>Genymotion</li>
 <li>Xcode</li>
 </ul>
-<h3 id="2-测试安装"><a href="#2-测试安装" class="headerlink" title="2.测试安装"></a>2.测试安装</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">react-native init FirstApp</span><br><span class="line">cd FirstApp</span><br><span class="line">react-native <span class="keyword">run</span><span class="bash">-android</span></span><br><span class="line"><span class="bash">react-native run-ios</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-测试安装"><a href="#2-测试安装" class="headerlink" title="2.测试安装"></a>2.测试安装</h3><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">react-native init FirstApp</span><br><span class="line">cd FirstApp</span><br><span class="line">react-native <span class="keyword">run</span><span class="bash">-android</span></span><br><span class="line"><span class="bash">react-native run-ios</span></span><br></pre></td></tr></table></figure>
 <p>到此，就可以分别在Android和iOS平台上运行项目。自己在配置过程中，也出现了一些坑。如果配置过程中出现问题，建议google查一下相关解决方案。</p>
 <h2 id="三、预备知识"><a href="#三、预备知识" class="headerlink" title="三、预备知识"></a>三、预备知识</h2><ul>
 <li>JavaScript：<a href="https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000" target="_blank" rel="noopener">JavaScript教程</a></li>

@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -368,7 +386,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,819
+                  1,793
                 </span>
               
 
@@ -411,9 +429,9 @@
 <h3 id="Flexbox使用"><a href="#Flexbox使用" class="headerlink" title="Flexbox使用"></a>Flexbox使用</h3><p>Flexbox的使用非常简单，只需要对Flex容器设置<code>display:flex</code>或者<code>display:inline-flex</code>，就可以具体操作使用Flexbox布局了。</p>
 <p>下面以具体示例演示：</p>
 <p>html代码</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrap"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrap"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>css代码</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">70%</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">500px</span>;</span><br><span class="line">	<span class="attribute">margin</span>:<span class="number">20px</span> auto;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-class">.wrap</span> &#123;</span><br><span class="line">	<span class="attribute">display</span>: flex;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#a448cf</span>;</span><br><span class="line">	<span class="attribute">margin</span>:<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">80%</span>;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">80%</span>  </span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-class">.wrap</span> <span class="selector-tag">div</span> &#123;</span><br><span class="line">	<span class="attribute">width</span>:<span class="number">150px</span>;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">150px</span>;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#c75a5a</span>;</span><br><span class="line">	<span class="attribute">margin</span>:<span class="number">10px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">	<span class="attribute">width</span>: <span class="number">70%</span>;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">500px</span>;</span><br><span class="line">	<span class="attribute">margin</span>:<span class="number">20px</span> auto;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-class">.wrap</span> &#123;</span><br><span class="line">	<span class="attribute">display</span>: flex;</span><br><span class="line">	<span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#a448cf</span>;</span><br><span class="line">	<span class="attribute">margin</span>:<span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">80%</span>;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">80%</span>  </span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-class">.wrap</span> <span class="selector-tag">div</span> &#123;</span><br><span class="line">	<span class="attribute">width</span>:<span class="number">150px</span>;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">150px</span>;</span><br><span class="line">	<span class="attribute">background-color</span>: <span class="number">#c75a5a</span>;</span><br><span class="line">	<span class="attribute">margin</span>:<span class="number">10px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-106f6367df1bc35b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h2 id="二、Flex容器"><a href="#二、Flex容器" class="headerlink" title="二、Flex容器"></a>二、Flex容器</h2><p>首先介绍下Flex容器的具体属性以及具体的使用方式。</p>
 <table>

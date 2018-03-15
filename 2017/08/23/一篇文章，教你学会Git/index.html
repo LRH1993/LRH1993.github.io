@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -369,7 +387,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,086
+                  2,079
                 </span>
               
 
@@ -546,11 +564,11 @@
 <p>在开始阶段，我们处于new分支上，执行<code>git rebase dev</code>，那么new分支上新的commit都在master分支上重演一遍，最后checkout切换回到new分支。这一点与merge是一样的，合并前后所处的分支并没有改变。<code>git rebase dev</code>，通俗的解释就是new分支想站在dev的肩膀上继续下去。rebase也需要手动解决冲突。</p>
 <p><strong>rebase与merge的区别</strong></p>
 <p>现在我们有这样的两个分支,test和master，提交如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">      D---E test</span><br><span class="line">     /</span><br><span class="line">A---B---C---F master</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">      D---E test</span><br><span class="line">     /</span><br><span class="line">A---B---C---F master</span><br></pre></td></tr></table></figure>
 <p>在master执行<code>git merge test</code>,然后会得到如下结果：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">      D--------E</span><br><span class="line">     /          \</span><br><span class="line">A---B---C---F----G   test, master</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">      D--------E</span><br><span class="line">     /          \</span><br><span class="line">A---B---C---F----G   test, master</span><br></pre></td></tr></table></figure>
 <p>在master执行<code>git rebase test</code>，然后得到如下结果：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A---B---D---E---C<span class="string">'---F'</span>   test, master</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">A---B---D---E---C<span class="string">'---F'</span>   test, master</span><br></pre></td></tr></table></figure>
 <p>可以看到，merge操作会生成一个新的节点，之前的提交分开显示。而rebase操作不会生成新的节点，是将两个分支融合成一个线性的提交。</p>
 <p>如果你想要一个干净的，没有merge commit的线性历史树，那么你应该选择git rebase<br>如果你想保留完整的历史记录，并且想要避免重写commit history的风险，你应该选择使用git merge</p>
 <h3 id="reset"><a href="#reset" class="headerlink" title="reset"></a>reset</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-2d41240c43bc3f2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>

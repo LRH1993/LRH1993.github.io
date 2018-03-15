@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -367,7 +385,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  3,338
+                  3,324
                 </span>
               
 
@@ -424,8 +442,8 @@
 <h4 id="2-特殊情况下的生命周期"><a href="#2-特殊情况下的生命周期" class="headerlink" title="2.特殊情况下的生命周期"></a>2.特殊情况下的生命周期</h4><p>上面是普通情况下Activity生命周期的一些流程，但是在一些特殊情况下，Activity的生命周期的经历有些异常，下面就是两种特殊情况。<br><strong>①横竖屏切换</strong><br>在横竖屏切换的过程中，会发生Activity被销毁并重建的过程。</p>
 <p>在了解这种情况下的生命周期时，首先应该了解这两个回调：<strong>onSaveInstanceState和onRestoreInstanceState</strong>。</p>
 <p>在Activity由于异常情况下终止时，系统会调用onSaveInstanceState来保存当前Activity的状态。这个方法的调用是在onStop之前，它和onPause没有既定的时序关系，该方法只在Activity被异常终止的情况下调用。当异常终止的Activity被重建以后，系统会调用onRestoreInstanceState，并且把Activity销毁时onSaveInstanceState方法所保存的Bundle对象参数同时传递给onSaveInstanceState和onCreate方法。因此，可以通过onRestoreInstanceState方法来恢复Activity的状态，该方法的调用时机是在onStart之后。<strong>其中onCreate和onRestoreInstanceState方法来恢复Activity的状态的区别：</strong>onRestoreInstanceState回调则表明其中Bundle对象非空，不用加非空判断。onCreate需要非空判断。建议使用onRestoreInstanceState。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-23d90471fa7f12d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>横竖屏切换的生命周期：onPause()-&gt;onSaveInstanceState()-&gt; onStop()-&gt;onDestroy()-&gt;onCreate()-&gt;onStart()-&gt;onRestoreInstanceState-&gt;onResume()</p>
-<p>可以通过在AndroidManifest文件的Activity中指定如下属性：<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">android:configChanges </span>= <span class="string">"orientation| screenSize"</span></span><br></pre></td></tr></table></figure></p>
-<p>来避免横竖屏切换时，Activity的销毁和重建，而是回调了下面的方法：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">    <span class="keyword">public</span> void onConfigurationChanged(Configuration <span class="keyword">new</span><span class="type">Config</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.onConfigurationChanged(<span class="keyword">new</span><span class="type">Config</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以通过在AndroidManifest文件的Activity中指定如下属性：<br><figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">android:configChanges </span>= <span class="string">"orientation| screenSize"</span></span><br></pre></td></tr></table></figure></p>
+<p>来避免横竖屏切换时，Activity的销毁和重建，而是回调了下面的方法：<br><figure class="highlight haxe"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">    <span class="keyword">public</span> void onConfigurationChanged(Configuration <span class="keyword">new</span><span class="type">Config</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.onConfigurationChanged(<span class="keyword">new</span><span class="type">Config</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>②资源内存不足导致优先级低的Activity被杀死</strong><br>Activity优先级的划分和下面的Activity的三种运行状态是对应的。</p>
 <p>(1) 前台Activity——正在和用户交互的Activity，优先级最高。</p>
 <p>(2) 可见但非前台Activity——比如Activity中弹出了一个对话框，导致Activity可见但是位于后台无法和用户交互。</p>
@@ -443,9 +461,9 @@
 <h4 id="3-Activity的LaunchMode"><a href="#3-Activity的LaunchMode" class="headerlink" title="3.Activity的LaunchMode"></a>3.Activity的LaunchMode</h4><h5 id="1-标准模式（standard）"><a href="#1-标准模式（standard）" class="headerlink" title="(1)标准模式（standard）"></a>(1)标准模式（standard）</h5><p>每启动一次Activity，就会创建一个新的Activity实例并置于栈顶。谁启动了这个Activity，那么这个Activity就运行在启动它的那个Activity所在的栈中。</p>
 <p>例如：Activity A启动了Activity B，则就会在A所在的栈顶压入一个新的Activity。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-59e0c33aadd55f62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>特殊情况，如果在Service或Application中启动一个Activity，其并没有所谓的任务栈，可以使用标记位Flag来解决。解决办法：为待启动的Activity指定FLAG_ACTIVITY_NEW_TASK标记位，创建一个新栈。</strong></p>
 <p><strong>应用场景：</strong>绝大多数Activity。如果以这种方式启动的Activity被跨进程调用，在5.0之前新启动的Activity实例会放入发送Intent的Task的栈的顶部，尽管它们属于不同的程序，这似乎有点费解看起来也不是那么合理，所以在5.0之后，上述情景会创建一个新的Task，新启动的Activity就会放入刚创建的Task中，这样就合理的多了。</p>
-<h5 id="2-栈顶复用模式（singleTop）"><a href="#2-栈顶复用模式（singleTop）" class="headerlink" title="(2)栈顶复用模式（singleTop）"></a>(2)栈顶复用模式（singleTop）</h5><p>如果需要新建的Activity位于任务栈栈顶，那么此Activity的实例就不会重建，而是重用栈顶的实例。并回调如下方法：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onNewIntent</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onNewIntent(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="2-栈顶复用模式（singleTop）"><a href="#2-栈顶复用模式（singleTop）" class="headerlink" title="(2)栈顶复用模式（singleTop）"></a>(2)栈顶复用模式（singleTop）</h5><p>如果需要新建的Activity位于任务栈栈顶，那么此Activity的实例就不会重建，而是重用栈顶的实例。并回调如下方法：<br><figure class="highlight aspectj"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onNewIntent</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onNewIntent(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>由于不会重建一个Activity实例，则不会回调其他生命周期方法。<br>如果栈顶不是新建的Activity,就会创建该Activity新的实例，并放入栈顶。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-6378dae7ea249294.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>应用场景：</strong>在通知栏点击收到的通知，然后需要启动一个Activity，这个Activity就可以用singleTop，否则每次点击都会新建一个Activity。当然实际的开发过程中，测试妹纸没准给你提过这样的bug：某个场景下连续快速点击，启动了两个Activity。如果这个时候待启动的Activity使用 singleTop模式也是可以避免这个Bug的。同standard模式，如果是外部程序启动singleTop的Activity，在Android 5.0之前新创建的Activity会位于调用者的Task中，5.0及以后会放入新的Task中。</p>
-<h5 id="3-栈内复用模式（singleTask）"><a href="#3-栈内复用模式（singleTask）" class="headerlink" title="(3)栈内复用模式（singleTask）"></a>(3)栈内复用模式（singleTask）</h5><p>该模式是一种单例模式，即一个栈内只有一个该Activity实例。该模式，可以通过在AndroidManifest文件的Activity中指定该Activity需要加载到那个栈中，即singleTask的Activity可以指定想要加载的目标栈。singleTask和taskAffinity配合使用，指定开启的Activity加入到哪个栈中。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".Activity1"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:taskAffinity</span>=<span class="string">"com.lvr.task"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="3-栈内复用模式（singleTask）"><a href="#3-栈内复用模式（singleTask）" class="headerlink" title="(3)栈内复用模式（singleTask）"></a>(3)栈内复用模式（singleTask）</h5><p>该模式是一种单例模式，即一个栈内只有一个该Activity实例。该模式，可以通过在AndroidManifest文件的Activity中指定该Activity需要加载到那个栈中，即singleTask的Activity可以指定想要加载的目标栈。singleTask和taskAffinity配合使用，指定开启的Activity加入到哪个栈中。<br><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".Activity1"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:taskAffinity</span>=<span class="string">"com.lvr.task"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>关于taskAffinity的值：</strong>每个Activity都有taskAffinity属性，这个属性指出了它希望进入的Task。如果一个Activity没有显式的指明该Activity的taskAffinity，那么它的这个属性就等于Application指明的taskAffinity，如果Application也没有指明，那么该taskAffinity的值就等于包名。<br><strong>执行逻辑：</strong><br>在这种模式下，如果Activity指定的栈不存在，则创建一个栈，并把创建的Activity压入栈内。如果Activity指定的栈存在，如果其中没有该Activity实例，则会创建Activity并压入栈顶，如果其中有该Activity实例，则把该Activity实例之上的Activity杀死清除出栈，重用并让该Activity实例处在栈顶，然后调用onNewIntent()方法。</p>
 <p>对应如下三种情况：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-2309a7222394cd80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-b4e3dbc29cdb7da4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>

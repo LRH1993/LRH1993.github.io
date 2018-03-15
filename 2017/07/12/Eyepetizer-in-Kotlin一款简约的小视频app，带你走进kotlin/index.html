@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -362,7 +380,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,422
+                  1,377
                 </span>
               
 
@@ -378,7 +396,7 @@
                   <span class="post-meta-item-text">阅读时长</span>
                 
                 <span title="阅读时长">
-                  6
+                  5
                 </span>
               
             </div>
@@ -410,21 +428,21 @@
 <h3 id="3-特点"><a href="#3-特点" class="headerlink" title="3.特点"></a>3.特点</h3><p>作为学习kotlin的一款app，在撸代码的过程中学习kotlin的语法及特性。</p>
 <p>Eyepetizer-in-Kotlin适合初学者作为学习kotlin语言的一个项目，可以在做项目的同时体验到kotlin语言的优点。</p>
 <h2 id="三、kotlin特性"><a href="#三、kotlin特性" class="headerlink" title="三、kotlin特性"></a>三、kotlin特性</h2><p>在做Eyepetizer-in-Kotlin的过程中，了解到了许多kotlin的特性，用在日常开发中，大大提高了开发效率，下面就简单介绍下在项目中用到的几个重要的kotlin特性。</p>
-<h5 id="1-和findViewById说再见"><a href="#1-和findViewById说再见" class="headerlink" title="(1) 和findViewById说再见"></a>(1) 和findViewById说再见</h5><p>我们可以直接使用xml中对应的id，并且import对应的文件，不在需要findViewById<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> kotlinx.android.synthetic.main.activity_watch.*</span><br><span class="line">.........</span><br><span class="line">tv_hint.visibility = View.VISIBLE</span><br><span class="line">tv_hint.text = <span class="string">"告别findViewById"</span></span><br></pre></td></tr></table></figure></p>
-<h5 id="2-延迟加载"><a href="#2-延迟加载" class="headerlink" title="(2) 延迟加载"></a>(2) 延迟加载</h5><p>延迟加载有几个好处。首先由于加载时机推迟到了变量被访问时，因此它可以提高应用的启动速度。其次，这样的延迟加载也有更高的内存效率。<br><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val mModel: FindDetailModel <span class="built_in">by</span> <span class="built_in">lazy</span> &#123;</span><br><span class="line">        FindDetailModel()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>当第一次使用mModle的时候进行初始化<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">lateinit</span> <span class="keyword">var</span> mAdapter: DownloadAdapter</span><br></pre></td></tr></table></figure></p>
+<h5 id="1-和findViewById说再见"><a href="#1-和findViewById说再见" class="headerlink" title="(1) 和findViewById说再见"></a>(1) 和findViewById说再见</h5><p>我们可以直接使用xml中对应的id，并且import对应的文件，不在需要findViewById<br><figure class="highlight clean"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> kotlinx.android.synthetic.main.activity_watch.*</span><br><span class="line">.........</span><br><span class="line">tv_hint.visibility = View.VISIBLE</span><br><span class="line">tv_hint.text = <span class="string">"告别findViewById"</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="2-延迟加载"><a href="#2-延迟加载" class="headerlink" title="(2) 延迟加载"></a>(2) 延迟加载</h5><p>延迟加载有几个好处。首先由于加载时机推迟到了变量被访问时，因此它可以提高应用的启动速度。其次，这样的延迟加载也有更高的内存效率。<br><figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">val mModel: FindDetailModel <span class="built_in">by</span> <span class="built_in">lazy</span> &#123;</span><br><span class="line">        FindDetailModel()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>当第一次使用mModle的时候进行初始化<br><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lateinit</span> <span class="keyword">var</span> mAdapter: DownloadAdapter</span><br></pre></td></tr></table></figure></p>
 <p>在任何想进行初始化的位置进行初始化</p>
 <h5 id="3-Lambdas-表达式"><a href="#3-Lambdas-表达式" class="headerlink" title="(3) Lambdas 表达式"></a>(3) Lambdas 表达式</h5><p>Lambdas 表达式在减少源文件中代码的总行数的同时，也支持函数式编程。</p>
-<p>使用 lambdas 表示式时，onClickListener 的用法如下：<br><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">holder?.itemView?.setOnClickListener &#123;</span><br><span class="line">            var keyWord = list?.get(<span class="keyword">position</span>)</span><br><span class="line">            var <span class="keyword">intent</span> : <span class="keyword">Intent</span> = <span class="keyword">Intent</span>(context,ResultActivity::<span class="keyword">class</span>.java)</span><br><span class="line">            <span class="keyword">intent</span>.putExtra(<span class="string">"keyWord"</span>,keyWord)</span><br><span class="line">            context?.startActivity(<span class="keyword">intent</span>)</span><br><span class="line">            mDialogListener?.onDismiss()</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<h5 id="4-数据类"><a href="#4-数据类" class="headerlink" title="(4) 数据类"></a>(4) 数据类</h5><p>数据类简化了类的定义，自动为类添加equals()，hashCode()，copy() 和toString() 方法。它明确定义了 model 类的意图，以及应该包含什么内容，同时将纯数据与业务逻辑分离开来。<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoBean</span></span>(<span class="keyword">var</span> feed:String?,<span class="keyword">var</span> title:String?,<span class="keyword">var</span> description:String?,</span><br><span class="line">                     <span class="keyword">var</span> duration: <span class="built_in">Long</span>?,<span class="keyword">var</span> playUrl: String?,<span class="keyword">var</span> category: String?,</span><br><span class="line">                     <span class="keyword">var</span> blurred : String?,<span class="keyword">var</span> collect:<span class="built_in">Int</span>?,<span class="keyword">var</span> share:<span class="built_in">Int</span>?,<span class="keyword">var</span> reply:<span class="built_in">Int</span>?,<span class="keyword">var</span> time:<span class="built_in">Long</span>) : Parcelable,Serializable &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用 lambdas 表示式时，onClickListener 的用法如下：<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line">holder?.itemView?.setOnClickListener &#123;</span><br><span class="line">            var keyWord = list?.get(<span class="keyword">position</span>)</span><br><span class="line">            var <span class="keyword">intent</span> : <span class="keyword">Intent</span> = <span class="keyword">Intent</span>(context,ResultActivity::<span class="keyword">class</span>.java)</span><br><span class="line">            <span class="keyword">intent</span>.putExtra(<span class="string">"keyWord"</span>,keyWord)</span><br><span class="line">            context?.startActivity(<span class="keyword">intent</span>)</span><br><span class="line">            mDialogListener?.onDismiss()</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="4-数据类"><a href="#4-数据类" class="headerlink" title="(4) 数据类"></a>(4) 数据类</h5><p>数据类简化了类的定义，自动为类添加equals()，hashCode()，copy() 和toString() 方法。它明确定义了 model 类的意图，以及应该包含什么内容，同时将纯数据与业务逻辑分离开来。<br><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoBean</span></span>(<span class="keyword">var</span> feed:String?,<span class="keyword">var</span> title:String?,<span class="keyword">var</span> description:String?,</span><br><span class="line">                     <span class="keyword">var</span> duration: <span class="built_in">Long</span>?,<span class="keyword">var</span> playUrl: String?,<span class="keyword">var</span> category: String?,</span><br><span class="line">                     <span class="keyword">var</span> blurred : String?,<span class="keyword">var</span> collect:<span class="built_in">Int</span>?,<span class="keyword">var</span> share:<span class="built_in">Int</span>?,<span class="keyword">var</span> reply:<span class="built_in">Int</span>?,<span class="keyword">var</span> time:<span class="built_in">Long</span>) : Parcelable,Serializable &#123;&#125;</span><br></pre></td></tr></table></figure></p>
 <p>就是如此简单，对比以前动辄几百行的数据类，简洁了太多。如果想实现序列化Parcelable，可以下载支持kotlin序列化的插件，一键实现，非常方便。</p>
-<h5 id="5-集合过滤"><a href="#5-集合过滤" class="headerlink" title="(5) 集合过滤"></a>(5) 集合过滤</h5><p>通过使用 Kotlin 的集合过滤功能，我们可以使代码变得更清晰简洁。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bean.issueList!!</span><br><span class="line">                <span class="selector-class">.flatMap</span> &#123; it.itemList!! &#125;</span><br><span class="line">                <span class="selector-class">.filter</span> &#123; it<span class="selector-class">.type</span><span class="selector-class">.equals</span>(<span class="string">"video"</span>) &#125;</span><br><span class="line">                <span class="selector-class">.forEach</span> &#123; mList.add(it) &#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="5-集合过滤"><a href="#5-集合过滤" class="headerlink" title="(5) 集合过滤"></a>(5) 集合过滤</h5><p>通过使用 Kotlin 的集合过滤功能，我们可以使代码变得更清晰简洁。<br><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">bean.issueList!!</span><br><span class="line">                <span class="selector-class">.flatMap</span> &#123; it.itemList!! &#125;</span><br><span class="line">                <span class="selector-class">.filter</span> &#123; it<span class="selector-class">.type</span><span class="selector-class">.equals</span>(<span class="string">"video"</span>) &#125;</span><br><span class="line">                <span class="selector-class">.forEach</span> &#123; mList.add(it) &#125;</span><br></pre></td></tr></table></figure></p>
 <p>通过以上过滤，便可以得到我们想要的内容。</p>
-<h5 id="6-扩展"><a href="#6-扩展" class="headerlink" title="(6) 扩展"></a>(6) 扩展</h5><p>扩展的好处在于它允许我们为一个类添加功能同时无需继承它。例如，你是否曾经希望 Context 有某些方法，比如 showToast()？使用扩展，你可以很容易实现这个功能：<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> Context.<span class="title">showToast</span><span class="params">(message: <span class="type">String</span>)</span></span> : Toast &#123;</span><br><span class="line">    <span class="keyword">var</span> toast : Toast = Toast.makeText(<span class="keyword">this</span>,message,Toast.LENGTH_SHORT)</span><br><span class="line">    toast.setGravity(Gravity.CENTER,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">    toast.show()</span><br><span class="line">    <span class="keyword">return</span> toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="6-扩展"><a href="#6-扩展" class="headerlink" title="(6) 扩展"></a>(6) 扩展</h5><p>扩展的好处在于它允许我们为一个类添加功能同时无需继承它。例如，你是否曾经希望 Context 有某些方法，比如 showToast()？使用扩展，你可以很容易实现这个功能：<br><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> Context.<span class="title">showToast</span><span class="params">(message: <span class="type">String</span>)</span></span> : Toast &#123;</span><br><span class="line">    <span class="keyword">var</span> toast : Toast = Toast.makeText(<span class="keyword">this</span>,message,Toast.LENGTH_SHORT)</span><br><span class="line">    toast.setGravity(Gravity.CENTER,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">    toast.show()</span><br><span class="line">    <span class="keyword">return</span> toast</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h5 id="7-其他特性"><a href="#7-其他特性" class="headerlink" title="(7) 其他特性"></a>(7) 其他特性</h5><p><strong>字符串</strong></p>
-<p>Kotlin在字符串之中可以使用变量，相对与在Java中的字符串拼接，更让人感觉到舒服。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">holder?.tv_detail?.text = <span class="string">"发布于 <span class="variable">$category</span> / <span class="variable">$realMinute</span>:<span class="variable">$realSecond</span>"</span></span><br></pre></td></tr></table></figure></p>
+<p>Kotlin在字符串之中可以使用变量，相对与在Java中的字符串拼接，更让人感觉到舒服。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">holder?.tv_detail?.text = <span class="string">"发布于 <span class="variable">$category</span> / <span class="variable">$realMinute</span>:<span class="variable">$realSecond</span>"</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>when</strong></p>
-<p>Kotlin中when的出现替代了switch，但其功能更加强大。<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(v: <span class="type">View</span>?)</span></span> &#123;</span><br><span class="line">       <span class="keyword">when</span>(v?.id)&#123;</span><br><span class="line">           R.id.tv_watch -&gt;&#123;</span><br><span class="line">               <span class="keyword">var</span> intent = Intent(activity,WatchActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">               startActivity(intent)</span><br><span class="line">           &#125;</span><br><span class="line">           R.id.tv_advise -&gt;&#123;</span><br><span class="line">               <span class="keyword">var</span> intent = Intent(activity,AdviseActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">               startActivity(intent)</span><br><span class="line">           &#125;</span><br><span class="line">           R.id.tv_save -&gt;&#123;</span><br><span class="line">               <span class="keyword">var</span> intent = Intent(activity,CacheActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">               startActivity(intent)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>Kotlin中when的出现替代了switch，但其功能更加强大。<br><figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(v: <span class="type">View</span>?)</span></span> &#123;</span><br><span class="line">       <span class="keyword">when</span>(v?.id)&#123;</span><br><span class="line">           R.id.tv_watch -&gt;&#123;</span><br><span class="line">               <span class="keyword">var</span> intent = Intent(activity,WatchActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">               startActivity(intent)</span><br><span class="line">           &#125;</span><br><span class="line">           R.id.tv_advise -&gt;&#123;</span><br><span class="line">               <span class="keyword">var</span> intent = Intent(activity,AdviseActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">               startActivity(intent)</span><br><span class="line">           &#125;</span><br><span class="line">           R.id.tv_save -&gt;&#123;</span><br><span class="line">               <span class="keyword">var</span> intent = Intent(activity,CacheActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">               startActivity(intent)</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
 <p>当然Kotlin的特性不止如此，还有更多高阶的特性如：高阶函数, Anko等，这些特性还需进一步学习应用</p>
 <h2 id="四、为什么要学Kotlin"><a href="#四、为什么要学Kotlin" class="headerlink" title="四、为什么要学Kotlin?"></a>四、为什么要学Kotlin?</h2><p>关于为什么要学Kotlin，在Google IO大会刚把kotlin作为一级开发语言后就已经有了很多的讨论。<br>当时学习的必要性还不明确，过了几个月之后，我们再来看一下学习的必要性。</p>
 <h5 id="1-语言层面"><a href="#1-语言层面" class="headerlink" title="1.语言层面"></a>1.语言层面</h5><p>通过以上分析，我们可以知道kotlin对于android开发的优势，同时kotlin也是基于JVM的一门静态语言，与Java完美兼容，不存在项目迁移等问题。除此之外，学习成本也比较低，很好入门。当然如果想要达到熟练程度，还需继续练习。</p>

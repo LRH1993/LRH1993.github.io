@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -363,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,496
+                  1,436
                 </span>
               
 
@@ -379,7 +397,7 @@
                   <span class="post-meta-item-text">阅读时长</span>
                 
                 <span title="阅读时长">
-                  6
+                  5
                 </span>
               
             </div>
@@ -404,7 +422,7 @@
 <p>简单说就是元素按照其在 HTML 中的位置顺序决定排布的过程。HTML的布局机制就是用文档流模型的，即块元素（block）独占一行，内联元素（inline），不独占一行。</p>
 <p>一般使用margin是用来隔开元素与元素的间距；padding是用来隔开元素与内容的间隔。margin用于布局分开元素使元素与元素互不相干；padding用于元素与内容之间的间隔，让内容（文字）与（包裹）元素之间有一段“距离”。</p>
 <p>只要不是float和绝对定位方式布局的，都在文档流里面。</p>
-<p>表现如下：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   &lt;div <span class="attribute">style</span>=<span class="string">"border:1px solid black"</span>&gt;div1&lt;/div&gt;</span><br><span class="line">&lt;div <span class="attribute">style</span>=<span class="string">"border:1px solid red"</span>&gt;div2&lt;/div&gt;</span><br><span class="line">这是一张图片</span><br><span class="line">&lt;img <span class="attribute">src</span>=<span class="string">"test.png"</span>&gt;</span><br></pre></td></tr></table></figure></p>
+<p>表现如下：<br><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">   &lt;div <span class="attribute">style</span>=<span class="string">"border:1px solid black"</span>&gt;div1&lt;/div&gt;</span><br><span class="line">&lt;div <span class="attribute">style</span>=<span class="string">"border:1px solid red"</span>&gt;div2&lt;/div&gt;</span><br><span class="line">这是一张图片</span><br><span class="line">&lt;img <span class="attribute">src</span>=<span class="string">"test.png"</span>&gt;</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-e1a00ad378dd24ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h3 id="2-position属性介绍"><a href="#2-position属性介绍" class="headerlink" title="2.position属性介绍"></a>2.position属性介绍</h3><ul>
 <li>static，默认值。位置设置为static的元素，它始终会处于文档流给予的位置。</li>
@@ -420,18 +438,18 @@
 <li>按默认方式（static）生成一个元素(并且元素像层一样浮动了起来)。</li>
 <li>相对于以前的位置移动，移动的方向和幅度由 left、right、top、bottom 属性确定，偏移前的位置保留不动。</li>
 </ul>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="css">		<span class="selector-id">#box1</span> &#123;</span></span><br><span class="line"><span class="undefined">			margin: 20px;</span></span><br><span class="line"><span class="undefined">			width: 200px;</span></span><br><span class="line"><span class="undefined">			height: 200px;</span></span><br><span class="line"><span class="undefined">			background-color: yellow;</span></span><br><span class="line"><span class="undefined">		&#125;</span></span><br><span class="line"><span class="css">		<span class="selector-id">#box2</span> &#123;</span></span><br><span class="line"><span class="undefined">			margin: 20px;</span></span><br><span class="line"><span class="undefined">			width: 200px;</span></span><br><span class="line"><span class="undefined">			height: 200px;</span></span><br><span class="line"><span class="undefined">			background-color: red;</span></span><br><span class="line"><span class="undefined">			/*position: relative;</span></span><br><span class="line"><span class="undefined">			left: 100px;</span></span><br><span class="line"><span class="undefined">			top: 100px;*/</span></span><br><span class="line"><span class="undefined">		&#125;</span></span><br><span class="line"><span class="undefined">	</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box1"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box2"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="css">		<span class="selector-id">#box1</span> &#123;</span></span><br><span class="line"><span class="undefined">			margin: 20px;</span></span><br><span class="line"><span class="undefined">			width: 200px;</span></span><br><span class="line"><span class="undefined">			height: 200px;</span></span><br><span class="line"><span class="undefined">			background-color: yellow;</span></span><br><span class="line"><span class="undefined">		&#125;</span></span><br><span class="line"><span class="css">		<span class="selector-id">#box2</span> &#123;</span></span><br><span class="line"><span class="undefined">			margin: 20px;</span></span><br><span class="line"><span class="undefined">			width: 200px;</span></span><br><span class="line"><span class="undefined">			height: 200px;</span></span><br><span class="line"><span class="undefined">			background-color: red;</span></span><br><span class="line"><span class="undefined">			/*position: relative;</span></span><br><span class="line"><span class="undefined">			left: 100px;</span></span><br><span class="line"><span class="undefined">			top: 100px;*/</span></span><br><span class="line"><span class="undefined">		&#125;</span></span><br><span class="line"><span class="undefined">	</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box1"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box2"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>其中box2中的注释代码未生效前，是按照文档流进行排序呈现。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-fedcf2c6d3943c94.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>但是，当注释代码取消注释生效后，就会相对文档流中应当呈现的位置进行移动。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-8888ffe8a0bdae65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>所以，相对定位的参照物是它本身。</strong></p>
 <h2 id="三、绝对定位"><a href="#三、绝对定位" class="headerlink" title="三、绝对定位"></a>三、绝对定位</h2><p>绝对定位与相对定位的一大不同之处就是，当我们把一个元素设置成绝对定位，那么<strong>这个元素将会脱离文档流</strong>，其他元素就会认为这个元素不存在于文档流中而填充它原来的位置。绝对定位元素根据它的参照物移动自己的位置，而参照物则需要根据它祖先元素的定位设置来确定。</p>
 <p>所谓根据它祖先元素的定位设置来确定简单理解为：相对于该元素最近的已定位的祖先元素，如果没有一个祖先元素设置定位，那么参照物是body层。</p>
 <h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-f1488be6275ed45e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <p>以上面的图形来展示绝对定位的特性。可以看出最里层是两个盒子，外面嵌套了两层祖先元素。</p>
-<h4 id="1-祖先元素没定位"><a href="#1-祖先元素没定位" class="headerlink" title="1.祖先元素没定位"></a>1.祖先元素没定位</h4><p>在祖先元素没定位的情况下，使用absolute。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box1</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">margin-left</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: yellow;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line">			<span class="attribute">top</span>: <span class="number">30px</span>;</span><br><span class="line">			<span class="attribute">left</span>: <span class="number">30px</span>;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="1-祖先元素没定位"><a href="#1-祖先元素没定位" class="headerlink" title="1.祖先元素没定位"></a>1.祖先元素没定位</h4><p>在祖先元素没定位的情况下，使用absolute。<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#box1</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">margin-left</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: yellow;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line">			<span class="attribute">top</span>: <span class="number">30px</span>;</span><br><span class="line">			<span class="attribute">left</span>: <span class="number">30px</span>;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-7fac05338ffbb3a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>在这种情况下，参考物就是body。</strong></p>
-<h4 id="2-祖先元素有定位"><a href="#2-祖先元素有定位" class="headerlink" title="2.祖先元素有定位"></a>2.祖先元素有定位</h4><p>祖先元素只要设置了值不为position:static之外的值，都视为有定位，并且最近的祖先元素会被设置为绝对定位元素的参照物。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#orange</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">400px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: orange;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line"></span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="selector-id">#box1</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">margin-left</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: yellow;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line">			<span class="attribute">top</span>: <span class="number">30px</span>;</span><br><span class="line">			<span class="attribute">left</span>: <span class="number">220px</span>;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-祖先元素有定位"><a href="#2-祖先元素有定位" class="headerlink" title="2.祖先元素有定位"></a>2.祖先元素有定位</h4><p>祖先元素只要设置了值不为position:static之外的值，都视为有定位，并且最近的祖先元素会被设置为绝对定位元素的参照物。<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#orange</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">400px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: orange;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line"></span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="selector-id">#box1</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">margin-left</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: yellow;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line">			<span class="attribute">top</span>: <span class="number">30px</span>;</span><br><span class="line">			<span class="attribute">left</span>: <span class="number">220px</span>;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-dfa2ae3eca8ae581.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><strong>在这种情况下，参考物就是最近的祖先元素。</strong></p>
 <p>除了上述两种情况外，在用户没给absolute元素设置left/right、top/bottom的情况下，所对应的参考物会有变化。</p>
-<h4 id="3-未设置left-right、top-bottom"><a href="#3-未设置left-right、top-bottom" class="headerlink" title="3.未设置left/right、top/bottom"></a>3.未设置left/right、top/bottom</h4><p>在没设置left/right、top/bottom的情况下，absolute元素的位置就是该元素在文档流里的位置<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#box1</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">margin-left</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: yellow;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-未设置left-right、top-bottom"><a href="#3-未设置left-right、top-bottom" class="headerlink" title="3.未设置left/right、top/bottom"></a>3.未设置left/right、top/bottom</h4><p>在没设置left/right、top/bottom的情况下，absolute元素的位置就是该元素在文档流里的位置<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#box1</span> &#123;</span><br><span class="line">			<span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">			<span class="attribute">margin-left</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">			<span class="attribute">background-color</span>: yellow;</span><br><span class="line">			<span class="attribute">position</span>: absolute;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-fb4516d29f27ca8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>上图可以看出两个盒子重叠了，这是因为：absolute元素由于没有设置left/right、top/bottom就按照其应该在文档流中出现的位置进行定位，而absolute元素脱离文档流，红色的盒子元素并不知道absolute元素的存在，就继续放置在该位置，并且absolute元素会覆盖正常文档流中的元素。</p>
 <h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>主要介绍了相对定位和绝对定位，其他定位方式比较简单，试一试就知道了。另外，相对定位和绝对定位的应用也比较灵活，适用于多种场景。</p>
 

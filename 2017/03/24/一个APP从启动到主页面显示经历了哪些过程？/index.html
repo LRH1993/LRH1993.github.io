@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -366,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,896
+                  2,882
                 </span>
               
 
@@ -424,7 +442,7 @@
 <p>为什么说SystemServer非常重要呢？因为系统里面重要的服务都是在这个进程里面开启的，比如<br>ActivityManagerService、PackageManagerService、WindowManagerService等等。</p>
 <h4 id="3-ActivityManagerService"><a href="#3-ActivityManagerService" class="headerlink" title="3.ActivityManagerService"></a>3.ActivityManagerService</h4><p>ActivityManagerService，简称AMS，服务端对象，负责系统中所有Activity的生命周期。</p>
 <p>ActivityManagerService进行初始化的时机很明确，就是在SystemServer进程开启的时候，就会初始化ActivityManagerService。</p>
-<h6 id="下面介绍下Android系统里面的服务器和客户端的概念。"><a href="#下面介绍下Android系统里面的服务器和客户端的概念。" class="headerlink" title="下面介绍下Android系统里面的服务器和客户端的概念。"></a>下面介绍下Android系统里面的服务器和客户端的概念。</h6><p>其实服务器客户端的概念不仅仅存在于Web开发中，在Android的框架设计中，使用的也是这一种模式。服务器端指的就是所有App共用的系统服务，比如我们这里提到的ActivityManagerService，和前面提到的PackageManagerService、WindowManagerService等等，这些基础的系统服务是被所有的App公用的，当某个App想实现某个操作的时候，要告诉这些系统服务，比如你想打开一个App，那么我们知道了包名和MainActivity类名之后就可以打开<br><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Intent</span> <span class="keyword">intent</span> = new <span class="keyword">Intent</span>(<span class="keyword">Intent</span>.ACTION_MAIN);  </span><br><span class="line"><span class="keyword">intent</span>.addCategory(<span class="keyword">Intent</span>.CATEGORY_LAUNCHER);              </span><br><span class="line">ComponentName cn = new ComponentName(packageName, className);              </span><br><span class="line"><span class="keyword">intent</span>.setComponent(cn);  </span><br><span class="line">startActivity(<span class="keyword">intent</span>);</span><br></pre></td></tr></table></figure></p>
+<h6 id="下面介绍下Android系统里面的服务器和客户端的概念。"><a href="#下面介绍下Android系统里面的服务器和客户端的概念。" class="headerlink" title="下面介绍下Android系统里面的服务器和客户端的概念。"></a>下面介绍下Android系统里面的服务器和客户端的概念。</h6><p>其实服务器客户端的概念不仅仅存在于Web开发中，在Android的框架设计中，使用的也是这一种模式。服务器端指的就是所有App共用的系统服务，比如我们这里提到的ActivityManagerService，和前面提到的PackageManagerService、WindowManagerService等等，这些基础的系统服务是被所有的App公用的，当某个App想实现某个操作的时候，要告诉这些系统服务，比如你想打开一个App，那么我们知道了包名和MainActivity类名之后就可以打开<br><figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Intent</span> <span class="keyword">intent</span> = new <span class="keyword">Intent</span>(<span class="keyword">Intent</span>.ACTION_MAIN);  </span><br><span class="line"><span class="keyword">intent</span>.addCategory(<span class="keyword">Intent</span>.CATEGORY_LAUNCHER);              </span><br><span class="line">ComponentName cn = new ComponentName(packageName, className);              </span><br><span class="line"><span class="keyword">intent</span>.setComponent(cn);  </span><br><span class="line">startActivity(<span class="keyword">intent</span>);</span><br></pre></td></tr></table></figure></p>
 <p>但是，我们的App通过调用startActivity()并不能直接打开另外一个App，这个方法会通过一系列的调用，最后还是告诉AMS说：“我要打开这个App，我知道他的住址和名字，你帮我打开吧！”所以是AMS来通知zygote进程来fork一个新进程，来开启我们的目标App的。这就像是浏览器想要打开一个超链接一样，浏览器把网页地址发送给服务器，然后还是服务器把需要的资源文件发送给客户端的。</p>
 <p>知道了Android Framework的客户端服务器架构之后，我们还需要了解一件事情，那就是我们的App和AMS(SystemServer进程)还有zygote进程分属于三个独立的进程，他们之间如何通信呢？</p>
 <p><strong>App与AMS通过Binder进行IPC通信，AMS(SystemServer进程)与zygote通过Socket进行IPC通信。后面具体介绍。</strong></p>
@@ -432,7 +450,7 @@
 <p>在Android系统中，<strong>任何一个Activity的启动都是由AMS和应用程序进程（主要是ActivityThread）相互配合来完成的。AMS服务统一调度系统中所有进程的Activity启动，而每个Activity的启动过程则由其所属的进程具体来完成。</strong></p>
 <h4 id="4-Launcher"><a href="#4-Launcher" class="headerlink" title="4.Launcher"></a>4.Launcher</h4><p>当我们点击手机桌面上的图标的时候，App就由Launcher开始启动了。但是，你有没有思考过Launcher到底是一个什么东西？</p>
 <p><strong>Launcher本质上也是一个应用程序，和我们的App一样，也是继承自Activity</strong></p>
-<p>packages/apps/Launcher2/src/com/android/launcher2/Launcher.java<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Launcher</span> <span class="keyword">extends</span> <span class="title">Activity</span></span></span><br><span class="line"><span class="class">        <span class="title">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span>, <span class="title">OnLongClickListener</span>, <span class="title">LauncherModel</span>.<span class="title">Callbacks</span>,</span></span><br><span class="line"><span class="class">                   <span class="title">View</span>.<span class="title">OnTouchListener</span> </span>&#123;</span><br><span class="line">                   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>packages/apps/Launcher2/src/com/android/launcher2/Launcher.java<br><figure class="highlight scala"><table><tr><td class="code"><pre><span class="line">public <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Launcher</span> <span class="keyword">extends</span> <span class="title">Activity</span></span></span><br><span class="line"><span class="class">        <span class="title">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span>, <span class="title">OnLongClickListener</span>, <span class="title">LauncherModel</span>.<span class="title">Callbacks</span>,</span></span><br><span class="line"><span class="class">                   <span class="title">View</span>.<span class="title">OnTouchListener</span> </span>&#123;</span><br><span class="line">                   &#125;</span><br></pre></td></tr></table></figure></p>
 <p>Launcher实现了点击、长按等回调接口，来接收用户的输入。既然是普通的App，那么我们的开发经验在这里就仍然适用，比如，我们点击图标的时候，是怎么开启的应用呢？<strong>捕捉图标点击事件，然后startActivity()发送对应的Intent请求呗！是的，Launcher也是这么做的，就是这么easy！</strong></p>
 <h4 id="5-Instrumentation和ActivityThread"><a href="#5-Instrumentation和ActivityThread" class="headerlink" title="5.Instrumentation和ActivityThread"></a>5.Instrumentation和ActivityThread</h4><p>每个Activity都持有Instrumentation对象的一个引用，但是整个进程只会存在一个Instrumentation对象。<br>Instrumentation这个类里面的方法大多数和Application和Activity有关，<strong>这个类就是完成对Application和Activity初始化和生命周期的工具类。</strong>Instrumentation这个类很重要，对Activity生命周期方法的调用根本就离不开他，他可以说是一个大管家。</p>
 <p>ActivityThread，依赖于UI线程。App和AMS是通过Binder传递信息的，那么ActivityThread就是专门与AMS的外交工作的。</p>
@@ -442,7 +460,7 @@
 <p>而且由于继承了同样的公共接口类，ActivityManagerProxy提供了与ActivityManagerService一样的函数原型，使用户感觉不出Server是运行在本地还是远端，从而可以更加方便的调用这些重要的系统服务。</p>
 <p><strong>服务端–&gt;客户端</strong></p>
 <p>还是通过Binder通信，不过是换了另外一对，换成了ApplicationThread和ApplicationThreadProxy。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/3985563-363b74b716570dd6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>他们也都实现了相同的接口IApplicationThread<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationThread</span> <span class="keyword">extends</span> <span class="title">ApplicationThreadNative</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationThreadNative</span> <span class="keyword">extends</span> <span class="title">Binder</span> <span class="title">implements</span> <span class="title">IApplicationThread</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplicationThreadProxy</span> <span class="title">implements</span> <span class="title">IApplicationThread</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3985563-363b74b716570dd6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>他们也都实现了相同的接口IApplicationThread<br><figure class="highlight scala"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationThread</span> <span class="keyword">extends</span> <span class="title">ApplicationThreadNative</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationThreadNative</span> <span class="keyword">extends</span> <span class="title">Binder</span> <span class="title">implements</span> <span class="title">IApplicationThread</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplicationThreadProxy</span> <span class="title">implements</span> <span class="title">IApplicationThread</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure></p>
 <p>关于Binder通信，可以参考这两篇文章理解一下：<a href="http://www.jianshu.com/p/4920c7781afe" target="_blank" rel="noopener">简单理解Binder机制的原理</a>,<a href="http://www.jianshu.com/p/e3293b8346ab" target="_blank" rel="noopener">关于AIDL使用和Binder机制详解，你只需要看这一篇即可</a>。</p>
 <p><strong>好了，前面罗里吧嗦的一大堆，介绍了一堆名词，可能不太清楚，没关系，下面结合流程图介绍。</strong></p>
 <h3 id="三、启动流程"><a href="#三、启动流程" class="headerlink" title="三、启动流程"></a>三、启动流程</h3><h4 id="1-创建进程"><a href="#1-创建进程" class="headerlink" title="1.创建进程"></a>1.创建进程</h4><p>①先从Launcher的startActivity()方法，通过Binder通信，调用ActivityManagerService的startActivity方法。</p>

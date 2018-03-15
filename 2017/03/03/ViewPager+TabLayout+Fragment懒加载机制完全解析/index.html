@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -358,7 +376,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,072
+                  1,029
                 </span>
               
 
@@ -415,11 +433,11 @@
 <p>②不是第一次调用网络加载，之前加载过，即isFirst = true。</p>
 <p>满足以上两者条件（只满足第一点也可以），取消网络请求。 </p>
 <h4 id="封装代码"><a href="#封装代码" class="headerlink" title="封装代码"></a>封装代码</h4><p>在BaseFragment中进行封装</p>
-<p>其中isFragment表示当前Fragment的可见情况<br>isFirst表示是否已经加载过<br>onFragmentVisibleChange()是一个可继承的空方法，子类实现，传入true，代表加载网络，传入false,代表取消网络加载。<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setUserVisibleHint</span><span class="params">(<span class="keyword">boolean</span> isVisibleToUser)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.setUserVisibleHint(isVisibleToUser);</span><br><span class="line">       <span class="keyword">if</span> (isVisibleToUser) &#123;</span><br><span class="line">           isFragmentVisible = <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (rootView == <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//可见，并且没有加载过</span></span><br><span class="line">       <span class="keyword">if</span> (!isFirst&amp;&amp;isFragmentVisible) &#123;</span><br><span class="line">           onFragmentVisibleChange(<span class="keyword">true</span>);</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//由可见——&gt;不可见 已经加载过</span></span><br><span class="line">       <span class="keyword">if</span> (isFragmentVisible) &#123;</span><br><span class="line">           onFragmentVisibleChange(<span class="keyword">false</span>);</span><br><span class="line">           isFragmentVisible = <span class="keyword">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onFragmentVisibleChange</span><span class="params">(<span class="keyword">boolean</span> isVisible)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中isFragment表示当前Fragment的可见情况<br>isFirst表示是否已经加载过<br>onFragmentVisibleChange()是一个可继承的空方法，子类实现，传入true，代表加载网络，传入false,代表取消网络加载。<br><figure class="highlight aspectj"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setUserVisibleHint</span><span class="params">(<span class="keyword">boolean</span> isVisibleToUser)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.setUserVisibleHint(isVisibleToUser);</span><br><span class="line">       <span class="keyword">if</span> (isVisibleToUser) &#123;</span><br><span class="line">           isFragmentVisible = <span class="keyword">true</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (rootView == <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//可见，并且没有加载过</span></span><br><span class="line">       <span class="keyword">if</span> (!isFirst&amp;&amp;isFragmentVisible) &#123;</span><br><span class="line">           onFragmentVisibleChange(<span class="keyword">true</span>);</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//由可见——&gt;不可见 已经加载过</span></span><br><span class="line">       <span class="keyword">if</span> (isFragmentVisible) &#123;</span><br><span class="line">           onFragmentVisibleChange(<span class="keyword">false</span>);</span><br><span class="line">           isFragmentVisible = <span class="keyword">false</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight aspectj"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onFragmentVisibleChange</span><span class="params">(<span class="keyword">boolean</span> isVisible)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中有一种特殊情况不能满足上述代码中的条件进行网络加载。</p>
-<p><strong>特殊情况：当TabLayout跳转到一个没有预加载过的Fragment，连续调用两次setUserVisibleHint方法，但此时rootView为空，不能进行加载。需要在onCreateView()方法最后判断是否进行网络加载，然后调用onFragmentVisibleChange(true)方法</strong><br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">     .................</span><br><span class="line">        <span class="comment">//可见，但是并没有加载过</span></span><br><span class="line">        <span class="keyword">if</span> (isFragmentVisible &amp;&amp; !isFirst) &#123;</span><br><span class="line">            onFragmentVisibleChange(true);</span><br><span class="line">        &#125;</span><br><span class="line">        return rootView;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>子类实现的实例：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onFragmentVisibleChange</span><span class="params">(<span class="keyword">boolean</span> isVisible)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(isVisible)&#123;</span><br><span class="line">            <span class="comment">//可见，并且是第一次加载</span></span><br><span class="line">            mPresenter.requestPhotoList(SIZE,mStartPage);</span><br><span class="line">            LoadingDialog.showDialogForLoading(getActivity());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//取消加载</span></span><br><span class="line">            RxDisposeManager.get().cancel(<span class="string">"photoList"</span>);</span><br><span class="line">            LoadingDialog.cancelDialogForLoading();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>特殊情况：当TabLayout跳转到一个没有预加载过的Fragment，连续调用两次setUserVisibleHint方法，但此时rootView为空，不能进行加载。需要在onCreateView()方法最后判断是否进行网络加载，然后调用onFragmentVisibleChange(true)方法</strong><br><figure class="highlight clean"><table><tr><td class="code"><pre><span class="line">public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) &#123;</span><br><span class="line">     .................</span><br><span class="line">        <span class="comment">//可见，但是并没有加载过</span></span><br><span class="line">        <span class="keyword">if</span> (isFragmentVisible &amp;&amp; !isFirst) &#123;</span><br><span class="line">            onFragmentVisibleChange(true);</span><br><span class="line">        &#125;</span><br><span class="line">        return rootView;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>子类实现的实例：<br><figure class="highlight aspectj"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onFragmentVisibleChange</span><span class="params">(<span class="keyword">boolean</span> isVisible)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(isVisible)&#123;</span><br><span class="line">            <span class="comment">//可见，并且是第一次加载</span></span><br><span class="line">            mPresenter.requestPhotoList(SIZE,mStartPage);</span><br><span class="line">            LoadingDialog.showDialogForLoading(getActivity());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">//取消加载</span></span><br><span class="line">            RxDisposeManager.get().cancel(<span class="string">"photoList"</span>);</span><br><span class="line">            LoadingDialog.cancelDialogForLoading();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="三、效果实现"><a href="#三、效果实现" class="headerlink" title="三、效果实现"></a>三、效果实现</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-f07ad6fd047d2c81.gif?imageMogr2/auto-orient/strip" alt=""><br>上图效果可以看出实现了懒加载，并且再次滑动回对应Fragment，也不会加载，通过下拉刷新才能更新数据，减少流量的耗费。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-5cdcdd11d65b8a0e.gif?imageMogr2/auto-orient/strip" alt=""></p>
 <p>上图效果可以看出，当TabLayout直接跳转到没有预加载的页面，也可以实现懒加载，效果一样。</p>
 <p>小伙伴们有没有很心动，下面有源码，欢迎参考使用！</p>

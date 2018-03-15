@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -361,7 +379,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,164
+                  2,143
                 </span>
               
 
@@ -402,7 +420,7 @@
 <h2 id="二、实现方式"><a href="#二、实现方式" class="headerlink" title="二、实现方式"></a>二、实现方式</h2><p>Android官方对TextView的图文混排提供了支持，我们可以从以下三种方式实现TextView的图文混排：</p>
 <p>1.在TextView中使用Compound Drawable属性；<br>2.在TextView中使用Spannable多样式显示；<br>3.在TextView中显示HTML文本。</p>
 <h2 id="三、drawable属性"><a href="#三、drawable属性" class="headerlink" title="三、drawable属性"></a>三、drawable属性</h2><p>在TextView中使用Compound Drawable属性可以在文字的上下左右放置drawable，效果如下：<br><img src="http://upload-images.jianshu.io/upload_images/3985563-cab6ba24c22fc8d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>一共有两种方式可以实现：XML布局设置和Java代码设置。</p>
-<h3 id="1-xml布局"><a href="#1-xml布局" class="headerlink" title="1. xml布局"></a>1. xml布局</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;TextView</span><br><span class="line">       android:<span class="attribute">gravity</span>=<span class="string">"center"</span></span><br><span class="line">       android:<span class="attribute">layout_width</span>=<span class="string">"wrap_content"</span></span><br><span class="line">       android:<span class="attribute">layout_height</span>=<span class="string">"wrap_content"</span></span><br><span class="line">       android:<span class="attribute">text</span>=<span class="string">"查看新的内容"</span></span><br><span class="line">       android:<span class="attribute">textSize</span>=<span class="string">"18sp"</span></span><br><span class="line">       android:<span class="attribute">drawablePadding</span>=<span class="string">"10dp"</span></span><br><span class="line">       android:<span class="attribute">drawableLeft</span>=<span class="string">"@drawable/arrow"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="1-xml布局"><a href="#1-xml布局" class="headerlink" title="1. xml布局"></a>1. xml布局</h3><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&lt;TextView</span><br><span class="line">       android:<span class="attribute">gravity</span>=<span class="string">"center"</span></span><br><span class="line">       android:<span class="attribute">layout_width</span>=<span class="string">"wrap_content"</span></span><br><span class="line">       android:<span class="attribute">layout_height</span>=<span class="string">"wrap_content"</span></span><br><span class="line">       android:<span class="attribute">text</span>=<span class="string">"查看新的内容"</span></span><br><span class="line">       android:<span class="attribute">textSize</span>=<span class="string">"18sp"</span></span><br><span class="line">       android:<span class="attribute">drawablePadding</span>=<span class="string">"10dp"</span></span><br><span class="line">       android:<span class="attribute">drawableLeft</span>=<span class="string">"@drawable/arrow"</span>/&gt;</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -437,7 +455,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="2-java代码"><a href="#2-java代码" class="headerlink" title="2. java代码"></a>2. java代码</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">textView = (TextView) findViewById(R.id.textView)<span class="comment">;</span></span><br><span class="line">Drawable drawable = getResources().getDrawable(R.drawable.see)<span class="comment">;</span></span><br><span class="line">drawable.setBounds(<span class="number">0</span>,<span class="number">0</span>,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight())<span class="comment">;</span></span><br><span class="line">textView.setCompoundDrawables(null,null,null,drawable)<span class="comment">;</span></span><br><span class="line">textView.setCompoundDrawablePadding(<span class="number">10</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-java代码"><a href="#2-java代码" class="headerlink" title="2. java代码"></a>2. java代码</h3><figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line">textView = (TextView) findViewById(R.id.textView)<span class="comment">;</span></span><br><span class="line">Drawable drawable = getResources().getDrawable(R.drawable.see)<span class="comment">;</span></span><br><span class="line">drawable.setBounds(<span class="number">0</span>,<span class="number">0</span>,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight())<span class="comment">;</span></span><br><span class="line">textView.setCompoundDrawables(null,null,null,drawable)<span class="comment">;</span></span><br><span class="line">textView.setCompoundDrawablePadding(<span class="number">10</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
 <p>注意：必须setBounds()测量图片边界，否则不显示。</p>
 <table>
 <thead>
@@ -569,7 +587,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3-使用方式"><a href="#3-使用方式" class="headerlink" title="3.使用方式"></a>3.使用方式</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SpannableString span3 = <span class="keyword">new</span> SpannableString(<span class="string">"我如果爱你"</span>);</span><br><span class="line">ImageSpan <span class="built_in">image</span> = <span class="keyword">new</span> ImageSpan(<span class="keyword">this</span>,R.drawable.collect, DynamicDrawableSpan.ALIGN_BOTTOM);</span><br><span class="line">span3.setSpan(<span class="built_in">image</span>,<span class="number">3</span>,<span class="number">4</span>, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);</span><br><span class="line">tv3.setText(span3);</span><br></pre></td></tr></table></figure>
+<h3 id="3-使用方式"><a href="#3-使用方式" class="headerlink" title="3.使用方式"></a>3.使用方式</h3><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">SpannableString span3 = <span class="keyword">new</span> SpannableString(<span class="string">"我如果爱你"</span>);</span><br><span class="line">ImageSpan <span class="built_in">image</span> = <span class="keyword">new</span> ImageSpan(<span class="keyword">this</span>,R.drawable.collect, DynamicDrawableSpan.ALIGN_BOTTOM);</span><br><span class="line">span3.setSpan(<span class="built_in">image</span>,<span class="number">3</span>,<span class="number">4</span>, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);</span><br><span class="line">tv3.setText(span3);</span><br></pre></td></tr></table></figure>
 <p>其中ImageSpan默认对其方式有两种：ALIGN_BOTTOM及ALIGN_BASELINE。很可惜我们平常用的居中对其的方式没有，不过可以通过自定义实现，后续会在开源出来。</p>
 <h3 id="4-效果"><a href="#4-效果" class="headerlink" title="4.效果"></a>4.效果</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-0f942b4c39b84fbd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h2 id="五、HTML显示"><a href="#五、HTML显示" class="headerlink" title="五、HTML显示"></a>五、HTML显示</h2><p>一般显示HTML内容有两种方式：</p>
@@ -582,9 +600,9 @@
 <h3 id="1-简介-1"><a href="#1-简介-1" class="headerlink" title="1.简介"></a>1.简介</h3><p>Android 中的 TextView 组件常用于显示文本内容，其实它也可以显示 HTML 的内容。</p>
 <p>简单来讲，这就需要先把 HTML 的内容以字符串的形式获取后，经过 android.text.Html.fromHtml()转化成 Spanned 的格式，然后将其传递到 TextView 的 setText()方法中，这样就可以在 TextView 中显示 HTML 页面的内容了。</p>
 <p>需要注意的是，并不是所有的 HTML 标签在 TextView 中都是支持的，且官方文档并没有明确的说明支持 HTML 标签列表，通过查看 Android 源代码，可以得到简单的支持列表。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">br</span>&gt;</span>,<span class="tag">&lt; <span class="attr">p</span>&gt;</span>,<span class="tag">&lt; <span class="attr">div</span> <span class="attr">align</span>=&gt;</span>,<span class="tag">&lt; <span class="attr">strong</span>&gt;</span>, <span class="tag">&lt;<span class="name">b</span>&gt;</span>, <span class="tag">&lt;<span class="name">em</span>&gt;</span>, <span class="tag">&lt;<span class="name">cite</span>&gt;</span>, <span class="tag">&lt;<span class="name">dfn</span>&gt;</span>, <span class="tag">&lt;<span class="name">i</span>&gt;</span>, <span class="tag">&lt;<span class="name">big</span>&gt;</span>, <span class="tag">&lt;<span class="name">small</span>&gt;</span>, <span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=&gt;</span>,  <span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=&gt;</span>, <span class="tag">&lt;<span class="name">blockquote</span>&gt;</span>, <span class="tag">&lt;<span class="name">tt</span>&gt;</span>, <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=&gt;</span>,</span><br><span class="line"> <span class="tag">&lt;<span class="name">u</span>&gt;</span>,  <span class="tag">&lt;<span class="name">sup</span>&gt;</span>,  <span class="tag">&lt;<span class="name">sub</span>&gt;</span>, <span class="tag">&lt;<span class="name">h1</span>&gt;</span>,<span class="tag">&lt;<span class="name">h2</span>&gt;</span>,<span class="tag">&lt;<span class="name">h3</span>&gt;</span>,<span class="tag">&lt;<span class="name">h4</span>&gt;</span>,<span class="tag">&lt;<span class="name">h5</span>&gt;</span>,<span class="tag">&lt;<span class="name">h6</span>&gt;</span>,  <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=&gt;</span>, <span class="tag">&lt;<span class="name">strike</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">br</span>&gt;</span>,<span class="tag">&lt; <span class="attr">p</span>&gt;</span>,<span class="tag">&lt; <span class="attr">div</span> <span class="attr">align</span>=&gt;</span>,<span class="tag">&lt; <span class="attr">strong</span>&gt;</span>, <span class="tag">&lt;<span class="name">b</span>&gt;</span>, <span class="tag">&lt;<span class="name">em</span>&gt;</span>, <span class="tag">&lt;<span class="name">cite</span>&gt;</span>, <span class="tag">&lt;<span class="name">dfn</span>&gt;</span>, <span class="tag">&lt;<span class="name">i</span>&gt;</span>, <span class="tag">&lt;<span class="name">big</span>&gt;</span>, <span class="tag">&lt;<span class="name">small</span>&gt;</span>, <span class="tag">&lt;<span class="name">font</span> <span class="attr">size</span>=&gt;</span>,  <span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=&gt;</span>, <span class="tag">&lt;<span class="name">blockquote</span>&gt;</span>, <span class="tag">&lt;<span class="name">tt</span>&gt;</span>, <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=&gt;</span>,</span><br><span class="line"> <span class="tag">&lt;<span class="name">u</span>&gt;</span>,  <span class="tag">&lt;<span class="name">sup</span>&gt;</span>,  <span class="tag">&lt;<span class="name">sub</span>&gt;</span>, <span class="tag">&lt;<span class="name">h1</span>&gt;</span>,<span class="tag">&lt;<span class="name">h2</span>&gt;</span>,<span class="tag">&lt;<span class="name">h3</span>&gt;</span>,<span class="tag">&lt;<span class="name">h4</span>&gt;</span>,<span class="tag">&lt;<span class="name">h5</span>&gt;</span>,<span class="tag">&lt;<span class="name">h6</span>&gt;</span>,  <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=&gt;</span>, <span class="tag">&lt;<span class="name">strike</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>下面的示例来介绍如何在 TextView 中显示一段 HTML 内容，要显示的这段 HTML 内容即包含超链接内容，也包含有图片。</p>
-<h3 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h3><p><strong>fromHtml方法</strong><br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">fromHtml</span><span class="params">(String source, ImageGetter imageGetter,TagHandler tagHandler)</span></span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h3><p><strong>fromHtml方法</strong><br><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">fromHtml</span><span class="params">(String source, ImageGetter imageGetter,TagHandler tagHandler)</span></span></span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>source，就是包含 HTML 内容的字符串。Html.ImageGetter 和 Html.TagHandler 是两个接口，提供给开发者继承使用。</li>
 <li>imageGetter， 如果要显示图片是需要被继承的，重写 getDrawable(String source)方法，用于获取 HTML 里面的图片来显示在 TextView 中。</li>
@@ -600,7 +618,7 @@
 <p>formHtml()方法已经将 HTML 内容中的超链接和图片转义成为 UrlSpan 和 ImageSpan，进而在 TextView 中完成显示。但是此时是没有任何用户交互的，用户只能看到 HTML 的内容，下面介绍如何添加用户交互功能。</p>
 <p>要完成用户交互，这里我们需要在 TextView 中还需要调用textView.setMovementMethod()方法。</p>
 <p>Android 提供了 LinkMovementMethod 类以实现了对于文本内容中超链接的遍历，并且支持对于超链接的点击事件。</p>
-<p>所以只要在添加下面一行代码，就可以使点击 UrlSpan 能够触发打开链接的功能。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">textView</span><span class="selector-class">.setMovementMethod</span>(<span class="selector-tag">LinkMovementMethod</span><span class="selector-class">.getInstance</span>())</span><br></pre></td></tr></table></figure></p>
+<p>所以只要在添加下面一行代码，就可以使点击 UrlSpan 能够触发打开链接的功能。<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">textView</span><span class="selector-class">.setMovementMethod</span>(<span class="selector-tag">LinkMovementMethod</span><span class="selector-class">.getInstance</span>())</span><br></pre></td></tr></table></figure></p>
 <p>如果想要更多的用户交互效果，可以自定义LinkMovementMethod 类，重写onTouchEvent方法来实现。</p>
 <h3 id="3-效果"><a href="#3-效果" class="headerlink" title="3.效果"></a>3.效果</h3><p><img src="http://upload-images.jianshu.io/upload_images/3985563-f3a5bd6b3e539d70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>点击图片，跳转到图片详情页。</p>
 <p>关于HTML显示这部分，没做具体实现。具体可以看：<a href="https://www.ibm.com/developerworks/cn/web/1407_zhangqian_androidhtml/index.html" target="_blank" rel="noopener">灵活高效的在 Android Native App 开发中显示 HTML 内容</a>,里面有具体源码可以下载，HTML部分内容也是参考该篇文章完成的。<br>开源库：<a href="https://github.com/PrivacyApps/html-textview" target="_blank" rel="noopener">html-textview</a></p>

@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -360,7 +378,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,433
+                  2,375
                 </span>
               
 
@@ -398,10 +416,10 @@
 <p>学习JavaScript的时候了解到JavaScript是单线程的，刚开始很疑惑，单线程怎么处理网络请求、文件读写等耗时操作呢？效率岂不是会很低？随着对这方面内容的了解和深入，知道了其中的奥秘。本篇文章就主要讲解一下JavaScript怎么处理异步问题。</p>
 </blockquote>
 <h2 id="一、同步与异步"><a href="#一、同步与异步" class="headerlink" title="一、同步与异步"></a>一、同步与异步</h2><p>在介绍JavaScript的异步机制之前，首先介绍一下：什么是同步？什么是异步？<br><img src="http://upload-images.jianshu.io/upload_images/3985563-bbc80847ea8e5755.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>如果在函数返回的时候，调用者就能够得到预期结果(即拿到了预期的返回值或者看到了预期的效果)，那么这个函数就是同步的。<br>如下所示：<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在函数返回时，获得了预期值，即2的平方根</span></span><br><span class="line">Math.<span class="built_in">sqrt</span>(<span class="number">2</span>);</span><br><span class="line"><span class="comment">//在函数返回时，获得了预期的效果，即在控制台上打印了'hello'</span></span><br><span class="line">console.<span class="built_in">log</span>('hello');</span><br></pre></td></tr></table></figure></p>
+<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>如果在函数返回的时候，调用者就能够得到预期结果(即拿到了预期的返回值或者看到了预期的效果)，那么这个函数就是同步的。<br>如下所示：<br><figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//在函数返回时，获得了预期值，即2的平方根</span></span><br><span class="line">Math.<span class="built_in">sqrt</span>(<span class="number">2</span>);</span><br><span class="line"><span class="comment">//在函数返回时，获得了预期的效果，即在控制台上打印了'hello'</span></span><br><span class="line">console.<span class="built_in">log</span>('hello');</span><br></pre></td></tr></table></figure></p>
 <p>上面两个函数就是同步的。</p>
 <p><strong>如果函数是同步的，即使调用函数执行的任务比较耗时，也会一直等待直到得到预期结果。</strong></p>
-<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>如果在函数返回的时候，调用者还不能够得到预期结果，而是需要在将来通过一定的手段得到，那么这个函数就是异步的。<br>如下所示：<br><figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取文件</span></span><br><span class="line">fs.readFile(<span class="string">'hello.txt'</span>, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//网络请求</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.onreadystatechange = xxx; <span class="comment">// 添加回调函数</span></span><br><span class="line">xhr.open(<span class="string">'GET'</span>, <span class="built_in">url</span>);</span><br><span class="line">xhr.send(); <span class="comment">// 发起函数</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>如果在函数返回的时候，调用者还不能够得到预期结果，而是需要在将来通过一定的手段得到，那么这个函数就是异步的。<br>如下所示：<br><figure class="highlight qml"><table><tr><td class="code"><pre><span class="line"><span class="comment">//读取文件</span></span><br><span class="line">fs.readFile(<span class="string">'hello.txt'</span>, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//网络请求</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.onreadystatechange = xxx; <span class="comment">// 添加回调函数</span></span><br><span class="line">xhr.open(<span class="string">'GET'</span>, <span class="built_in">url</span>);</span><br><span class="line">xhr.send(); <span class="comment">// 发起函数</span></span><br></pre></td></tr></table></figure></p>
 <p>上述示例中读取文件函数 <code>readFile</code>和网络请求的发起函数  <code>send</code>都将执行耗时操作，虽然函数会立即返回，但是不能立刻获取预期的结果，因为耗时操作交给其他线程执行，暂时获取不到预期结果（后面介绍）。而在JavaScript中通过回调函数 <code>function(err, data) {
     console.log(data);
 }</code>和 <code>onreadystatechange</code>   ，在耗时操作执行完成后把相应的结果信息传递给回调函数，通知执行JavaScript代码的线程执行回调。</p>
@@ -438,16 +456,16 @@
 <blockquote>
 <p>执行下面这段代码，执行后，在 5s 内点击两下，过一段时间（&gt;5s）后，再点击两下，整个过程的输出结果是什么？</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100000000</span>; i++)&#123;&#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timer a'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">5</span>; j++)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(j);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timer b'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitFiveSeconds</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> now = (<span class="keyword">new</span> <span class="built_in">Date</span>()).getTime();</span><br><span class="line">    <span class="keyword">while</span>(((<span class="keyword">new</span> <span class="built_in">Date</span>()).getTime() - now) &lt; <span class="number">5000</span>)&#123;&#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'finished waiting'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'click'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'click begin'</span>);</span><br><span class="line">waitFiveSeconds();</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100000000</span>; i++)&#123;&#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timer a'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">5</span>; j++)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(j);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timer b'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitFiveSeconds</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> now = (<span class="keyword">new</span> <span class="built_in">Date</span>()).getTime();</span><br><span class="line">    <span class="keyword">while</span>(((<span class="keyword">new</span> <span class="built_in">Date</span>()).getTime() - now) &lt; <span class="number">5000</span>)&#123;&#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'finished waiting'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'click'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'click begin'</span>);</span><br><span class="line">waitFiveSeconds();</span><br></pre></td></tr></table></figure>
 <p>要想了解上述代码的输出结果，首先介绍下定时器。</p>
 <p><code>setTimeout</code>的作用是在间隔一定的时间后，将回调函数插入消息队列中，等栈中的同步任务都执行完毕后，再执行。因为栈中的同步任务也会耗时，<strong>所以间隔的时间一般会大于等于指定的时间</strong>。</p>
-<p><code>setTimeout(fn, 0)</code>的意思是，将回调函数fn立刻插入消息队列，等待执行，而不是立即执行。看一个例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"a"</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>; i&lt;<span class="number">10000</span>; i++) &#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"b"</span>)</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">b</span>  a</span><br></pre></td></tr></table></figure>
+<p><code>setTimeout(fn, 0)</code>的意思是，将回调函数fn立刻插入消息队列，等待执行，而不是立即执行。看一个例子：<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"a"</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>; i&lt;<span class="number">10000</span>; i++) &#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"b"</span>)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">b</span>  a</span><br></pre></td></tr></table></figure>
 <p>打印结果表明回调函数并没有立刻执行，而是等待栈中的任务执行完毕后才执行的。栈中的任务执行多久，它就得等多久。</p>
 <p>理解了定时器的作用，那么对于输出结果就容易得出了。</p>
-<p>首先，先执行同步任务。其中<code>waitFiveSeconds</code>是耗时操作，持续执行长达5s。<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">click begin</span><br><span class="line">finished waiting</span><br></pre></td></tr></table></figure></p>
-<p>然后，在JS引擎线程执行的时候，’timer a’对应的定时器产生的回调、 ‘timer b’对应的定时器产生的回调和两次 click 对应的回调被先后放入消息队列。由于JS引擎线程空闲后，会<strong>先查看是否有事件可执行</strong>，接着再处理其他异步任务。因此会产生 下面的输出顺序。<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">click</span></span><br><span class="line"><span class="built_in">click</span></span><br><span class="line">timer a</span><br><span class="line">timer b</span><br></pre></td></tr></table></figure></p>
-<p>最后，5s 后的两次 click 事件被放入消息队列，由于此时JS引擎线程空闲，便被立即执行了。<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">click</span></span><br><span class="line"><span class="built_in">click</span></span><br></pre></td></tr></table></figure></p>
+<p>首先，先执行同步任务。其中<code>waitFiveSeconds</code>是耗时操作，持续执行长达5s。<br><figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">click begin</span><br><span class="line">finished waiting</span><br></pre></td></tr></table></figure></p>
+<p>然后，在JS引擎线程执行的时候，’timer a’对应的定时器产生的回调、 ‘timer b’对应的定时器产生的回调和两次 click 对应的回调被先后放入消息队列。由于JS引擎线程空闲后，会<strong>先查看是否有事件可执行</strong>，接着再处理其他异步任务。因此会产生 下面的输出顺序。<br><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="built_in">click</span></span><br><span class="line"><span class="built_in">click</span></span><br><span class="line">timer a</span><br><span class="line">timer b</span><br></pre></td></tr></table></figure></p>
+<p>最后，5s 后的两次 click 事件被放入消息队列，由于此时JS引擎线程空闲，便被立即执行了。<br><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line"><span class="built_in">click</span></span><br><span class="line"><span class="built_in">click</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>参考文章</strong><br> <a href="https://segmentfault.com/a/1190000004322358" target="_blank" rel="noopener">JavaScript：彻底理解同步、异步和事件循环(Event Loop)</a><br><a href="http://www.alloyteam.com/2015/10/turning-to-javascript-series-from-settimeout-said-the-event-loop-model/" title="【转向Javascript系列】从setTimeout说事件循环模型" target="_blank" rel="noopener">从setTimeout说事件循环模型</a><br><a href="https://github.com/pramper/Blog/issues/4" target="_blank" rel="noopener">JavaScript单线程和异步机制</a><br><a href="https://github.com/huangtengfei/blog/issues/15" target="_blank" rel="noopener">JavaScript的单线程机制</a><br><a href="https://zhuanlan.zhihu.com/p/27035708" target="_blank" rel="noopener">JavaScript单线程异步的背后——事件循环机制</a><br><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="noopener">JavaScript 运行机制详解：再谈Event Loop</a></p>
 
       

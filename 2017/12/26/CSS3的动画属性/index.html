@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,26 +103,26 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
 
 
 
-<meta name="description" content="transition、animation和transform是CSS3中三个制作动画的重要属性，本篇文章主要对其进行学习了解。  一、transitiontransition允许css的属性值在一定的时间区间内平滑地过渡。这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变CSS的属性值。 1transition ：transition-property ||">
+<meta name="description" content="transition、animation和transform是CSS3中三个制作动画的重要属性，本篇文章主要对其进行学习了解。  一、transitiontransition允许css的属性值在一定的时间区间内平滑地过渡。这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变CSS的属性值。 transition ：transition-property || t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSS3的动画属性">
 <meta property="og:url" content="https://lrh1993.github.io/2017/12/26/CSS3的动画属性/index.html">
 <meta property="og:site_name" content="ruheng">
-<meta property="og:description" content="transition、animation和transform是CSS3中三个制作动画的重要属性，本篇文章主要对其进行学习了解。  一、transitiontransition允许css的属性值在一定的时间区间内平滑地过渡。这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变CSS的属性值。 1transition ：transition-property ||">
+<meta property="og:description" content="transition、animation和transform是CSS3中三个制作动画的重要属性，本篇文章主要对其进行学习了解。  一、transitiontransition允许css的属性值在一定的时间区间内平滑地过渡。这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变CSS的属性值。 transition ：transition-property || t">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-af0098558fc18cb5.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3985563-914eacab4466fe8b.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:updated_time" content="2017-12-27T09:44:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSS3的动画属性">
-<meta name="twitter:description" content="transition、animation和transform是CSS3中三个制作动画的重要属性，本篇文章主要对其进行学习了解。  一、transitiontransition允许css的属性值在一定的时间区间内平滑地过渡。这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变CSS的属性值。 1transition ：transition-property ||">
+<meta name="twitter:description" content="transition、animation和transform是CSS3中三个制作动画的重要属性，本篇文章主要对其进行学习了解。  一、transitiontransition允许css的属性值在一定的时间区间内平滑地过渡。这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变CSS的属性值。 transition ：transition-property || t">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3985563-af0098558fc18cb5.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -358,7 +376,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  2,229
+                  2,166
                 </span>
               
 
@@ -396,16 +414,16 @@
 <p>transition、animation和transform是CSS3中三个制作动画的重要属性，本篇文章主要对其进行学习了解。</p>
 </blockquote>
 <h2 id="一、transition"><a href="#一、transition" class="headerlink" title="一、transition"></a>一、transition</h2><p><code>transition</code>允许css的属性值在一定的时间区间内平滑地<strong>过渡</strong>。这种效果可以在鼠标单击、获得焦点、被点击或对元素任何改变中触发，并圆滑地以动画效果改变CSS的属性值。</p>
-<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transition ：transition-property |<span class="type">| transition</span>-duration |<span class="type">| transition</span>-timing-function |<span class="type">| transition</span>-delay;</span><br></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">transition ：transition-property |<span class="type">| transition</span>-duration |<span class="type">| transition</span>-timing-function |<span class="type">| transition</span>-delay;</span><br></pre></td></tr></table></figure>
 <p><code>transition</code>主要包含四个属性值：执行变换的属性：<code>transition-property</code>，变换延续的时间：<code>transition-duration</code>，在延续时间段，变换的速率变化：<code>transition-timing-function</code>，变换延迟时间：<code>transition-delay</code>。</p>
-<h3 id="1-transition-property"><a href="#1-transition-property" class="headerlink" title="1. transition-property"></a>1. transition-property</h3><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transition-<span class="keyword">property</span><span class="title"></span>: none || all || <span class="keyword">property</span><span class="title"></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="1-transition-property"><a href="#1-transition-property" class="headerlink" title="1. transition-property"></a>1. transition-property</h3><figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">transition-<span class="keyword">property</span><span class="title"></span>: none || all || <span class="keyword">property</span><span class="title"></span>;</span><br></pre></td></tr></table></figure>
 <p><code>transition-property</code>是用来指定当元素其中一个属性改变时执行<code>transition</code>效果。</p>
 <p>none: 没有属性会获得过渡效果；</p>
 <p>all: 所有属性都将获得过渡效果,<strong>也是其默认值</strong>；</p>
 <p>property: 定义应用过渡效果的 CSS 属性名称列表，列表以逗号分隔。</p>
-<h3 id="2-transition-duration"><a href="#2-transition-duration" class="headerlink" title="2. transition-duration"></a>2. transition-duration</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transition-duration</span>: time;</span><br></pre></td></tr></table></figure>
+<h3 id="2-transition-duration"><a href="#2-transition-duration" class="headerlink" title="2. transition-duration"></a>2. transition-duration</h3><figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="attribute">transition-duration</span>: time;</span><br></pre></td></tr></table></figure>
 <p><code>transition-duration</code>是用来指定元素 转换过程的持续时间，取值time为数值，单位为s（秒）或者ms(毫秒)，其默认值是0，也就是变换时是即时的。</p>
-<h3 id="3-transition-timing-function"><a href="#3-transition-timing-function" class="headerlink" title="3. transition-timing-function"></a>3. transition-timing-function</h3><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">transition-timing-function: linear |<span class="type">| ease</span> |<span class="type">| ease</span>-<span class="built_in">in</span> |<span class="type">| ease</span>-out |<span class="type">| ease</span>-<span class="built_in">in</span>-out |<span class="type">| cubic</span>-</span><br><span class="line">bezier(n,n,n,n);</span><br></pre></td></tr></table></figure>
+<h3 id="3-transition-timing-function"><a href="#3-transition-timing-function" class="headerlink" title="3. transition-timing-function"></a>3. transition-timing-function</h3><figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">transition-timing-function: linear |<span class="type">| ease</span> |<span class="type">| ease</span>-<span class="built_in">in</span> |<span class="type">| ease</span>-out |<span class="type">| ease</span>-<span class="built_in">in</span>-out |<span class="type">| cubic</span>-</span><br><span class="line">bezier(n,n,n,n);</span><br></pre></td></tr></table></figure>
 <p>以上具体取值含义如下：</p>
 <table>
 <thead>
@@ -441,12 +459,12 @@
 </tr>
 </tbody>
 </table>
-<h3 id="4-transition-delay"><a href="#4-transition-delay" class="headerlink" title="4. transition-delay"></a>4. transition-delay</h3><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transition-<span class="built_in">delay</span>: <span class="built_in">time</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="4-transition-delay"><a href="#4-transition-delay" class="headerlink" title="4. transition-delay"></a>4. transition-delay</h3><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">transition-<span class="built_in">delay</span>: <span class="built_in">time</span>;</span><br></pre></td></tr></table></figure>
 <p><code>transition-delay</code>是用来指定一个动画开始执行的时间，也就是说当改变元素属性值后多长时间开始执行<code>transition</code>效果，其取值time为数值，单位为s（秒）或者ms(毫秒)， 默认大小是”0”，也就是变换立即执行，没有延迟。</p>
 <h3 id="5-示例"><a href="#5-示例" class="headerlink" title="5. 示例"></a>5. 示例</h3><p>html代码</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"one"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"one"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>css代码</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.one</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">margin</span>: <span class="number">200px</span> auto;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#cd4a48</span>;</span><br><span class="line">        <span class="attribute">-webkit-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">-moz-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">-ms-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">-o-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.one</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.one</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">margin</span>: <span class="number">200px</span> auto;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#cd4a48</span>;</span><br><span class="line">        <span class="attribute">-webkit-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">-moz-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">-ms-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">-o-transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">        <span class="attribute">transition</span>: width, height <span class="number">2s</span> ease;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.one</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>效果：</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-af0098558fc18cb5.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h3 id="6-注意事项"><a href="#6-注意事项" class="headerlink" title="6. 注意事项"></a>6. 注意事项</h3><ul>
@@ -456,7 +474,7 @@
 <li><code>transition</code>是一次性的，不能重复发生，除非一再触发。</li>
 </ul>
 <h2 id="二、animation"><a href="#二、animation" class="headerlink" title="二、animation"></a>二、animation</h2><p>不同于<code>transition</code>只能定义首尾两个状态，<code>animation</code>可以定义任意多的关键帧，因而能实现更复杂的动画效果。</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">animation</span>: <span class="built_in">animation</span>-name || <span class="built_in">animation</span>-duration || <span class="built_in">animation</span>-timing-function || <span class="built_in">animation</span>-<span class="built_in">delay</span> || <span class="built_in">animation</span>-iteration-count || <span class="built_in">animation</span>-direction</span><br></pre></td></tr></table></figure>
+<figure class="highlight maxima"><table><tr><td class="code"><pre><span class="line"><span class="built_in">animation</span>: <span class="built_in">animation</span>-name || <span class="built_in">animation</span>-duration || <span class="built_in">animation</span>-timing-function || <span class="built_in">animation</span>-<span class="built_in">delay</span> || <span class="built_in">animation</span>-iteration-count || <span class="built_in">animation</span>-direction</span><br></pre></td></tr></table></figure>
 <p><code>animation</code>主要包含六个属性，具体含义如下：</p>
 <table>
 <thead>
@@ -496,7 +514,7 @@
 <p><code>@keyframes</code> 让开发者通过指定动画中特定时间点必须展现的关键帧样式（或者说停留点）来控制CSS动画的中间环节。这让开发者能够控制动画中的更多细节而不是全部让浏览器自动处理。</p>
 <p>要使用关键帧, 先创建一个带名称的<code>@keyframes</code>规则，以便后续使用 <code>animation-name</code>这个属性来调用指定的<code>@keyframes</code>. 每个<code>@keyframes</code> 规则包含多个关键帧，也就是一段样式块语句，每个关键帧有一个百分比值作为名称，代表在动画进行中，在哪个阶段触发这个帧所包含的样式。</p>
 <p>关键帧的编写顺序没有要求，最后只会根据百分比按由小到大的顺序触发。</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@keyframes <span class="class">animationname </span>&#123;keyframes-<span class="class">selector </span>&#123;css-styles;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line">@keyframes <span class="class">animationname </span>&#123;keyframes-<span class="class">selector </span>&#123;css-styles;&#125;&#125;</span><br></pre></td></tr></table></figure>
 <p>具体含义如下：</p>
 <table>
 <thead>
@@ -521,17 +539,17 @@
 </tbody>
 </table>
 <p>示例：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">keyframes</span> identifier &#123;</span><br><span class="line">  0% &#123; <span class="attribute">top</span>: <span class="number">0</span>; <span class="attribute">left</span>: <span class="number">0px</span>&#125;</span><br><span class="line">  50% &#123; <span class="attribute">top</span>: <span class="number">30px</span>; <span class="attribute">left</span>: <span class="number">20px</span>; &#125;</span><br><span class="line">  100% &#123; <span class="attribute">top</span>: <span class="number">0</span>; <span class="attribute">left</span>: <span class="number">30px</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">@<span class="keyword">keyframes</span> identifier &#123;</span><br><span class="line">  0% &#123; <span class="attribute">top</span>: <span class="number">0</span>; <span class="attribute">left</span>: <span class="number">0px</span>&#125;</span><br><span class="line">  50% &#123; <span class="attribute">top</span>: <span class="number">30px</span>; <span class="attribute">left</span>: <span class="number">20px</span>; &#125;</span><br><span class="line">  100% &#123; <span class="attribute">top</span>: <span class="number">0</span>; <span class="attribute">left</span>: <span class="number">30px</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="2-示例"><a href="#2-示例" class="headerlink" title="2. 示例"></a>2. 示例</h3><p>html代码</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"one"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"one"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>css代码</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.one</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">margin</span>: <span class="number">200px</span> auto;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#cd4a48</span>;</span><br><span class="line">        <span class="attribute">position</span>: relative;</span><br><span class="line">        <span class="attribute">animation</span>: moveHover <span class="number">5s</span> ease-in-out <span class="number">0.2s</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @<span class="keyword">keyframes</span> moveHover &#123;</span><br><span class="line">        0% &#123;</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">0px</span>;</span><br><span class="line">            <span class="attribute">left</span>: <span class="number">0px</span>;</span><br><span class="line">            <span class="attribute">background</span>: <span class="number">#cd4a48</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        50% &#123;</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">200px</span>;</span><br><span class="line">            <span class="attribute">left</span>: <span class="number">200px</span>;</span><br><span class="line">            <span class="attribute">background</span>:<span class="number">#A48992</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        100% &#123;</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">350px</span>;</span><br><span class="line">            <span class="attribute">left</span>:<span class="number">350px</span>;</span><br><span class="line">            <span class="attribute">background</span>: <span class="number">#FFB89A</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.one</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">        <span class="attribute">margin</span>: <span class="number">200px</span> auto;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#cd4a48</span>;</span><br><span class="line">        <span class="attribute">position</span>: relative;</span><br><span class="line">        <span class="attribute">animation</span>: moveHover <span class="number">5s</span> ease-in-out <span class="number">0.2s</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @<span class="keyword">keyframes</span> moveHover &#123;</span><br><span class="line">        0% &#123;</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">0px</span>;</span><br><span class="line">            <span class="attribute">left</span>: <span class="number">0px</span>;</span><br><span class="line">            <span class="attribute">background</span>: <span class="number">#cd4a48</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        50% &#123;</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">200px</span>;</span><br><span class="line">            <span class="attribute">left</span>: <span class="number">200px</span>;</span><br><span class="line">            <span class="attribute">background</span>:<span class="number">#A48992</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        100% &#123;</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">350px</span>;</span><br><span class="line">            <span class="attribute">left</span>:<span class="number">350px</span>;</span><br><span class="line">            <span class="attribute">background</span>: <span class="number">#FFB89A</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>效果：</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3985563-914eacab4466fe8b.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <h3 id="3-其他属性"><a href="#3-其他属性" class="headerlink" title="3. 其他属性"></a>3. 其他属性</h3><p>除了上述主要用到的六个属性外，还要额外介绍两个属性。</p>
 <p><strong>animation-fill-mode</strong></p>
 <p>动画结束以后，会立即从结束状态跳回到起始状态。如果想让动画保持在结束状态，需要使用<code>animation-fill-mode</code>属性。</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">animation</span>-<span class="meta">fill</span>-mode: none <span class="title">||</span> <span class="keyword">backwards </span><span class="title">||</span> <span class="keyword">both</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">animation</span>-<span class="meta">fill</span>-mode: none <span class="title">||</span> <span class="keyword">backwards </span><span class="title">||</span> <span class="keyword">both</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>none：默认值，回到动画没开始时的状态。</li>
 <li>forwards：当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）。</li>
@@ -541,10 +559,10 @@
 <p><strong>animation-play-state</strong></p>
 <p>有时，动画播放过程中，会突然停止。这时，默认行为是跳回到动画的开始状态。</p>
 <p>如果想让动画保持突然终止时的状态，就要使用<code>animation-play-state</code>属性。</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">animation-play-state:running <span class="string">|| paused</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">animation-play-state:running <span class="string">|| paused</span></span><br></pre></td></tr></table></figure>
 <p><code>animation-play-state</code>主要是用来控制元素动画的播放状态。其主要有两个值，running和paused其中running为默认值。通过paused将正在播放的动画停下了，通过running将暂停的动画重新播放，这个属性目前很少内核支持。</p>
 <h2 id="三、transform"><a href="#三、transform" class="headerlink" title="三、transform"></a>三、transform</h2><p><code>transform</code>就是变形，主要包括<strong>旋转rotate</strong>、<strong>扭曲skew</strong>、<strong>缩放scale</strong>和<strong>移动translate</strong>以及<strong>矩阵变形matrix</strong>。</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">transform</span>: none || <span class="built_in">transform</span>-<span class="built_in">functions</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight maxima"><table><tr><td class="code"><pre><span class="line"><span class="built_in">transform</span>: none || <span class="built_in">transform</span>-<span class="built_in">functions</span></span><br></pre></td></tr></table></figure>
 <p>none:表示不进么变换；transform-function表示一个或多个变换函数，以空格分开；换句话说就是我们同时对一个元素进行transform的多种属性操作，例如rotate、scale、translate三种。</p>
 <p>主要的transform-function变换函数如下：</p>
 <h3 id="1-translate"><a href="#1-translate" class="headerlink" title="1. translate"></a>1. translate</h3><table>
@@ -660,7 +678,7 @@
 </tbody>
 </table>
 <h3 id="5-transform-origin"><a href="#5-transform-origin" class="headerlink" title="5. transform-origin"></a>5. transform-origin</h3><p>以上变化的默认参照点是元素的中心点，不过可以通过<code>transform-origin</code>设置元素的参照点。</p>
-<figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transform-origin: <span class="keyword">X</span> || <span class="keyword">Y</span> || <span class="keyword">Z</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight tp"><table><tr><td class="code"><pre><span class="line">transform-origin: <span class="keyword">X</span> || <span class="keyword">Y</span> || <span class="keyword">Z</span></span><br></pre></td></tr></table></figure>
 <p>其中X，Y，Z对应三维坐标，X，Y，Z的值可以是em，px。此外，X，Y可以是百分值，其中X也可以是字符参数值left，center，right。Y和X一样除了百分值外还可以设置字符值top，center，bottom。</p>
 <p>具体示例就不再写了，情况比较多，实现起来也比较简单。</p>
 <h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>以上是关于CSS3中制作动画的三个属性，内容比较基础，不过却很实用。仅仅只需要CSS，即可实现一些较为简单的动画效果，省去了复杂的js代码。</p>

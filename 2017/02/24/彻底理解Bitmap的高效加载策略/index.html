@@ -51,17 +51,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,7 +103,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -355,7 +373,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  1,401
+                  1,372
                 </span>
               
 
@@ -410,8 +428,8 @@
 <p>②从BitmapFactory.Options中取出图片的原始宽高信息，它们对应于outWidth和outHeight参数。</p>
 <p>③根据采样率的规则并结合目标View的所需大小计算出采样率inSampleSize。</p>
 <p>④将BitmapFactory.Options的inJustDecodeBounds参数设为false，然后重新加载图片。</p>
-<h3 id="三、Bitmap高效加载的代码实现"><a href="#三、Bitmap高效加载的代码实现" class="headerlink" title="三、Bitmap高效加载的代码实现"></a>三、Bitmap高效加载的代码实现</h3><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap decodeSampledBitmapFromResource(Resources res, <span class="built_in">int</span> resId, <span class="built_in">int</span> reqWidth, <span class="built_in">int</span> reqHeight)&#123;</span><br><span class="line">       BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">       options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">       <span class="comment">//加载图片</span></span><br><span class="line">       BitmapFactory.decodeResource(res,resId,options);</span><br><span class="line">       <span class="comment">//计算缩放比</span></span><br><span class="line">       options.inSampleSize = calculateInSampleSize(options,reqHeight,reqWidth);</span><br><span class="line">       <span class="comment">//重新加载图片</span></span><br><span class="line">       options.inJustDecodeBounds =<span class="keyword">false</span>;</span><br><span class="line">       <span class="keyword">return</span> BitmapFactory.decodeResource(res,resId,options);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> calculateInSampleSize(BitmapFactory.Options options, <span class="built_in">int</span> reqHeight, <span class="built_in">int</span> reqWidth) &#123;</span><br><span class="line">       <span class="built_in">int</span> <span class="built_in">height</span> = options.outHeight;</span><br><span class="line">       <span class="built_in">int</span> <span class="built_in">width</span> = options.outWidth;</span><br><span class="line">       <span class="built_in">int</span> inSampleSize = <span class="number">1</span>;</span><br><span class="line">       <span class="keyword">if</span>(<span class="built_in">height</span>&gt;reqHeight||<span class="built_in">width</span>&gt;reqWidth)&#123;</span><br><span class="line">           <span class="built_in">int</span> halfHeight = <span class="built_in">height</span>/<span class="number">2</span>;</span><br><span class="line">           <span class="built_in">int</span> halfWidth = <span class="built_in">width</span>/<span class="number">2</span>;</span><br><span class="line">           <span class="comment">//计算缩放比，是2的指数</span></span><br><span class="line">           <span class="keyword">while</span>((halfHeight/inSampleSize)&gt;=reqHeight&amp;&amp;(halfWidth/inSampleSize)&gt;=reqWidth)&#123;</span><br><span class="line">               inSampleSize*=<span class="number">2</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       <span class="keyword">return</span> inSampleSize;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>这个时候就可以通过如下方式高效加载图片：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mImageView</span><span class="selector-class">.setImageBitmap</span>(<span class="selector-tag">decodeSampledBitmapFromResource</span>(<span class="selector-tag">getResources</span>(),<span class="selector-tag">R</span><span class="selector-class">.mipmap</span><span class="selector-class">.ic_launcher</span>,100,100);</span><br></pre></td></tr></table></figure></p>
+<h3 id="三、Bitmap高效加载的代码实现"><a href="#三、Bitmap高效加载的代码实现" class="headerlink" title="三、Bitmap高效加载的代码实现"></a>三、Bitmap高效加载的代码实现</h3><figure class="highlight processing"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap decodeSampledBitmapFromResource(Resources res, <span class="built_in">int</span> resId, <span class="built_in">int</span> reqWidth, <span class="built_in">int</span> reqHeight)&#123;</span><br><span class="line">       BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">       options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">       <span class="comment">//加载图片</span></span><br><span class="line">       BitmapFactory.decodeResource(res,resId,options);</span><br><span class="line">       <span class="comment">//计算缩放比</span></span><br><span class="line">       options.inSampleSize = calculateInSampleSize(options,reqHeight,reqWidth);</span><br><span class="line">       <span class="comment">//重新加载图片</span></span><br><span class="line">       options.inJustDecodeBounds =<span class="keyword">false</span>;</span><br><span class="line">       <span class="keyword">return</span> BitmapFactory.decodeResource(res,resId,options);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> calculateInSampleSize(BitmapFactory.Options options, <span class="built_in">int</span> reqHeight, <span class="built_in">int</span> reqWidth) &#123;</span><br><span class="line">       <span class="built_in">int</span> <span class="built_in">height</span> = options.outHeight;</span><br><span class="line">       <span class="built_in">int</span> <span class="built_in">width</span> = options.outWidth;</span><br><span class="line">       <span class="built_in">int</span> inSampleSize = <span class="number">1</span>;</span><br><span class="line">       <span class="keyword">if</span>(<span class="built_in">height</span>&gt;reqHeight||<span class="built_in">width</span>&gt;reqWidth)&#123;</span><br><span class="line">           <span class="built_in">int</span> halfHeight = <span class="built_in">height</span>/<span class="number">2</span>;</span><br><span class="line">           <span class="built_in">int</span> halfWidth = <span class="built_in">width</span>/<span class="number">2</span>;</span><br><span class="line">           <span class="comment">//计算缩放比，是2的指数</span></span><br><span class="line">           <span class="keyword">while</span>((halfHeight/inSampleSize)&gt;=reqHeight&amp;&amp;(halfWidth/inSampleSize)&gt;=reqWidth)&#123;</span><br><span class="line">               inSampleSize*=<span class="number">2</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">       <span class="keyword">return</span> inSampleSize;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候就可以通过如下方式高效加载图片：<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">mImageView</span><span class="selector-class">.setImageBitmap</span>(<span class="selector-tag">decodeSampledBitmapFromResource</span>(<span class="selector-tag">getResources</span>(),<span class="selector-tag">R</span><span class="selector-class">.mipmap</span><span class="selector-class">.ic_launcher</span>,100,100);</span><br></pre></td></tr></table></figure></p>
 <p>除了BitmapFactory的decodeResource方法，其他方法也可以类似实现。</p>
 
       
