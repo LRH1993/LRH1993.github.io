@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lrh1993.github.io/"/>
-  <updated>2018-03-15T01:55:12.094Z</updated>
+  <updated>2018-03-16T01:51:11.677Z</updated>
   <id>https://lrh1993.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>碎阅：一款基于douban及ONE API开发的资讯类App</title>
+    <link href="https://lrh1993.github.io/2018/03/16/%E7%A2%8E%E9%98%85%EF%BC%9A%E4%B8%80%E6%AC%BE%E5%9F%BA%E4%BA%8Edouban%E5%8F%8AONE-API%E5%BC%80%E5%8F%91%E7%9A%84%E8%B5%84%E8%AE%AF%E7%B1%BBApp/"/>
+    <id>https://lrh1993.github.io/2018/03/16/碎阅：一款基于douban及ONE-API开发的资讯类App/</id>
+    <published>2018-03-16T01:33:21.000Z</published>
+    <updated>2018-03-16T01:51:11.677Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>一款基于douban及ONE API开发的资讯类的开源项目。项目采取的是okhttp + MVP架构开发。Github地址：<a href="https://github.com/LRH1993/SuiYue" target="_blank" rel="noopener">https://github.com/LRH1993/SuiYue</a></p></blockquote><h2 id="一、效果图"><a href="#一、效果图" class="headerlink" title="一、效果图"></a>一、效果图</h2><table><thead><tr><th><img src="https://upload-images.jianshu.io/upload_images/3985563-0511e76b2586caed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文章页面"></th><th><img src="https://upload-images.jianshu.io/upload_images/3985563-14cbc9d75c05ea9d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图书页面"></th><th><img src="https://upload-images.jianshu.io/upload_images/3985563-f49b76a0036c3c74.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="电影页面"></th></tr></thead><tbody><tr><td><img src="https://upload-images.jianshu.io/upload_images/3985563-28e8db39f2088d17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文章详情页"></td><td><img src="https://upload-images.jianshu.io/upload_images/3985563-f8b6399f512d3c25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图书详情页"></td><td><img src="https://upload-images.jianshu.io/upload_images/3985563-a288b2f6cce7eb3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="电影详情页"></td></tr><tr><td><img src="https://upload-images.jianshu.io/upload_images/3985563-d0af9ae23b6ed174.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="搜索页面"></td><td><img src="https://upload-images.jianshu.io/upload_images/3985563-4c5b0a8efe9dc007.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="扫描页面"></td><td><img src="https://upload-images.jianshu.io/upload_images/3985563-6ae55947995001d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="电影列表页面"></td></tr></tbody></table><h2 id="二、简介"><a href="#二、简介" class="headerlink" title="二、简介"></a>二、简介</h2><p>碎阅分为三个主要模块：</p><ul><li>文章</li><li>图书</li><li>电影</li></ul><h3 id="1-文章"><a href="#1-文章" class="headerlink" title="1.文章"></a>1.文章</h3><blockquote><p>API使用的是ONE API，关于具体API参考该项目的REAMDE。</p></blockquote><ul><li><p>文章列表：支持上拉加载更多下拉刷新，列表使用RecyclerView，每日推荐新的文章。</p></li><li><p>文章详情页：主要分为短文、问答及连载三种类型文章，布局采用CoordinatorLayout。</p></li></ul><h3 id="2-图书"><a href="#2-图书" class="headerlink" title="2.图书"></a>2.图书</h3><blockquote><p>API使用的是豆瓣图书 API，关于具体API参考该项目的REAMDE。</p></blockquote><ul><li><p>图书列表：列表使用RecyclerView，添加浮动按钮刷新图书，该按钮支持任意拖拽。</p></li><li><p>搜索界面：采用DialogFragment实现，支持历史搜索及热门搜索，具有Circular Reveal动画效果。</p></li><li><p>扫描界面：采用Zxing进行二维码扫描，支持图书扫描，获取图书详情信息。</p></li></ul><h3 id="3-电影"><a href="#3-电影" class="headerlink" title="3.电影"></a>3.电影</h3><blockquote><p>API使用的是豆瓣电影 API，关于具体API参考该项目的REAMDE。</p></blockquote><ul><li><p>电影列表：由影院热映、院线即将上映及豆瓣Top250三部分组成，点击全部跳转到显示所有列表信息。</p></li><li><p>电影详情页：影片的具体介绍及评分信息，采用CardView卡片控件，评分控件采用MaterialRatingbar。</p></li></ul><h2 id="三、开源库"><a href="#三、开源库" class="headerlink" title="三、开源库"></a>三、开源库</h2><ul><li><a href="https://github.com/facebook/fresco" target="_blank" rel="noopener">Fresco</a>，好用的图片加载库。</li><li><a href="https://github.com/square/okhttp" target="_blank" rel="noopener">okhttp</a>，快速实现网络请求。</li><li><a href="https://github.com/greenrobot/EventBus" target="_blank" rel="noopener">EventBus</a>，方便实现组件间通信。</li><li><a href="https://github.com/DreaminginCodeZH/MaterialRatingBar" target="_blank" rel="noopener">MaterialRatingBar</a>，符合material design的评分控件。</li><li><a href="https://github.com/zxing/zxing" target="_blank" rel="noopener">zxing</a>，google出品的二维码库。</li><li><a href="https://github.com/journeyapps/zxing-android-embedded" target="_blank" rel="noopener">zxing-android-embedded</a>，快速适用于android二维码使用的库。</li><li><a href="https://github.com/gyf-dev/ImmersionBar" target="_blank" rel="noopener">ImmersionBar</a>，简单实现各种状态栏管理。</li></ul><h2 id="四、技术点"><a href="#四、技术点" class="headerlink" title="四、技术点"></a>四、技术点</h2><p>在实现项目过程中，学到的一些知识，及遇到的一些技术问题。</p><ul><li><p>豆瓣及ONE的相关API的了解</p></li><li><p>Kotlin语言的使用及语法特性</p></li><li><p>MVP模式的特点及使用</p></li><li><p>Fresco的使用细节</p></li><li><p>okhttp的使用细节及简单封装</p></li><li><p>ZXing的接入以及在android中的使用</p></li><li><p>代码混淆的简单了解及学习</p></li><li><p>SwipeRefreshLayout结合RecyclerView下拉刷新上拉加载</p></li><li><p>CoordinatorLayout + Behavior的简单学习与使用</p></li><li><p>ScrollView嵌套RecyclerView的使用及问题分析</p></li></ul><h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>由于时间原因以及相关API数据的限制，有些实现上比较粗糙，同时存在一些潜在的bug，欢迎在Github上提issue。如果觉得不错，对你有帮助，希望多多fork，star。</p><p><strong>Github地址：<a href="https://github.com/LRH1993/SuiYue" target="_blank" rel="noopener">https://github.com/LRH1993/SuiYue</a></strong><br><img src="https://upload-images.jianshu.io/upload_images/3985563-0ec22db89c7c5e02.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>可以通过扫描二维码，下载apk体验。</p><p>​<br>​                      </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;一款基于douban及ONE API开发的资讯类的开源项目。项目采取的是okhttp + MVP架构开发。Github地址：&lt;a href=&quot;https://github.com/LRH1993/SuiYue&quot; target=&quot;_blank&quot; re
+      
+    
+    </summary>
+    
+      <category term="开源项目" scheme="https://lrh1993.github.io/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>ScrollView嵌套RecyclerView滑动冲突相关问题</title>
@@ -494,32 +518,6 @@
 &lt;p&gt;最近了解了Android中权限申请的一些情况，由于Android系统的定制，里面还是有不少坑的，所以就系统梳理下关于Android权限申请的技术点。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&quot;一、权限处理分类&quot;&gt;&lt;a href=&quot;#一、权
-      
-    
-    </summary>
-    
-      <category term="Android进阶" scheme="https://lrh1993.github.io/categories/Android%E8%BF%9B%E9%98%B6/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Android新手如何学习开发一款app?</title>
-    <link href="https://lrh1993.github.io/2017/07/21/Android%E6%96%B0%E6%89%8B%E5%A6%82%E4%BD%95%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BEapp-/"/>
-    <id>https://lrh1993.github.io/2017/07/21/Android新手如何学习开发一款app-/</id>
-    <published>2017-07-21T10:48:57.000Z</published>
-    <updated>2017-07-22T04:07:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>毫无疑问，开发一款自己的App对于初学者来说，无论从技术学习，还是找工作（或者装x），都是一大利器。那么如何才能快速上手，开发一款属于自己的app。本篇文章仅以自己的一些经验给更多的Android新手一些建议。</p></blockquote><p><img src="http://upload-images.jianshu.io/upload_images/3985563-599a90acaeb64565.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p><h2 id="一、误区"><a href="#一、误区" class="headerlink" title="一、误区"></a>一、误区</h2><p>在讲如何开发一款app之前，先说下一定要避免的一些误区。</p><ul><li>借鉴与copy</li><li>表面与原理</li><li>效果与深度  </li></ul><p>###（1）借鉴是为了学习<br>作为一名Android开发新手，在学习开发一款自己的app之前，参考一些大牛的项目，进行借鉴与参考是一个很好的捷径。</p><p>然而有些新手上手就开始撸代码，看着一脸懵逼的代码，不明所以，想着不管三七二十一，敲着敲着就明白了。结果，最后一出bug就懵逼了，丝毫不理解项目的结构与框架，更不提其中的技术难点。</p><p>所以不要盲目地copy，磨刀不误砍柴工，要像看源码一样学习项目。先理清项目中的结构，使用的框架，每个类的功能，以及使用到的技术点，庖丁解牛，逐个拆分学习，化为一个个的技术问题，这样才能最终转化为自己的知识。</p><h3 id="（2）从表面深入原理"><a href="#（2）从表面深入原理" class="headerlink" title="（2）从表面深入原理"></a>（2）从表面深入原理</h3><p>针对具体的技术实现，不要仅仅以实现为目的，更不要仅仅因为实现了一些炫酷的UI效果而沾沾自喜。</p><p>对于一些技术，要知其然，更要知其所以然。比如：进程间通信的实现方式AIDL，可能照着一些模板就可以实现，达到目的。再比如说：RecyclerView或ListView，按照一定的方法就可以快速实现列表布局。</p><p>然而这些实现不仅在一个项目或一处使用，而是频繁高发的实现，将来也更是工作或面试中会遇到的。所以我们要透过表面学习原理，在开发一款app的同时，通过这种方式激励自己加深对技术的理解与实际应用。</p><p>比如，针对AIDL理解binder机制的实现，更进一步理解android中的进程间通信方式。针对RecyclerView或ListView，理解复用机制以及如何定制化实现一些特殊的效果，加深我们自己的技术深度。</p><h3 id="（3）不盲目追求效果"><a href="#（3）不盲目追求效果" class="headerlink" title="（3）不盲目追求效果"></a>（3）不盲目追求效果</h3><p>Android开发的乐趣在于可以自己实现app的开发，用技术创造体验。</p><p>然而正是这种乐趣可能会导致一些新手盲目注重UI实现效果，而忽略自身的技术学习。有时候技术学习与效果并不冲突，然而在自己独立开发app，学习技术的过程中，可以适当较少对UI效果的追求，专注于对技术的追求与学习。</p><p>当然完美主义者（强迫症）会不知觉地倾斜，但也请保持平衡。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-10c00b5e74981838.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p><h2 id="二、准备工作"><a href="#二、准备工作" class="headerlink" title="二、准备工作"></a>二、准备工作</h2><p>在进行开发之前，我们要先进行足够的准备工作，这样才能事半功倍。</p><p>通常而言，新手在开发第一款app都是来自于借鉴，站在巨人的肩膀上进行学习，那么如何选择一款自己想做、技术难度适当、干货较多的app？</p><h3 id="选择参照app"><a href="#选择参照app" class="headerlink" title="选择参照app"></a>选择参照app</h3><ul><li>先选择自己想做的类型，比如：播放器，新闻类等，一些适合新手开发的app。然后在Github中搜索（一定要学会使用Github）。</li><li>了解当前的流行技术框架，选择自己想学的一些框架，筛选出使用这些框架的app。</li><li>从满足以上需求的app中找出一些star较多的项目，因为群众的眼睛是雪亮的，这代表该项目是有可取之处的。</li><li>先大致了解下项目结构，不要盲目选一些效果炫酷的实现。要根据自己的技术能力选择，初学者不要选择太过复杂的，要循序渐进，才能事半功倍。  </li></ul><h3 id="开发前奏"><a href="#开发前奏" class="headerlink" title="开发前奏"></a>开发前奏</h3><p>选择好了一款或多款参照app后，那么就要开始全面了解这款app。</p><ul><li><p>项目结构：了解整个项目的结构，各个功能模块，以及使用的框架。一般项目结构都会按照如下结构展开。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-92ac503971a0a90f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p></li><li><p>框架使用：了解整个项目使用的框架，然后学习该框架的使用。先看相关文章，了解基础使用，然后了解原理，最后基于自己的项目进行封装，这样会方便后续快速功能实现。</p></li></ul><h2 id="三、开发app"><a href="#三、开发app" class="headerlink" title="三、开发app"></a>三、开发app</h2><p>关于具体开发，仅介绍一些通用的东西，供大家参考。</p><ul><li>项目构建 ：<a href="http://www.jianshu.com/p/d9e4ddd1c530" target="_blank" rel="noopener">一个优秀的Android应用从建项目开始</a>，创建项目的一些规范。</li><li>工具类：<a href="https://github.com/Blankj/AndroidUtilCode" target="_blank" rel="noopener">AndroidUtilCode</a>，所有你想用的工具类，都可以从中抽取。</li><li>基类：构建项目中基类，如Activity,Fragment等，可以参考网上的一些实现，但是大而全不一定好，适合自己的才是最好的。</li></ul><h2 id="四、个人经验"><a href="#四、个人经验" class="headerlink" title="四、个人经验"></a>四、个人经验</h2><h3 id="（1）动机"><a href="#（1）动机" class="headerlink" title="（1）动机"></a>（1）动机</h3><p>作为一个Android新手，我也是在今年2月份才开始想学习做一款app，增加自己各方面的能力。</p><p>在刚开始，想学习一些流行框架的使用，如Retrofit，RxJava，Glide,EventBus以及MVP模式。</p><p>在构思整个项目的时候，想的大而全，想实现太多的功能，而然做到最后只实现了新闻浏览以及图片浏览的功能，虽然项目不完整,但是仍然学到了不少东西。</p><h3 id="（2）过程"><a href="#（2）过程" class="headerlink" title="（2）过程"></a>（2）过程</h3><p>因为实现的功能比较简单，整个项目的周期大概20多天左右。其实开发周期也就10多天，在前10天左右一直在学习了解各个框架的使用及原理。</p><p>Read the fucking source code，这个过程虽然很枯燥，不过也是一个积累与沉淀的过程。</p><p>从我的博客就可以看出我在准备这个项目时的学习历程。博客写作真的是学习的一个很好方式，可以将很多东西变成自己的，不再留于表面。</p><p><strong>RxJava学习过程</strong><br><a href="http://www.jianshu.com/p/d149043d103a" target="_blank" rel="noopener">手把手教你使用 RxJava 2.0（一）</a><br><a href="http://www.jianshu.com/p/310726a75045" target="_blank" rel="noopener">手把手教你使用 RxJava 2.0（二）</a><br><a href="http://www.jianshu.com/p/1f4867ce3c01" target="_blank" rel="noopener">手把手教你使用 RxJava 2.0（三）</a>  </p><p><strong>Retrofit学习过程</strong><br><a href="http://www.jianshu.com/p/7a4b3766f86d" target="_blank" rel="noopener">Retrofit配置详解及封装，让你的网络请求更简单</a><br><a href="http://www.jianshu.com/p/9c3f0af1180d" target="_blank" rel="noopener">Retrofit+RxJava网络请求异常处理</a>  </p><p><strong>EventBus学习过程</strong><br><a href="http://www.jianshu.com/p/251a1e1b793a" target="_blank" rel="noopener">关于EventBus，从使用到解析（上）</a><br><a href="http://www.jianshu.com/p/4f34176c2ea7" target="_blank" rel="noopener">关于EventBus，从使用到解析（下）</a>  </p><p><strong>MVP模式学习过程</strong><br><a href="http://www.jianshu.com/p/8fb4c0ae006e" target="_blank" rel="noopener">Android MVP 的简单介绍与使用</a> </p><p><strong>具体技术解决过程</strong><br><a href="http://www.jianshu.com/p/86ca7c873cb8" target="_blank" rel="noopener">Android之仿哔哩哔哩客户端首页+抽屉式导航</a><br><a href="http://www.jianshu.com/p/40561384c7ca" target="_blank" rel="noopener">类似支付宝首页——RecycleView多布局结构实现</a><br><a href="http://www.jianshu.com/p/02a9b697fdc0" target="_blank" rel="noopener">类似支付宝应用管理界面——RecycleView+ItemTouchHelper实现拖拽滑动</a><br><a href="http://www.jianshu.com/p/eb81f3692229" target="_blank" rel="noopener">ViewPager+TabLayout+Fragment懒加载机制完全解析</a>  </p><p>边做边写，一路下来，收获还是颇丰，小伙伴们可以在暑假试一试，很有效。</p><h3 id="（3）结果"><a href="#（3）结果" class="headerlink" title="（3）结果"></a>（3）结果</h3><p>最终完成的项目在现在看来很low了，不过确实是一个很好的开端。下面展示下具体实现的效果，纪念下我的第一款app。<br><img src="http://upload-images.jianshu.io/upload_images/3985563-9fd54f74ee60ed5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><img src="http://upload-images.jianshu.io/upload_images/3985563-6a141a248f2f279a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p><p><img src="http://upload-images.jianshu.io/upload_images/3985563-23d52fd7c7e3fad2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p><p><strong>Github地址：<a href="https://github.com/LRH1993/LiveCircle" target="_blank" rel="noopener">https://github.com/LRH1993/LiveCircle</a></strong>  </p><p>感兴趣的看下，觉得以上介绍不错的可以给个star支持下。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;毫无疑问，开发一款自己的App对于初学者来说，无论从技术学习，还是找工作（或者装x），都是一大利器。那么如何才能快速上手，开发一款属于自己的app。本篇文章仅以自己的一些经验给更多的Android新手一些建议。&lt;/p&gt;
-&lt;/blockquote&gt;
-
       
     
     </summary>
